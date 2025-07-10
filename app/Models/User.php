@@ -2,26 +2,35 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    use Notifiable;
+
+    protected $connection = 'legacy';
+
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'username',
         'email',
         'password',
+        'class_course',
+        'class_year',
+        'gender',
+        'birthdate',
+        'phone',
+        'avatar_path',
     ];
 
     /**
@@ -32,6 +41,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at',
+        'approved_at',
     ];
 
     /**
@@ -44,18 +55,54 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birthdate' => 'date:Y-m-d',
+            'phone' => E164PhoneNumberCast::class.':FR',
+            'flight_hours' => 'integer',
+            'approved_at' => 'datetime',
         ];
     }
 
-    /**
-     * Get the user's initials
-     */
+    public function getRouteKeyName(): string
+    {
+        return 'username';
+    }
+
+    protected function firstName(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => Str::nameCase($value),
+        );
+    }
+
+    protected function lastName(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => Str::nameCase($value),
+        );
+    }
+
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => implode(' ', [
+                $attributes['first_name'],
+                $attributes['last_name'],
+            ]),
+        );
+    }
+
+    protected function class(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => implode(' ', [
+                $attributes['class_course'],
+                $attributes['class_year'],
+            ]),
+        );
+    }
+
     public function initials(): string
     {
-        return Str::of($this->name)
-            ->explode(' ')
-            ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
-            ->implode('');
+        return Str::substr($this->first_name, 0, 1).Str::substr($this->last_name, 0, 1);
     }
 }
