@@ -1,14 +1,13 @@
-name: linter
+name: fix code styling
 
 on:
   push:
-    branches:
-      - develop
-      - main
+    paths:
+      - '**.php'
   pull_request:
     branches:
       - develop
-      - main
+      - master
 
 permissions:
   contents: write
@@ -17,8 +16,12 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     environment: Testing
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -36,11 +39,11 @@ jobs:
       - name: Run Pint
         run: vendor/bin/pint
 
-      # - name: Commit Changes
-      #   uses: stefanzweifel/git-auto-commit-action@v5
-      #   with:
-      #     commit_message: fix code style
-      #     commit_options: '--no-verify'
-      #     file_pattern: |
-      #       **/*
-      #       !.github/workflows/*
+      - name: Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: Fix code style
+          commit_options: '--no-verify'
+          file_pattern: |
+            **/*
+            !.github/workflows/*
