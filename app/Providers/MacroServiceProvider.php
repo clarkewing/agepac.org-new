@@ -31,13 +31,13 @@ class MacroServiceProvider extends ServiceProvider
                 ->filter(fn ($part) => $part->count() == 2)
                 ->mapSpread(function ($name, $separator = null) use ($casedParts) {
                     // Use a specified case for separator if set
-                    $casedParts = $casedParts->first(fn ($i) => strcasecmp($i, $separator) == 0);
-                    $separator = $casedParts ?? $separator;
+                    $cased = $casedParts->first(fn ($i) => strcasecmp($i, $separator) == 0);
+                    $separator = $cased ?? $separator;
 
                     // Choose a specified part case, or uppercase first as default
-                    $casedParts = $casedParts->first(fn ($i) => strcasecmp($i, $name) == 0);
+                    $cased = $casedParts->first(fn ($i) => strcasecmp($i, $name) == 0);
 
-                    return [$casedParts ?? ucfirst(strtolower($name)), $separator];
+                    return [$cased ?? ucfirst(strtolower($name)), $separator];
                 })
                 ->map(fn ($part) => implode($part))
                 ->join('');
