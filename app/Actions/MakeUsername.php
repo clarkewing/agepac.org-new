@@ -6,18 +6,34 @@ use Illuminate\Support\Str;
 
 class MakeUsername
 {
+    protected string $username;
+
+    protected string $firstName;
+
+    protected string $lastName;
+
     public function __invoke(string $firstName, string $lastName): string
     {
-        $first = $this->normalize($firstName);
-        $last = $this->normalize($lastName);
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
 
-        return "$first.$last";
+        $this->buildUsername();
+
+        return $this->username;
+    }
+
+    protected function buildUsername(): void
+    {
+        $first = $this->normalizeString($this->firstName);
+        $last = $this->normalizeString($this->lastName);
+
+        $this->username = "$first.$last";
     }
 
     /**
      * Remove accents and normalize string
      */
-    protected function normalize(string $value): string
+    protected function normalizeString(string $value): string
     {
         $value = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value);
 
