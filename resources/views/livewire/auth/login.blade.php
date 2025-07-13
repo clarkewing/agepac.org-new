@@ -1,13 +1,13 @@
 <div class="flex flex-col gap-6">
     <flux:heading class="text-center" size="xl">{{ __('Welcome back') }}</flux:heading>
 
-    <div class="space-y-4">
-        @env('local')
+    @env('local')
+        <div class="space-y-4">
             <x-login-link />
-        @endenv
-    </div>
+        </div>
 
-    <flux:separator text="or" />
+        <flux:separator text="or" />
+    @endenv
 
     <div class="flex flex-col gap-6">
         <!-- Session Status -->
