@@ -10,6 +10,21 @@ test('login screen can be rendered', function () {
     $response->assertStatus(200);
 });
 
+test('login screen only shows developer login in local environment', function () {
+    $loginLink = route('loginLinkLogin');
+    $loginLinkFormTag = <<<HTML
+        <form method="POST" action="$loginLink">
+        HTML;
+
+    withEnvironment('local',
+        fn () => $this->get('/login')->assertSeeHtml($loginLinkFormTag)
+    );
+
+    withEnvironment('production',
+        fn () => $this->get('/login')->assertDontSeeHtml($loginLinkFormTag)
+    );
+});
+
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
 
