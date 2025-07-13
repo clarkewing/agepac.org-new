@@ -40,7 +40,7 @@ class UserFactory extends Factory
             'class_course' => fake()->randomElement(ClassCourse::options()),
             'class_year' => fake()->year,
             'gender' => fake()->randomElement(array_keys(Gender::options())),
-            'birthdate' => fake()->date('Y-m-d', today()->subYears(18)), // At least 18 years old
+            'birth_date' => fake()->date('Y-m-d', today()->subYears(18)), // At least 18 years old
             'phone' => fake()->randomElement([ // Use predefined numbers for testing as Faker can generate some weirdos
                 '0669696969',
                 '07 68 12 34 56',

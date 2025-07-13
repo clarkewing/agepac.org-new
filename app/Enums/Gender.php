@@ -11,7 +11,7 @@ enum Gender: string
 
     public function label(): string
     {
-        return __('gender.'.strtolower($this->name));
+        return __('genders.'.strtolower($this->name));
     }
 
     public static function options(): array

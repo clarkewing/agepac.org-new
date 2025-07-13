@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('class_course', 30)->nullable();
             $table->year('class_year')->nullable();
             $table->string('gender', 1);
-            $table->date('birthdate')->nullable();
+            $table->date('birth_date')->nullable();
             $table->string('phone', 20)->nullable();
             $table->string('avatar_path')->nullable();
 

@@ -31,7 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'class_course',
         'class_year',
         'gender',
-        'birthdate',
+        'birth_date',
         'phone',
         'avatar_path',
     ];
@@ -58,7 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'birthdate' => 'date:Y-m-d',
+            'birth_date' => 'date:Y-m-d',
             'phone' => E164PhoneNumberCast::class.':FR',
             'flight_hours' => 'integer',
             'approved_at' => 'datetime',
