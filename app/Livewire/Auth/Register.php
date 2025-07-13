@@ -72,6 +72,7 @@ class Register extends Component
     {
         try {
             $this->phone = new PhoneNumber($this->phone, 'FR')->formatInternational();
-        } catch (NumberParseException) {}
+        } catch (NumberParseException) {
+        }
     }
 }
