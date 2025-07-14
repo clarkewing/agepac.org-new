@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Actions\MakeUsername;
 use App\Enums\ClassCourse;
 use App\Enums\Gender;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -64,5 +65,12 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'approved_at' => null,
         ]);
+    }
+
+    public function asCustomer(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->createAsStripeCustomer();
+        });
     }
 }

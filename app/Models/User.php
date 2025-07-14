@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Stripe\Billable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,9 +13,8 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use Billable;
     use HasFactory;
-
     use Notifiable;
 
     public function getConnectionName()
