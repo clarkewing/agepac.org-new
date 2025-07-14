@@ -6,7 +6,8 @@ use Livewire\Component;
 use Livewire\Livewire;
 
 beforeEach(function () {
-    $this->component = new class extends Component {
+    $this->component = new class extends Component
+    {
         use InteractsWithToasts;
 
         public function mount(): void

@@ -6,7 +6,8 @@ use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 
 beforeEach(function () {
-    $this->component = new class extends Component {
+    $this->component = new class extends Component
+    {
         use TracksLifecycle;
 
         public function render(): string
