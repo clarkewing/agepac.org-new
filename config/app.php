@@ -125,14 +125,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Maintenance Mode Driver
+    | Users Database Connection
     |--------------------------------------------------------------------------
     |
-    | These configuration options determine the driver used to determine and
-    | manage Laravel's "maintenance mode" status. The "cache" driver will
-    | allow maintenance mode to be controlled across multiple machines.
-    |
-    | Supported drivers: "file", "cache"
+    | This value allows you to specify a dedicated database connection for
+    | user-related data, such as authentication or user profiles. By default,
+    | it falls back to the application's primary database connection.
+    | You can override this in your environment configuration.
     |
     */
 
