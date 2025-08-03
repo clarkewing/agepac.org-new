@@ -92,5 +92,4 @@ class LegacySyncHelpers
             expect($legacyRecord->{$column})->toBe($value);
         }
     }
-
 }
