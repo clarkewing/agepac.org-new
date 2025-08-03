@@ -16,6 +16,7 @@
         "php": "^8.4",
         "ext-iconv": "*",
         "ext-intl": "*",
+        "clarkewing/legacy-sync": "^0.1.0",
         "laravel/cashier": "^15.7",
         "laravel/framework": "^12.20",
         "laravel/tinker": "^2.10.1",

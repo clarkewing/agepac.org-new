@@ -17,11 +17,6 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory;
     use Notifiable;
 
-    public function getConnectionName()
-    {
-        return config('app.users_connection');
-    }
-
     protected $fillable = [
         'first_name',
         'last_name',

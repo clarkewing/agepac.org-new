@@ -123,17 +123,4 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Users Database Connection
-    |--------------------------------------------------------------------------
-    |
-    | This value allows you to specify a dedicated database connection for
-    | user-related data, such as authentication or user profiles. By default,
-    | it falls back to the application's primary database connection.
-    | You can override this in your environment configuration.
-    |
-    */
-
-    'users_connection' => env('APP_USERS_CONNECTION', config('database.default')),
 ];
