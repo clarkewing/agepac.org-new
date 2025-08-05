@@ -5,23 +5,20 @@ use App\Models\User;
 use Livewire\Livewire;
 
 test('login screen can be rendered', function () {
-    $response = $this->get('/login');
+    $response = $this->get(route('login'));
 
     $response->assertStatus(200);
 });
 
 test('login screen only shows developer login in local environment', function () {
-    $loginLink = route('loginLinkLogin');
-    $loginLinkFormTag = <<<HTML
-        <form method="POST" action="$loginLink">
-        HTML;
-
     withEnvironment('local',
-        fn () => $this->get('/login')->assertSeeHtml($loginLinkFormTag)
+        fn () => $this->get(route('login'))
+            ->assertSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">')
     );
 
     withEnvironment('production',
-        fn () => $this->get('/login')->assertDontSeeHtml($loginLinkFormTag)
+        fn () => $this->get(route('login'))
+            ->assertDontSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">')
     );
 });
 
@@ -56,9 +53,9 @@ test('users can not authenticate with invalid password', function () {
 test('users can logout', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->post('/logout');
+    $response = $this->actingAs($user)->post(route('logout'));
 
-    $response->assertRedirect('/');
+    $response->assertRedirect(route('home'));
 
     $this->assertGuest();
 });

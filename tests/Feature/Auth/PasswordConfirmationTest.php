@@ -7,7 +7,7 @@ use Livewire\Livewire;
 test('confirm password screen can be rendered', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get('/confirm-password');
+    $response = $this->actingAs($user)->get(route('password.confirm'));
 
     $response->assertStatus(200);
 });
