@@ -10,7 +10,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 $domain = Uri::of(config('app.url'))->host();
 
 Route::domain($domain)
-    // Remove cookies from public site
+    // Prevent cookies on public site
     ->withoutMiddleware([
         StartSession::class,
         AuthenticateSession::class,
@@ -18,6 +18,7 @@ Route::domain($domain)
         VerifyCsrfToken::class,
     ])
     ->group(__DIR__.'/public.php');
+
 Route::domain('squawk.'.$domain)
     ->group(__DIR__.'/squawk.php');
 
