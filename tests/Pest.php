@@ -46,10 +46,10 @@ function withEnvironment(string $env, callable $callback): void
     $originalEnv = $_ENV['APP_ENV'];
 
     $_ENV['APP_ENV'] = $env;
-    test()->refreshApplication();
+    invade(test())->refreshApplication();
 
     $callback();
 
     $_ENV['APP_ENV'] = $originalEnv;
-    test()->refreshApplication();
+    invade(test())->refreshApplication();
 }
