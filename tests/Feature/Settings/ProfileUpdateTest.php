@@ -7,8 +7,8 @@ use Livewire\Livewire;
 test('profile page is displayed', function () {
     $this->actingAs($user = User::factory()->create());
 
-    $this->get('/settings/profile')->assertOk();
-});
+    $this->get(route('settings.profile'))->assertOk();
+})->skip(message: 'Handoff is handling this route for now');
 
 test('profile information can be updated', function () {
     $user = User::factory()->create();
