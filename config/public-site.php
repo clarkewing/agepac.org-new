@@ -135,23 +135,23 @@ return [
         ],
         [
             'name' => 'Solal Lorcy',
-            'title' => 'Responsable Promotion EPL/S 2020'
+            'title' => 'Responsable Promotion EPL/S 2020',
         ],
         [
             'name' => 'Marc Lesavre',
-            'title' => 'Responsable Promotion EPL/S 2021'
+            'title' => 'Responsable Promotion EPL/S 2021',
         ],
         [
             'name' => 'Sébastien Vazelle',
-            'title' => 'Responsable Promotion EPL/S 2022'
+            'title' => 'Responsable Promotion EPL/S 2022',
         ],
         [
             'name' => 'Louis Bécet',
-            'title' => 'Responsable Promotion EPL/S 2023'
+            'title' => 'Responsable Promotion EPL/S 2023',
         ],
         [
             'name' => 'Florian Bartkowiak',
-            'title' =>'Responsable Promotions EPL/U & EPL/P'
+            'title' => 'Responsable Promotions EPL/U & EPL/P',
         ],
         [
             'name' => 'Zoé Kouvelas',
