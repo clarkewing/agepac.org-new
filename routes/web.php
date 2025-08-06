@@ -21,4 +21,3 @@ Route::domain($domain)
 
 Route::domain('squawk.'.$domain)
     ->group(__DIR__.'/squawk.php');
-
