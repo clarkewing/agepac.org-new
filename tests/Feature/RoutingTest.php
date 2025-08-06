@@ -3,7 +3,7 @@
 use Illuminate\Support\Uri;
 
 test('public pages do not have cookies', function () {
-    $response = $this->get(route('home'))
+    $response = $this->get(route('public.home'))
         ->assertSuccessful();
 
     expect($response->headers->getCookies())->toBeEmpty();
