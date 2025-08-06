@@ -17,6 +17,7 @@ Route::domain($domain)
         ShareErrorsFromSession::class,
         VerifyCsrfToken::class,
     ])
+    ->name('public.')
     ->group(__DIR__.'/public.php');
 
 Route::domain('squawk.'.$domain)

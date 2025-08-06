@@ -4,17 +4,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'public.welcome')->name('home');
 
-Route::view('/privacy', 'public.terms', ['terms' => 'privacy']);
-Route::view('/terms', 'public.terms', ['terms' => 'terms']);
+Route::view('epl/selection', 'public.selection')->name('epl.selection');
+Route::view('epl/training', 'public.training')->name('epl.training');
 
-Route::view('epl/selection', 'public.selection');
-Route::view('epl/training', 'public.training');
+Route::view('association', 'public.about')->name('association.about');
+Route::view('association/team', 'public.team')->name('association.team');
 
-Route::view('association', 'public.about');
-Route::view('association/team', 'public.team');
+Route::view('contact', 'public.contact')->name('contact');
+Route::view('press', 'public.press')->name('press');
 
-Route::view('contact', 'public.contact');
+Route::view('/privacy', 'public.terms', ['terms' => 'privacy'])->name('privacy');
+Route::view('/terms', 'public.terms', ['terms' => 'terms'])->name('terms');
 
-Route::view('press', 'public.press');
-
-Route::view('remembering', 'public.remembering');
+Route::view('remembering', 'public.remembering')->name('remembering');
