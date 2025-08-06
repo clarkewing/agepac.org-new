@@ -161,7 +161,7 @@
                 Plus de 100 exploitants nous font confiance
             </p>
             <div class="-mx-4 mt-6 flex flex-wrap justify-center">
-                @foreach(config('marketing.employers_showcase') as $employer)
+                @foreach(config('public-site.employers_showcase') as $employer)
                     @php
                         if (File::exists(public_path('media/logos/' . Str::slug($employer) . '-logo-wide-gray-400.svg'))) {
                             $src = asset('media/logos/' . Str::slug($employer) . '-logo-wide-gray-400.svg');

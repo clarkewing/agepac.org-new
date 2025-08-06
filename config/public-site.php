@@ -1,0 +1,287 @@
+<?php
+
+return [
+    'board' => [
+        [
+            'name' => 'Hugo Bao',
+            'title' => 'Président',
+            'promotion' => 'CP ATPL 2019',
+            'job' => 'OPL Transavia France',
+            'linkedin' => 'https://www.linkedin.com/in/hugo-bao-ba121418a/',
+            'bio' => 'Très investi dans le bénévolat depuis ses débuts à l’ENAC, Hugo commence un premier mandat au Bureau de l’AGEPAC en 2022 en tant que Vice-Président. Il est élu Président en 2023.',
+        ],
+        [
+            'name' => 'Thomas Joffraud',
+            'title' => 'Vice-Président',
+            'promotion' => 'EPL/U 2021',
+            'job' => 'OPL Air France',
+            'linkedin' => '',
+            'bio' => 'Empathique et travailleur, Thomas a rejoint l’équipe du Bureau afin de s’impliquer au développement de la communauté EPL ainsi qu’à sa cohésion par le biais de l’AGEPAC.',
+        ],
+        [
+            'name' => 'Pierre Grézaud',
+            'title' => 'Secrétaire Général',
+            'promotion' => 'EPL/U 2021',
+            'job' => '',
+            'linkedin' => '',
+            'bio' => 'Nouvellement élu Secrétaire Général, après une année de découverte de l’association, Pierre va tenter de suivre le rythme de ses prédécesseurs. En équipe avec Céline, son rôle est de s’assurer de la bonne tenue administrative de l’AGEPAC.',
+        ],
+        [
+            'name' => 'Alys Godelu',
+            'title' => 'Secrétaire Général adjointe',
+            'promotion' => 'CP ATPL 2022',
+            'job' => '',
+            'linkedin' => '',
+            'bio' => 'Espérant former un aussi bon duo que ses prédécesseurs, Alys, en équipe avec Pierre, fera en sorte d’éviter que les réunions ne se finissent dans un nuage de confusions !',
+        ],
+        [
+            'name' => 'Raphaël Timmerman',
+            'title' => 'Trésorier',
+            'promotion' => 'EPL/S 2022',
+            'job' => '',
+            'linkedin' => '',
+            'bio' => 'Ayant mené la communication d’une main de maître, Raph s’attaque maintenant à la trésorerie. Un vrai couteau suisse.',
+        ],
+        [
+            'name' => 'Céline Rosier',
+            'title' => 'Responsable Communication',
+            'promotion' => 'EPL/U 2020',
+            'job' => 'OPL Transavia France',
+            'linkedin' => '',
+            'bio' => 'Adepte de nouveaux challenges, Céline est maintenant en charge de la communication, après une merveilleuse année en tant que Secrétaire adjointe, en duo avec Pierre.',
+        ],
+        [
+            'name' => 'Victor Krogmann',
+            'title' => 'Responsable Emploi et Réseau',
+            'promotion' => 'CP ATPL 2020',
+            'job' => '',
+            'linkedin' => '',
+            'bio' => 'Passionné et investi depuis son jeune âge dans les aéroclubs qu’il a fréquenté, Victor n’a pas hésité à rejoindre l’équipe du Bureau en 2023.',
+        ],
+        [
+            'name' => 'Romano Morisson',
+            'title' => 'Responsable adjoint Emploi et Réseau',
+            'promotion' => 'EPL/S 2023',
+            'job' => '',
+            'linkedin' => '',
+            'bio' => 'Après une première immersion totale dans le milieu associatif aéronautique avec Airexpo, Romano a rejoint les rangs de l’AGEPAC. Il oeuvre aux côtés de Victor dans le pôle Emploi et Réseau.',
+        ],
+        [
+            'name' => 'Thomas Salacroux',
+            'title' => 'Liaison Partenaires Industriels',
+            'promotion' => 'EPL/U 2021',
+            'job' => 'OPL Air France',
+            'linkedin' => 'https://www.linkedin.com/in/thomas-salacroux-b28487141/',
+            'bio' => 'Allant du planeur, à l’aéroclub, à l’ATPL théorique, à l’ENAC, il semblait évident que Thomas allait rejoindre le Bureau tôt ou tard. Il manie l’art du dialogue avec nos partenaires.',
+        ],
+        [
+            'name' => 'Elisabeth Arnaud',
+            'title' => 'Responsable Événements',
+            'promotion' => 'EPL/U 2022',
+            'job' => '',
+            'linkedin' => '',
+            'bio' => 'Après avoir secondé Morgane, cette année Elisabeth prend les rênes du pôle Events. Préparez-vous à vivre des événements aux petits oignons.',
+        ],
+        [
+            'name' => 'Mathilde Toulouse',
+            'title' => 'Responsable Événements adjointe',
+            'promotion' => 'EPL/U 2022',
+            'job' => '',
+            'linkedin' => '',
+            'bio' => 'Mêlant son école de commerce à sa passion de l’aérien, Mathilde a rejoint l’équipe évènement de l’AGEPAC pour rassembler et fédérer tous les EPL; qu’ils soient en formation ou en ligne.',
+        ],
+    ],
+
+    'council' => [
+        [
+            'name' => 'César Chroscik',
+            'title' => 'Responsable Promotions EPL/S 2010 & antérieures',
+        ],
+        [
+            'name' => 'Julian Krummel',
+            'title' => 'Responsable Promotion EPL/S 2011',
+        ],
+        [
+            'name' => 'Jacques Preiss',
+            'title' => 'Responsable Promotion EPL/S 2012',
+        ],
+        [
+            'name' => 'Erwan Marlier',
+            'title' => 'Responsable Promotion EPL/S 2013',
+        ],
+        [
+            'name' => 'Timothée Barry',
+            'title' => 'Responsable Promotion EPL/S 2014',
+        ],
+        [
+            'name' => 'Théo Chamiot-Prieur',
+            'title' => 'Responsable Promotion EPL/S 2015',
+        ],
+        [
+            'name' => 'Thomas Izarn',
+            'title' => 'Responsable Promotion EPL/S 2016',
+        ],
+        [
+            'name' => 'Victor Agopian',
+            'title' => 'Responsable Promotion EPL/S 2017',
+        ],
+        [
+            'name' => 'Lilian Berquier',
+            'title' => 'Responsable Promotion EPL/S 2018',
+        ],
+        [
+            'name' => 'Louis Geig',
+            'title' => 'Responsable Promotion EPL/S 2019',
+        ],
+        [
+            'name' => 'Solal Lorcy',
+            'title' => 'Responsable Promotion EPL/S 2020'
+        ],
+        [
+            'name' => 'Marc Lesavre',
+            'title' => 'Responsable Promotion EPL/S 2021'
+        ],
+        [
+            'name' => 'Sébastien Vazelle',
+            'title' => 'Responsable Promotion EPL/S 2022'
+        ],
+        [
+            'name' => 'Louis Bécet',
+            'title' => 'Responsable Promotion EPL/S 2023'
+        ],
+        [
+            'name' => 'Florian Bartkowiak',
+            'title' =>'Responsable Promotions EPL/U & EPL/P'
+        ],
+        [
+            'name' => 'Zoé Kouvelas',
+            'title' => 'Responsable Promotions Cursus Préparatoire ATPL',
+        ],
+        [
+            'name' => 'Jérôme Walrave',
+            'title' => 'Ancien Président 2002&#8209;2006',
+        ],
+        [
+            'name' => 'Simon Spriet',
+            'title' => 'Ancien Président 2006&#8209;2008',
+        ],
+        [
+            'name' => 'Pierre Petaux',
+            'title' => 'Ancien Président 2008&#8209;2010',
+        ],
+        [
+            'name' => 'Timoté Dufour',
+            'title' => 'Ancien Président 2010&#8209;2014',
+        ],
+        [
+            'name' => 'Benjamin Payet',
+            'title' => 'Ancien Président 2014&#8209;2016',
+        ],
+        [
+            'name' => 'Damien Lacombe',
+            'title' => 'Ancien Président 2016&#8209;2019',
+        ],
+        [
+            'name' => 'Simon Louyot',
+            'title' => 'Ancien Président 2019&#8209;2020',
+        ],
+        [
+            'name' => 'Hugo Clarke-Wing',
+            'title' => 'Ancien Président 2020&#8209;2023',
+            'photo' => '/media/leadership/hugo-clarke-wing-face.jpg',
+        ],
+    ],
+
+    'employers_showcase' => [
+        // 'Aegean Airlines',
+        'Aerosotravia',
+        // 'Air Austral',
+        // 'Air Caraibes',
+        // 'Air Corsica',
+        // 'Air France Hop',
+        'Air France',
+        'Air Macau',
+        // 'Air Mauritius',
+        // 'airBaltic',
+        // 'AirCalin',
+        // 'ASL Airlines France',
+        // 'ASL Airlines Switzerland',
+        // 'Astonfly',
+        // 'Austrian Airlines',
+        // 'Babcock International',
+        // 'Blue Islands',
+        // 'British Airways',
+        'Cargolux',
+        'Cathay Pacific',
+        // 'Cebu Pacific',
+        // 'Chalair Aviation',
+        // 'CityJet',
+        // 'Cretan Eagle Aviation',
+        // 'DHL',
+        'easyJet',
+        'Emirates',
+        // 'ENAC',
+        // 'Etihad Airways',
+        // 'Etihad Regional',
+        // 'Flybe',
+        // 'Flydubai',
+        // 'Garuda Indonesia',
+        // 'GlobalJet',
+        // 'GlobeAir',
+        // 'Hong Kong Airlines',
+        // 'Intercaribbean Airways',
+        // 'Jetstar',
+        // 'La Compagnie',
+        // 'LOT Polish Airlines',
+        // 'Lufthansa Cityline',
+        'Luxair',
+        // 'LuxAviation',
+        // 'Norwegian',
+        // 'Oyonnair',
+        // 'PixAir Survey',
+        // 'PrivatAir',
+        // 'Qantas',
+        // 'Qatar Airways',
+        // 'Ryanair',
+        // 'St Barth Commuter',
+        // 'St Barth Executive',
+        // 'Susi Air',
+        // 'Swiss',
+        'Transavia',
+        // 'TUI Fly',
+        // 'VallJet',
+        'VistaJet',
+        // 'Volotea',
+        // 'Vueling',
+        // 'West Atlantic',
+        // 'Wizz Air',
+    ],
+
+    'fallen_epls' => [
+        [
+            'name' => 'Guillaume G.',
+            'promotion' => 'EPL 2006',
+            'death' => 'Octobre 2011',
+        ],
+        [
+            'name' => 'Pierre H.',
+            'promotion' => 'EPL 2008',
+            'death' => 'Juillet 2011',
+        ],
+        [
+            'name' => 'Nicolas B.',
+            'promotion' => 'EPL 2008',
+            'death' => 'Décembre 2009',
+        ],
+        [
+            'name' => 'Céline S.',
+            'promotion' => 'EPL 2004',
+            'death' => 'Aout 2004',
+        ],
+        [
+            'name' => 'Jean M.',
+            'promotion' => 'EPL A12',
+            'death' => 'Juillet 2000',
+        ],
+    ],
+];

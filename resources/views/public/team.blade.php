@@ -21,7 +21,7 @@
                 </x-public::leadership.section-heading>
 
                 <ul role="list" class="space-y-12 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8 lg:gap-y-12 lg:space-y-0">
-                    @foreach(config('marketing.board') as $boardMember)
+                    @foreach(config('public-site.board') as $boardMember)
                         <x-public::leadership.card-detailed
                             name="{{ $boardMember['name'] }}"
                             title="{{ $boardMember['title'] }}"
@@ -47,7 +47,7 @@
                 </x-public::leadership.section-heading>
 
                 <ul role="list" class="mx-auto grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:gap-x-6 lg:gap-x-8 lg:gap-y-12 xl:grid-cols-6">
-                    @foreach(config('marketing.council') as $councilMember)
+                    @foreach(config('public-site.council') as $councilMember)
                         <x-public::leadership.card-simple
                             name="{{ $councilMember['name'] }}"
                             title="{!! $councilMember['title'] !!}"

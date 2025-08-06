@@ -47,7 +47,7 @@
                             </blockquote>
 
                             <ul class="mt-10 text-base text-gray-300 space-y-2">
-                                @foreach(config('marketing.fallen_epls') as $fallenEpl)
+                                @foreach(config('public-site.fallen_epls') as $fallenEpl)
                                     <li class="flex items-center">
                                         <x-public::icon.dove class="w-4 h-4 mr-2 text-gray-500" aria-hidden="true" />
                                         {{ $fallenEpl['name'] }} – {{ $fallenEpl['promotion'] }} – {{ $fallenEpl['death'] }}
