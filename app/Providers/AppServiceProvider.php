@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Observers\SubscriptionItemObserver;
 use App\Observers\SubscriptionObserver;
 use App\Observers\UserObserver;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Subscription;
@@ -32,5 +33,7 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Subscription::observe(SubscriptionObserver::class);
         SubscriptionItem::observe(SubscriptionItemObserver::class);
+
+        Blade::anonymousComponentPath(resource_path('views/public/components'), 'public');
     }
 }
