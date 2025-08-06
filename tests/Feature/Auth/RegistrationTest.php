@@ -6,7 +6,7 @@ use Illuminate\Validation\Rules\Enum as EnumRule;
 use Livewire\Livewire;
 
 test('registration screen can be rendered', function () {
-    $response = $this->get('/register');
+    $response = $this->get(route('register'));
 
     $response->assertStatus(200);
 });
