@@ -55,19 +55,19 @@
                             </div>
                         </div>
                         <div class="mt-6 space-y-1">
-                            <a href="/" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
+                            <a href="{{ route('public.home') }}" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
                                 Accueil
                             </a>
-                            <a href="/epl/selection" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
+                            <a href="{{ route('public.epl.selection') }}" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
                                 La Sélection EPL
                             </a>
-                            <a href="/epl/training" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
+                            <a href="{{ route('public.epl.training') }}" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
                                 La Formation EPL
                             </a>
-                            <a href="/association" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
+                            <a href="{{ route('public.association.about') }}" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
                                 Association
                             </a>
-                            <a href="/contact" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
+                            <a href="{{ route('public.contact') }}" class="block rounded-md p-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800">
                                 Nous Recruter
                             </a>
                         </div>
@@ -81,7 +81,7 @@
                                 Ancien élève ? Encore en formation ?
                             </p>
                             <div class="mt-1 flex justify-center">
-                                <a href="https://members.agepac.org" class="flex items-center px-2 text-vermilion-400 hover:text-vermilion-500">
+                                <a href="{{ route('dashboard') }}" class="flex items-center px-2 text-vermilion-400 hover:text-vermilion-500">
                                     <x-heroicon-o-user-circle class="shrink-0 h-5 w-5" />
                                     <span class="ml-2">Espace Membres</span>
                                 </a>

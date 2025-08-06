@@ -26,7 +26,7 @@
                         <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                             <div class="rounded-md shadow-sm">
                                 <a
-                                    href="/association"
+                                    href="{{ route('public.association.about') }}"
                                     class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-wedgewood-600 hover:bg-wedgewood-700 md:py-4 md:text-lg md:px-10"
                                 >
                                     En savoir plus
@@ -56,7 +56,7 @@
             </h2>
             <div class="mt-8 flex lg:mt-0 lg:shrink-0">
                 <div class="inline-flex rounded-md shadow-sm">
-                    <a href="https://members.agepac.org" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-wedgewood-600 hover:bg-wedgewood-700">
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-wedgewood-600 hover:bg-wedgewood-700">
                         Rejoignez-nous
                     </a>
                 </div>
@@ -85,12 +85,12 @@
                         </p>
                         <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                             <div class="rounded-md shadow-sm">
-                                <a href="/epl/training" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-vermilion-400 hover:bg-vermilion-500 md:py-4 md:text-lg md:px-10">
+                                <a href="{{ route('public.epl.training') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-vermilion-400 hover:bg-vermilion-500 md:py-4 md:text-lg md:px-10">
                                     La Formation
                                 </a>
                             </div>
                             <div class="mt-3 sm:mt-0 sm:ml-3">
-                                <a href="/epl/selection" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-vermilion-700 bg-vermilion-100 hover:bg-vermilion-200 md:py-4 md:text-lg md:px-10">
+                                <a href="{{ route('public.epl.selection') }}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-vermilion-700 bg-vermilion-100 hover:bg-vermilion-200 md:py-4 md:text-lg md:px-10">
                                     Le Concours
                                 </a>
                             </div>

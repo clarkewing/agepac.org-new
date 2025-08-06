@@ -10,7 +10,7 @@
 >
     <div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-6 sm:px-6 md:justify-start md:space-x-6 lg:space-x-10">
         <div>
-            <a href="/" class="flex">
+            <a href="{{ route('public.home') }}" class="flex">
                 <span class="sr-only">AGEPAC</span>
                 @if($branding === 'logo')
                     <x-public::application-logo class="h-8 w-auto sm:h-10 {{ $isOverlayed ? 'text-white' : '' }}" />
@@ -51,7 +51,7 @@
                     </x-slot>
 
                     <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                        <a href="/epl/selection" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
+                        <a href="{{ route('public.epl.selection') }}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
                             <x-heroicon-o-users class="shrink-0 h-6 w-6 text-wedgewood-500" />
                             <div class="ml-4">
                                 <p class="text-base font-medium text-gray-900">
@@ -63,7 +63,7 @@
                             </div>
                         </a>
 
-                        <a href="/epl/training" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
+                        <a href="{{ route('public.epl.training') }}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
                             <x-heroicon-o-academic-cap class="shrink-0 h-6 w-6 text-wedgewood-500" />
                             <div class="ml-4">
                                 <p class="text-base font-medium text-gray-900">
@@ -109,7 +109,7 @@
                     </x-slot>
 
                     <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                        <a href="/association" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
+                        <a href="{{ route('public.association.about') }}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
                             <x-heroicon-o-building-library class="shrink-0 h-6 w-6 text-wedgewood-500" />
                             <div class="ml-4">
                                 <p class="text-base font-medium text-gray-900">
@@ -121,7 +121,7 @@
                             </div>
                         </a>
 
-                        <a href="/association/team" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
+                        <a href="{{ route('public.association.team') }}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
                             <x-heroicon-o-user-group class="shrink-0 h-6 w-6 text-wedgewood-500" />
                             <div class="ml-4">
                                 <p class="text-base font-medium text-gray-900">
@@ -136,7 +136,7 @@
                 </x-public::flyout-menu>
 
                 <a
-                    href="/contact"
+                    href="{{ route('public.contact') }}"
                     @class([
                         'text-base font-medium',
                         'text-gray-500 hover:text-gray-900' => ! $isOverlayed,
@@ -150,7 +150,7 @@
             @unless($attributes->has('compact'))
                 <div class="flex items-center md:ml-12">
                     <a
-                        href="https://members.agepac.org"
+                        href="{{ route('dashboard') }}"
                         @class([
                             'w-full border border-transparent rounded-full lg:rounded-md p-1 lg:py-2 lg:px-4 flex items-center justify-center text-base focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-vermilion-400',
                             'text-vermilion-400 lg:text-white lg:bg-vermilion-400 hover:text-vermilion-500 lg:hover:text-white lg:hover:bg-vermilion-500' => ! $isOverlayed,

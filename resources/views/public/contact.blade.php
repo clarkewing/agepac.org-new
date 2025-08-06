@@ -43,7 +43,7 @@
                                 <div class="mt-1">
                                     <dt class="sr-only">Webpage</dt>
                                     <dd>
-                                        <a class="text-wedgewood-500 font-medium hover:underline" href="/press">
+                                        <a class="text-wedgewood-500 font-medium hover:underline" href="{{ route('public.press') }}">
                                             En savoir plus <span aria-hidden="true">&rarr;</span>
                                         </a>
                                     </dd>

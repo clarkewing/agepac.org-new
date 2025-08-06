@@ -223,7 +223,7 @@
         </div>
         <a
             class="group block mx-auto max-w-md px-4 sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8"
-            href="/association/team"
+            href="{{ route('public.association.team') }}"
         >
             <div class="relative rounded-2xl px-6 py-10 bg-dandelion-500 group-hover:bg-dandelion-400 overflow-hidden shadow-xl sm:px-12 sm:py-20">
                 <div aria-hidden="true" class="absolute inset-0 -mt-72 sm:-mt-32 md:mt-0">

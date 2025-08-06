@@ -10,13 +10,13 @@
                         </h3>
                         <ul class="mt-4 space-y-4">
                             <li>
-                                <a href="/epl/selection" class="text-base text-gray-300 hover:text-white">
+                                <a href="{{ route('public.epl.selection') }}" class="text-base text-gray-300 hover:text-white">
                                     La Sélection
                                 </a>
                             </li>
 
                             <li>
-                                <a href="/epl/training" class="text-base text-gray-300 hover:text-white">
+                                <a href="{{ route('public.epl.training') }}" class="text-base text-gray-300 hover:text-white">
                                     La Formation
                                 </a>
                             </li>
@@ -28,25 +28,25 @@
                         </h3>
                         <ul class="mt-4 space-y-4">
                             <li>
-                                <a href="/association" class="text-base text-gray-300 hover:text-white">
+                                <a href="{{ route('public.association.about') }}" class="text-base text-gray-300 hover:text-white">
                                     À propos
                                 </a>
                             </li>
 
                             <li>
-                                <a href="/association/team" class="text-base text-gray-300 hover:text-white">
+                                <a href="{{ route('public.association.team') }}" class="text-base text-gray-300 hover:text-white">
                                     Notre équipe
                                 </a>
                             </li>
 
                             <li>
-                                <a href="/press" class="text-base text-gray-300 hover:text-white">
+                                <a href="{{ route('public.press') }}" class="text-base text-gray-300 hover:text-white">
                                     Presse & médias
                                 </a>
                             </li>
 
                             <li>
-                                <a href="/contact" class="text-base text-gray-300 hover:text-white">
+                                <a href="{{ route('public.contact') }}" class="text-base text-gray-300 hover:text-white">
                                     Contactez-nous
                                 </a>
                             </li>
@@ -84,13 +84,13 @@
                         </h3>
                         <ul class="mt-4 space-y-4">
                             <li>
-                                <a href="/privacy" class="text-base text-gray-300 hover:text-white">
+                                <a href="{{ route('public.privacy') }}" class="text-base text-gray-300 hover:text-white">
                                     Confidentialité
                                 </a>
                             </li>
 
                             <li>
-                                <a href="/terms" class="text-base text-gray-300 hover:text-white">
+                                <a href="{{ route('public.terms') }}" class="text-base text-gray-300 hover:text-white">
                                     Conditions d’utilisation
                                 </a>
                             </li>
@@ -162,7 +162,7 @@
                     &copy; 2022 AGEPAC. Tous droits réservés.
                 </p>
 
-                <a href="/remembering" class="group mt-1 inline-flex items-center text-base">
+                <a href="{{ route('public.remembering') }}" class="group mt-1 inline-flex items-center text-base">
                     <span class="text-gray-400 group-hover:text-white">En hommage à nos EPL disparus</span>
                     <x-public::icon.dove class="w-4 h-4 text-gray-500 group-hover:text-gray-300 ml-2" aria-hidden="true" />
                 </a>

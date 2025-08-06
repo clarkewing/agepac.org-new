@@ -13,7 +13,7 @@
                 </div>
                 <div class="mt-2 w-full shrink-0 sm:mt-0 sm:w-auto">
                     <a
-                        href="/epl/selection#new-epl-u-criteria"
+                        href="{{ route('public.epl.selection') }}#new-epl-u-criteria"
                         class="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-vermilion-400 shadow-xs hover:bg-vermilion-50"
                     >
                         En savoir plus

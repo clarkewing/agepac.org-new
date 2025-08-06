@@ -381,7 +381,7 @@
 {{--                    <h2 class="text-3xl font-extrabold text-universe">Foire aux questions</h2>--}}
 {{--                    <p class="mt-4 text-lg text-gray-500">--}}
 {{--                        Vous ne trouvez pas la réponse que vous cherchez ? Contactez notre--}}
-{{--                        <a href="/contact" class="font-medium text-vermilion-500 hover:text-vermilion-600">équipe</a>.--}}
+{{--                        <a href="{{ route('public.contact') }}" class="font-medium text-vermilion-500 hover:text-vermilion-600">équipe</a>.--}}
 {{--                    </p>--}}
 {{--                </div>--}}
 {{--                <div class="mt-12 lg:mt-0 lg:col-span-2">--}}
@@ -393,7 +393,7 @@
 {{--                            <x-slot name="answer">--}}
 {{--                                Les formations sont différenciées par leurs prérequis au concours d’entrée. Plus de--}}
 {{--                                détails sont disponibles sur notre page--}}
-{{--                                <a href="/epl/selection">Le Concours</a>.--}}
+{{--                                <a href="{{ route('public.epl.selection') }}">Le Concours</a>.--}}
 {{--                            </x-slot>--}}
 {{--                        </x-public::faq-item>--}}
 
