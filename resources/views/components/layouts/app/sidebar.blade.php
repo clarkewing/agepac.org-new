@@ -8,7 +8,7 @@
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             {{-- TODO: Add wire:navigate --}}
-            <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse">
+            <a href="{{ route('dashboard') }}" class="me-5 mb-2 flex items-center space-x-2 rtl:space-x-reverse">
                 <x-app-logo />
             </a>
 
