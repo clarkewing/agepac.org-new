@@ -1,0 +1,44 @@
+name: Code Quality
+
+on: ['push', 'pull_request']
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [ 8.4 ]
+
+    name: Tests — PHP ${{ matrix.php }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Add Flux Credentials Loaded From ENV
+        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, mbstring, zip
+          coverage: pcov
+
+      - name: Install Composer dependencies
+        run: composer update --prefer-stable --no-interaction --prefer-dist
+
+      - name: Coding Style Checks
+        run: composer test:lint
+
+      - name: Type Coverage
+        run: composer test:type-coverage min=100

@@ -1,54 +1,66 @@
-name: tests
+name: Tests
 
-on:
-  push:
-    branches:
-      - develop
-      - master
-  pull_request:
-    branches:
-      - develop
-      - master
+on: ['push', 'pull_request']
 
 jobs:
-  ci:
+  test:
     runs-on: ubuntu-latest
-    environment: Testing
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [ 8.4 ]
+
+    name: Tests — PHP ${{ matrix.php }}
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Add Flux Credentials Loaded From ENV
+        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: ${{ matrix.php }}
+          extensions: iconv, intl
           tools: composer:v2
           coverage: xdebug
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 22
           cache: 'npm'
 
-      - name: Install Node Dependencies
-        run: npm i
+      - name: Setup problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Add Flux Credentials Loaded From ENV
-        run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction --no-progress --ansi
+          npm ci
 
-      - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+      - name: List installed dependencies
+        run: composer show -D
 
-      - name: Copy Environment File
-        run: cp .env.example .env
+      - name: Prepare Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate
 
-      - name: Generate Application Key
-        run: php artisan key:generate
-
-      - name: Build Assets
+      - name: Build assets
         run: npm run build
 
-      - name: Run Tests
-        run: ./vendor/bin/pest
+      - name: Unit tests
+        run: composer test:unit
