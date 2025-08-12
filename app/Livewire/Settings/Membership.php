@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Settings;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Redirector;
 use Laravel\Cashier\Subscription;
 use Livewire\Attributes\Computed;
@@ -50,5 +51,11 @@ class Membership extends Component
     public function followsCanceledCheckout(): bool
     {
         return request()->boolean('checkout_canceled');
+    }
+
+    public function render(): View
+    {
+        return view('livewire.settings.membership')
+            ->title(__('navigation.settings.password').' - '.__('settings.title'));
     }
 }

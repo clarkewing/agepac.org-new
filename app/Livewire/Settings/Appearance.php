@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Settings;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -31,5 +32,11 @@ class Appearance extends Component
         return [
             'language' => ['required', Rule::in(['en', 'fr'])],
         ];
+    }
+
+    public function render(): View
+    {
+        return view('livewire.settings.appearance')
+            ->title(__('navigation.settings.appearance').' - '.__('settings.title'));
     }
 }
