@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Events\WebhookHandled;
@@ -38,13 +39,13 @@ class StripeEventListener
         $user->updateDefaultPaymentMethod($payload['data']['object']['id']);
     }
 
-    /** @return \Laravel\Cashier\Billable|null */
-    protected function getUserByStripeId($stripeId)
+    /** @return \Laravel\Cashier\Billable|\App\Models\User|null */
+    protected function getUserByStripeId(string $stripeId): ?User
     {
         return Cashier::findBillable($stripeId);
     }
 
-    protected function setMaxNetworkRetries($retries = 3): void
+    protected function setMaxNetworkRetries(int $retries = 3): void
     {
         Stripe::setMaxNetworkRetries($retries);
     }

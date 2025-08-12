@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -28,18 +29,18 @@ class MacroServiceProvider extends ServiceProvider
             // Chunk parts, use $casedParts or uppercase first, remove unfinished chunks
             $value = collect($parts)
                 ->chunk(2)
-                ->filter(fn ($part) => $part->count() == 2)
-                ->mapSpread(function ($name, $separator = null) use ($casedParts) {
+                ->filter(fn (Collection $part): bool => $part->count() === 2)
+                ->mapSpread(function (string $name, ?string $separator = null) use ($casedParts): array {
                     // Use a specified case for separator if set
-                    $cased = $casedParts->first(fn ($i) => strcasecmp($i, $separator) == 0);
+                    $cased = $casedParts->first(fn (string $i): bool => strcasecmp($i, $separator) === 0);
                     $separator = $cased ?? $separator;
 
                     // Choose a specified part case, or uppercase first as default
-                    $cased = $casedParts->first(fn ($i) => strcasecmp($i, $name) == 0);
+                    $cased = $casedParts->first(fn (string $i): bool => strcasecmp($i, $name) === 0);
 
                     return [$cased ?? ucfirst(strtolower($name)), $separator];
                 })
-                ->map(fn ($part) => implode($part))
+                ->map(fn (array $part): string => implode($part))
                 ->join('');
 
             // Trim and return normalized value
