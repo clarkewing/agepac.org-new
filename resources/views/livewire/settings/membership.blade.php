@@ -3,7 +3,7 @@
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('settings.membership.heading')" :subheading=" __('settings.membership.subheading')">
+    <x-settings.layout :heading="__('settings.membership.heading')" :subheading="__('settings.membership.subheading')">
         <div class="space-y-4">
             @if($this->followsSuccessfulCheckout())
                 <flux:callout icon="hand-thumb-up">

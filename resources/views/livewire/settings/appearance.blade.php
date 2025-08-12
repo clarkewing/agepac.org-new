@@ -1,7 +1,7 @@
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('settings.appearance.heading')" :subheading=" __('settings.appearance.subheading')">
+    <x-settings.layout :heading="__('settings.appearance.heading')" :subheading="__('settings.appearance.subheading')">
         <div class="my-6 w-full space-y-6">
             <flux:radio.group
                 variant="segmented"
