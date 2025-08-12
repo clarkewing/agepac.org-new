@@ -55,7 +55,8 @@ test('user can delete their account', function () {
 
     $response
         ->assertHasNoErrors()
-        ->assertRedirect('/');
+        ->assertSessionHas('status', __('settings.profile.delete-account.status.deleted'))
+        ->assertRedirect(route('login'));
 
     expect($user->fresh())->toBeNull();
     expect(auth()->check())->toBeFalse();

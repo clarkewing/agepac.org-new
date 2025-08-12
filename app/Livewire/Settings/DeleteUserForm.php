@@ -21,6 +21,9 @@ class DeleteUserForm extends Component
 
         tap(Auth::user(), $logout(...))->delete();
 
-        $this->redirect('/', navigate: true);
+        session()->flash('status', __('settings.profile.delete-account.status.deleted'));
+
+        // TODO: Add navigate: true
+        $this->redirectRoute('login');
     }
 }
