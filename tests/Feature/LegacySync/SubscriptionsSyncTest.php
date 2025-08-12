@@ -1,5 +1,7 @@
 <?php
 
+use ClarkeWing\LegacySync\Facades\LegacySync;
+use ClarkeWing\LegacySync\LegacySyncManager;
 use Illuminate\Support\Facades\DB;
 use Laravel\Cashier\Subscription;
 use Laravel\Cashier\SubscriptionItem;
@@ -7,6 +9,7 @@ use Stripe\Subscription as StripeSubscription;
 use Tests\Helpers\LegacySyncHelpers as Helpers;
 
 beforeEach(function () {
+    LegacySync::swap(new LegacySyncManager);
     Helpers::setupLegacyDatabase();
 });
 

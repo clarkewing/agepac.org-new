@@ -9,6 +9,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (app()->runningUnitTests()) {
+            return;
+        }
+
         LegacySync::syncAll(SyncDirection::LegacyToNew);
 
         $this->backfillStripeProductIds();

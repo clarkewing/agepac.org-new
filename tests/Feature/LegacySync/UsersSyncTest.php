@@ -1,9 +1,12 @@
 <?php
 
 use App\Models\User;
+use ClarkeWing\LegacySync\Facades\LegacySync;
+use ClarkeWing\LegacySync\LegacySyncManager;
 use Tests\Helpers\LegacySyncHelpers as Helpers;
 
 beforeEach(function () {
+    LegacySync::swap(new LegacySyncManager);
     Helpers::setupLegacyDatabase();
 });
 
