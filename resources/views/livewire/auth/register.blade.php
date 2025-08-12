@@ -2,7 +2,7 @@
 @use(App\Enums\Gender)
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+    <x-auth-header :title="__('auth.register.heading')" :description="__('auth.register.description')" />
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
@@ -11,30 +11,30 @@
         <!-- First Name -->
         <flux:input
             wire:model="first_name"
-            :label="__('First Name')"
+            :label="__('fields.first-name.label')"
             type="text"
             required
             autofocus
             autocomplete="given-name"
-            :placeholder="__('First name')"
+            :placeholder="__('fields.first-name.placeholder')"
         />
 
         <!-- Last Name -->
         <flux:input
             wire:model="last_name"
-            :label="__('Last Name')"
+            :label="__('fields.last-name.label')"
             type="text"
             required
             autocomplete="family-name"
-            :placeholder="__('Last name')"
+            :placeholder="__('fields.last-name.placeholder')"
         />
 
         <!-- Gender -->
         <flux:select
             wire:model="gender"
-            :label="__('Gender')"
+            :label="__('fields.gender.label')"
             required
-            :placeholder="__('Select gender…')"
+            :placeholder="__('fields.gender.placeholder')"
         >
             @foreach(Gender::options() as $value => $label)
                 <flux:select.option :$value :$label />
@@ -44,7 +44,7 @@
         <!-- Birth Date -->
         <flux:date-picker
             wire:model="birth_date"
-            :label="__('Birth Date')"
+            :label="__('fields.birth-date.label')"
             required
         >
             <x-slot name="trigger">
@@ -55,9 +55,9 @@
         <!-- Class Course -->
         <flux:select
             wire:model="class_course"
-            :label="__('Class Course')"
+            :label="__('fields.class-course.label')"
             required
-            :placeholder="__('Choose course…')"
+            :placeholder="__('fields.class-course.placeholder')"
         >
             @foreach(ClassCourse::options() as $option)
                 <flux:select.option :value="$option" :label="$option" />
@@ -67,16 +67,16 @@
         <!-- Class Year -->
         <flux:input
             wire:model="class_year"
-            :label="__('Class Year')"
+            :label="__('fields.class-year.label')"
             type="text"
             required
-            :placeholder="__('YYYY')"
+            placeholder="YYYY"
         />
 
         <!-- Email Address -->
         <flux:input
             wire:model="email"
-            :label="__('Email address')"
+            :label="__('fields.email.label')"
             type="email"
             required
             autocomplete="email"
@@ -87,53 +87,50 @@
         <flux:input
             wire:model.blur="phone"
             :loading="true"
-            :label="__('Phone')"
+            :label="__('fields.phone.label')"
             type="tel"
             required
             autocomplete="tel"
-            :placeholder="__('Phone number')"
+            :placeholder="__('fields.phone.placeholder')"
         >
             <x-slot name="iconTrailing">
-                <flux:tooltip position="bottom" toggleable>
-                    <flux:button icon="information-circle" size="sm" variant="subtle" inset="left right" />
-                    <flux:tooltip.content class="max-w-56">
-                        <p>{{ __('International phone numbers are also accepted') }}</p>
-                    </flux:tooltip.content>
-                </flux:tooltip>
+                <flux:input-tooltip>
+                    <p>{{ __('fields.phone.tooltip') }}</p>
+                </flux:input-tooltip>
             </x-slot>
         </flux:input>
 
         <!-- Password -->
         <flux:input
             wire:model="password"
-            :label="__('Password')"
+            :label="__('fields.password.label')"
             type="password"
             required
             autocomplete="new-password"
-            :placeholder="__('Password')"
+            :placeholder="__('fields.password.placeholder')"
             viewable
         />
 
         <!-- Confirm Password -->
         <flux:input
             wire:model="password_confirmation"
-            :label="__('Confirm password')"
+            :label="__('fields.password-confirmation.label')"
             type="password"
             required
             autocomplete="new-password"
-            :placeholder="__('Confirm password')"
+            :placeholder="__('fields.password-confirmation.placeholder')"
             viewable
         />
 
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
-                {{ __('Create account') }}
+                {{ __('auth.register.action') }}
             </flux:button>
         </div>
     </form>
 
-    <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-        <span>{{ __('Already have an account?') }}</span>
-        <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
-    </div>
+    <flux:subheading class="text-center text-zinc-600 dark:text-zinc-400">
+        <span>{{ __('auth.register.login-prompt') }}</span>
+        <flux:link :href="route('login')" wire:navigate>{{ __('auth.register.login-link') }}</flux:link>
+    </flux:subheading>
 </div>

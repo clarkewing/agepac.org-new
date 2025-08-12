@@ -26,7 +26,7 @@ class ConfirmPassword extends Component
             'password' => $this->password,
         ])) {
             throw ValidationException::withMessages([
-                'password' => __('auth.password'),
+                'password' => __('auth.confirm-password.status.invalid-password'),
             ]);
         }
 
