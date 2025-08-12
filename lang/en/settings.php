@@ -7,6 +7,13 @@ return [
     'appearance' => [
         'heading' => 'Appearance',
         'subheading' => 'Update the appearance settings for your account',
+        'callouts' => [
+            'language-updated' => [
+                'heading' => 'Language updated',
+                'text' => 'Your new language preference has been applied. Some parts of the interface may require a full page refresh to update completely.',
+                'action' => 'Refresh',
+            ],
+        ],
     ],
 
     'profile' => [

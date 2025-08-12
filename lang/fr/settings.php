@@ -7,6 +7,13 @@ return [
     'appearance' => [
         'heading' => 'Apparence',
         'subheading' => 'Mettez à jour les paramètres d’apparence de votre compte',
+        'callouts' => [
+            'language-updated' => [
+                'heading' => 'Langue modifiée',
+                'text' => 'Votre langue a bien été modifiée. Certaines parties de l’interface peuvent nécessiter un rechargement complet de la page pour s’afficher correctement.',
+                'action' => 'Recharger',
+            ],
+        ],
     ],
 
     'profile' => [
