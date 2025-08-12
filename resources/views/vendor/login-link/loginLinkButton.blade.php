@@ -1,6 +1,5 @@
 <flux:button
-    {{ $attributes->class('w-full') }}
-    icon="code-bracket"
+    {{ $attributes->class('w-full')->merge(['icon' => 'code-bracket']) }}
     type="submit"
 >
     {{ $label }}
