@@ -26,9 +26,10 @@ class Membership extends Component
         //     auth()->user()->createAsStripeCustomer();
         // }
 
-        return redirect(
-            auth()->user()->billingPortalUrl(route('settings.membership'))
-        );
+        return redirect(auth()->user()->billingPortalUrl(
+            route('settings.membership'),
+            ['locale' => app()->getLocale()],
+        ));
     }
 
     public function resume(): void

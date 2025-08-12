@@ -5,7 +5,7 @@
     <flux:radio.group
         variant="cards"
         class="flex-col"
-        :label="__('Select your membership option')"
+        :label="__('settings.membership.product.label')"
         wire:model="selectedMembership"
     >
         @foreach(Membership::cases() as $membershipOption)
@@ -23,6 +23,6 @@
     </flux:radio.group>
 
     <flux:button variant="primary" class="max-sm:w-full" wire:click="checkout">
-        {{ __('Continue to payment') }}
+        {{ __('settings.membership.payment-action') }}
     </flux:button>
 </div>

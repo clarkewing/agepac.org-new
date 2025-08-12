@@ -64,13 +64,24 @@ class ResetPassword extends Component
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         if ($status != Password::PasswordReset) {
-            $this->addError('email', __($status));
+            $this->addError('email', $this->getTranslationString($status));
 
             return;
         }
 
-        Session::flash('status', __($status));
+        Session::flash('status', $this->getTranslationString($status));
 
         $this->redirectRoute('login', navigate: true);
+    }
+
+    protected function getTranslationString(string $status): string
+    {
+        return __(match ($status) {
+            Password::RESET_LINK_SENT => 'auth.reset-password.status.sent',
+            Password::PASSWORD_RESET => 'auth.reset-password.status.reset',
+            Password::INVALID_USER => 'auth.reset-password.status.user',
+            Password::INVALID_TOKEN => 'auth.reset-password.status.token',
+            Password::RESET_THROTTLED => 'auth.reset-password.status.throttled',
+        });
     }
 }

@@ -25,6 +25,7 @@ class CreateSubscriptionCheckout
             ->checkout(array_merge(array_filter([
                 'success_url' => $this->withStripeSession(Uri::of($successUrl)),
                 'cancel_url' => $this->withStripeSession(Uri::of($cancelUrl)->withQuery(['checkout_canceled' => true])),
+                'locale' => app()->getLocale(),
                 'metadata' => $metadata,
             ]), $sessionOptions), $customerOptions);
     }

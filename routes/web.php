@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\SetLocaleFromSession;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
@@ -20,4 +21,5 @@ Route::domain($rootDomain)
     ->group(__DIR__.'/public.php');
 
 Route::domain($rootDomain->prepend('squawk.'))
+    ->middleware(SetLocaleFromSession::class)
     ->group(__DIR__.'/squawk.php');
