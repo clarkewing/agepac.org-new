@@ -19,23 +19,33 @@
 
             @if($this->subscription)
                 @if($this->subscription->hasIncompletePayment())
-                    <flux:callout icon="exclamation-circle" variant="danger">
-                        @if($this->subscription->pastDue())
+                    @if($this->subscription->pastDue())
+                        <flux:callout icon="exclamation-circle" variant="danger">
                             <flux:callout.heading>{{ __('settings.membership.callouts.subscription-past-due.heading') }}</flux:callout.heading>
                             <flux:callout.text>{{ __('settings.membership.callouts.subscription-past-due.text') }}</flux:callout.text>
-                        @elseif($this->subscription->incomplete())
+                            <x-slot name="actions">
+                                <flux:button
+                                    size="sm"
+                                    href="{{ route('cashier.payment', $this->subscription->latestPayment()->id) }}"
+                                >
+                                    {{ __('settings.membership.callouts.subscription-past-due.action') }}
+                                </flux:button>
+                            </x-slot>
+                        </flux:callout>
+                    @elseif($this->subscription->incomplete())
+                        <flux:callout icon="exclamation-circle" variant="danger">
                             <flux:callout.heading>{{ __('settings.membership.callouts.subscription-incomplete.heading') }}</flux:callout.heading>
                             <flux:callout.text>{{ __('settings.membership.callouts.subscription-incomplete.text') }}</flux:callout.text>
-                        @endif
-                        <x-slot name="actions">
-                            <flux:button
-                                size="sm"
-                                href="{{ route('cashier.payment', $this->subscription->latestPayment()->id) }}"
-                            >
-                                {{ __('settings.membership.callouts.subscription-past-due.action') }}
-                            </flux:button>
-                        </x-slot>
-                    </flux:callout>
+                            <x-slot name="actions">
+                                <flux:button
+                                    size="sm"
+                                    href="{{ route('cashier.payment', $this->subscription->latestPayment()->id) }}"
+                                >
+                                    {{ __('settings.membership.callouts.subscription-incomplete.action') }}
+                                </flux:button>
+                            </x-slot>
+                        </flux:callout>
+                    @endif
                 @endif
 
                 @if($this->subscription->onGracePeriod())
