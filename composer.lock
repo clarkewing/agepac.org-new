@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d35c61009cfdc46cd318ff52111e814c",
+    "content-hash": "83c3232af654379c080f06df31b596c1",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -353,16 +353,16 @@
         },
         {
             "name": "clarkewing/legacy-sync",
-            "version": "v0.1",
+            "version": "v0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clarkewing/legacy-sync.git",
-                "reference": "746fee828c6419d2fce646ac3f1e3bd6606e2bf2"
+                "reference": "12d19e244abbd98ece99c2d58217aacdf561090c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clarkewing/legacy-sync/zipball/746fee828c6419d2fce646ac3f1e3bd6606e2bf2",
-                "reference": "746fee828c6419d2fce646ac3f1e3bd6606e2bf2",
+                "url": "https://api.github.com/repos/clarkewing/legacy-sync/zipball/12d19e244abbd98ece99c2d58217aacdf561090c",
+                "reference": "12d19e244abbd98ece99c2d58217aacdf561090c",
                 "shasum": ""
             },
             "require": {
@@ -415,9 +415,9 @@
             ],
             "support": {
                 "issues": "https://github.com/clarkewing/legacy-sync/issues",
-                "source": "https://github.com/clarkewing/legacy-sync/tree/v0.1"
+                "source": "https://github.com/clarkewing/legacy-sync/tree/v0.2"
             },
-            "time": "2025-08-03T13:15:26+00:00"
+            "time": "2025-08-12T20:55:43+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

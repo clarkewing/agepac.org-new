@@ -1,7 +1,7 @@
 <?php
 
 use ClarkeWing\LegacySync\Enums\SyncDirection;
-use ClarkeWing\LegacySync\LegacySyncManager;
+use ClarkeWing\LegacySync\Facades\LegacySync;
 use Illuminate\Database\Migrations\Migration;
 use Laravel\Cashier\Cashier;
 
@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        app(LegacySyncManager::class)->syncAll(SyncDirection::LegacyToNew);
+        LegacySync::syncAll(SyncDirection::LegacyToNew);
 
         $this->backfillStripeProductIds();
     }
