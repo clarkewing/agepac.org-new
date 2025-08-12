@@ -64,3 +64,6 @@ jobs:
 
       - name: Unit tests
         run: composer test:unit
+        env:
+          STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+          STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
