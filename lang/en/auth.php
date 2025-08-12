@@ -50,7 +50,7 @@ return [
         'login-prompt' => 'Or, return to',
         'login-link' => 'log in',
         'status' => [
-            'link-sent' => __('auth.reset-password.status.sent'),
+            'link-sent' => 'A reset link will be sent if the account exists.',
         ],
     ],
 

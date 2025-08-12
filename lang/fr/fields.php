@@ -18,15 +18,15 @@ return [
 
     'name' => [
         'label' => 'Nom',
-        'placeholder' => __('fields.name.label'),
+        'placeholder' => 'Nom',
     ],
     'first-name' => [
         'label' => 'Prénom',
-        'placeholder' => __('fields.first-name.label'),
+        'placeholder' => 'Prénom',
     ],
     'last-name' => [
         'label' => 'Nom de famille',
-        'placeholder' => __('fields.last-name.label'),
+        'placeholder' => 'Nom de famille',
     ],
     'gender' => [
         'label' => 'Genre',
@@ -34,7 +34,7 @@ return [
     ],
     'birth-date' => [
         'label' => 'Date de naissance',
-        'placeholder' => __('fields.birth-date.label'),
+        'placeholder' => 'Date de naissance',
     ],
     'class-course' => [
         'label' => 'Cursus',
@@ -42,32 +42,32 @@ return [
     ],
     'class-year' => [
         'label' => 'Année de promotion',
-        'placeholder' => __('fields.class-year.label'),
+        'placeholder' => 'Année de promotion',
     ],
     'email' => [
         'label' => 'Adresse e‑mail',
-        'placeholder' => __('fields.email.label'),
+        'placeholder' => 'Adresse e‑mail',
     ],
     'phone' => [
         'label' => 'Numéro de téléphone',
-        'placeholder' => __('fields.phone.label'),
+        'placeholder' => 'Numéro de téléphone',
         'tooltip' => 'Les numéros de téléphone internationaux sont également acceptés',
     ],
     'password' => [
         'label' => 'Mot de passe',
-        'placeholder' => __('fields.password.label'),
+        'placeholder' => 'Mot de passe',
     ],
     'password-confirmation' => [
         'label' => 'Confirmer le mot de passe',
-        'placeholder' => __('fields.password-confirmation.label'),
+        'placeholder' => 'Confirmer le mot de passe',
     ],
     'current-password' => [
         'label' => 'Mot de passe actuel',
-        'placeholder' => __('fields.current-password.label'),
+        'placeholder' => 'Mot de passe actuel',
     ],
     'new-password' => [
         'label' => 'Nouveau mot de passe',
-        'placeholder' => __('fields.new-password.label'),
+        'placeholder' => 'Nouveau mot de passe',
     ],
     'theme' => [
         'label' => 'Thème',

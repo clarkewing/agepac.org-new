@@ -50,7 +50,7 @@ return [
         'login-prompt' => 'Ou, revenir à',
         'login-link' => 'la connexion',
         'status' => [
-            'link-sent' => __('auth.reset-password.status.sent'),
+            'link-sent' => 'Un lien de réinitialisation sera envoyé si le compte existe.',
         ],
     ],
 
