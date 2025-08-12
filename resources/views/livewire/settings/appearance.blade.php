@@ -19,6 +19,27 @@
                     {{ __('fields.theme.options.system') }}
                 </flux:radio>
             </flux:radio.group>
+
+            <flux:select
+                variant="listbox"
+                wire:model="language"
+                wire:change="setLocale"
+                :label="__('fields.language.label')"
+                :placeholder="__('fields.language.placeholder')"
+            >
+                <flux:select.option value="en">
+                    <div class="flex items-center gap-2">
+                        <x-flag-language-en-us class="size-5" />
+                        {{ __('fields.language.options.en') }}
+                    </div>
+                </flux:select.option>
+                <flux:select.option value="fr">
+                    <div class="flex items-center gap-2">
+                        <x-flag-language-fr class="size-5" />
+                        {{ __('fields.language.options.fr') }}
+                    </div>
+                </flux:select.option>
+            </flux:select>
         </div>
     </x-settings.layout>
 </section>

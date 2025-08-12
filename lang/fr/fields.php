@@ -78,5 +78,13 @@ return [
             'system' => 'Système',
         ],
     ],
+    'language' => [
+        'label' => 'Langue',
+        'placeholder' => 'Sélectionner une langue…',
+        'options' => [
+            'en' => 'Anglais',
+            'fr' => 'Français',
+        ],
+    ],
 
 ];
