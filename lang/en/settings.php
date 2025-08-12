@@ -23,7 +23,6 @@ return [
         'delete-account' => [
             'heading' => 'Delete account',
             'subheading' => 'Permanently delete your account and all of its resources',
-            'prompt' => 'Are you sure you want to delete your account?',
             'action' => 'Delete account',
             'confirmation-modal' => [
                 'heading' => 'Are you sure you want to delete your account?',
