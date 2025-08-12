@@ -67,7 +67,7 @@ it('allows visiting the billing portal', function () {
     createSubscription($this->user);
 
     Livewire::test(Membership::class)
-        ->assertSeeText('Manage membership')
+        ->assertSeeText(__('settings.membership.manage-action'))
         ->call('openBillingPortal')
         ->assertRedirectContains('https://billing.stripe.com/p/session');
 });
@@ -87,8 +87,8 @@ it('shows the form to create a subscription if none exist or are valid', functio
 
 it('displays appropriate callouts upon checkout return', function () {
     $this->get(route('settings.membership').'?session_id=cs_123')
-        ->assertSeeText('Checkout completed');
+        ->assertSeeText(__('settings.membership.callouts.checkout-completed.heading'));
 
     $this->get(route('settings.membership').'?checkout_canceled=1&session_id=cs_123')
-        ->assertSeeText('Checkout interrupted');
+        ->assertSeeText(__('settings.membership.callouts.checkout-interrupted.heading'));
 });

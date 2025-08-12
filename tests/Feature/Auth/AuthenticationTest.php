@@ -8,16 +8,16 @@ test('login screen can be rendered', function () {
     $response = $this->get(route('login'));
 
     $response->assertStatus(200);
-});
+})->skip(message: 'Handoff is handling this route for now');
 
 test('login screen only shows developer login in local environment', function () {
     withEnvironment('local',
-        fn () => $this->get(route('login'))
+        fn () => Livewire::test('auth.login')
             ->assertSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">')
     );
 
     withEnvironment('production',
-        fn () => $this->get(route('login'))
+        fn () => Livewire::test('auth.login')
             ->assertDontSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">')
     );
 });

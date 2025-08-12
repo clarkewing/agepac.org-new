@@ -24,6 +24,7 @@ it('creates a checkout with correct options', function () {
     expect($result->asStripeCheckoutSession()->toArray())
         ->mode->toBe('subscription')
         ->status->toBe('open')
+        ->locale->toBe(app()->getLocale())
         ->allow_promotion_codes->toBeTrue()
         ->url->toStartWith('https://checkout.stripe.com/c/pay')
         ->customer->toBe($user->stripe_id)
