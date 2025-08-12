@@ -69,5 +69,14 @@ return [
         'label' => 'New Password',
         'placeholder' => 'New password',
     ],
+    'theme' => [
+        'label' => 'Theme',
+        'placeholder' => 'Select theme…',
+        'options' => [
+            'light' => 'Light',
+            'dark' => 'Dark',
+            'system' => 'System',
+        ],
+    ],
 
 ];

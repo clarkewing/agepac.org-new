@@ -7,14 +7,6 @@ return [
     'appearance' => [
         'heading' => 'Appearance',
         'subheading' => 'Update the appearance settings for your account',
-        'theme' => [
-            'label' => 'Theme',
-            'options' => [
-                'light' => 'Light',
-                'dark' => 'Dark',
-                'system' => 'System',
-            ],
-        ],
     ],
 
     'profile' => [
