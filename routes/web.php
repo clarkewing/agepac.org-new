@@ -4,12 +4,11 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Uri;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-$domain = Uri::of(config('app.url'))->host();
+$rootDomain = str(uri(config('app.url'))->host())->after('squawk.');
 
-Route::domain($domain)
+Route::domain($rootDomain)
     // Prevent cookies on public site
     ->withoutMiddleware([
         StartSession::class,
@@ -20,5 +19,5 @@ Route::domain($domain)
     ->name('public.')
     ->group(__DIR__.'/public.php');
 
-Route::domain('squawk.'.$domain)
+Route::domain($rootDomain->prepend('squawk.'))
     ->group(__DIR__.'/squawk.php');
