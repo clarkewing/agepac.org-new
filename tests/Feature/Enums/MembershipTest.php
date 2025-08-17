@@ -12,6 +12,11 @@ beforeEach(function () {
     ]);
 });
 
+afterEach(function () {
+    Mockery::close();
+    ApiRequestor::setHttpClient(null);
+});
+
 it('maps fromStripeId to the correct enum case', function () {
     expect(Membership::fromStripeId('prod_agepac_123'))->toBe(Membership::AGEPAC)
         ->and(Membership::fromStripeId('prod_alumni_456'))->toBe(Membership::AGEPAC_ALUMNI);
