@@ -3,11 +3,11 @@
 use App\Livewire\Auth\VerifyEmail;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Livewire\Livewire;
-use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
 
 beforeEach(function () {
     Event::fake();
