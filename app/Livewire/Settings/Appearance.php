@@ -21,6 +21,8 @@ class Appearance extends Component
 
     public function setLocale(): void
     {
+        $this->validate();
+
         session()->put('locale', $this->language);
         app()->setLocale($this->language);
 

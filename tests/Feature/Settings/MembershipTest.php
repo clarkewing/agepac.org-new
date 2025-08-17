@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Products\Membership as MembershipEnum;
 use App\Livewire\Settings\CreateMembershipForm;
 use App\Livewire\Settings\Membership;
 use App\Models\User;
@@ -8,30 +9,6 @@ use Livewire\Livewire;
 
 pest()->group('stripe', 'api');
 
-function createSubscription(User $user, array $data = []): Subscription
-{
-    return tap(
-        $user->subscriptions()->create(array_merge([
-            'type' => 'membership',
-            'stripe_id' => 'sub_123',
-            'stripe_status' => 'active',
-            'stripe_price' => 'price_123',
-            'quantity' => 1,
-            'trial_ends_at' => null,
-            'ends_at' => null,
-        ], $data)),
-        function (Subscription $subscription) {
-            $subscription->items()->create([
-                'subscription_id' => $subscription->id,
-                'stripe_id' => 'si_123',
-                'stripe_product' => config('cashier.products.membership.agepac'),
-                'stripe_price' => 'price_123',
-                'quantity' => 1,
-            ]);
-        }
-    );
-}
-
 beforeEach(function () {
     $this->user = User::factory()->asCustomer()->create();
     $this->actingAs($this->user);
@@ -39,6 +16,7 @@ beforeEach(function () {
 
 it('renders the livewire component', function () {
     $this->get(route('settings.membership'))
+        ->assertOk()
         ->assertSeeLivewire(Membership::class);
 });
 
@@ -53,7 +31,7 @@ it('computes the current user’s membership subscription', function () {
 
     expect($component->get('subscription'))
         ->toBeInstanceOf(Subscription::class)
-        ->id->toBe($subscription->id);
+        ->toBe($subscription);
 });
 
 it('only retrieves subscriptions of membership type', function () {
@@ -73,12 +51,12 @@ it('allows visiting the billing portal', function () {
 });
 
 it('shows the form to create a subscription if none exist or are valid', function () {
+    // Case where the user has no subscription
     Livewire::test(Membership::class)
         ->assertSeeLivewire(CreateMembershipForm::class);
 
+    // Case where the subscription is canceled and has expired
     createSubscription($this->user, ['stripe_status' => 'canceled', 'ends_at' => now()->subHour()]);
-
-    // Ensure the user's subscriptions are refreshed
     $this->user->refresh();
 
     Livewire::test(Membership::class)
@@ -92,3 +70,46 @@ it('displays appropriate callouts upon checkout return', function () {
     $this->get(route('settings.membership').'?checkout_canceled=1&session_id=cs_123')
         ->assertSeeText(__('settings.membership.callouts.checkout-interrupted.heading'));
 });
+
+it('allows resuming a canceled subscription', function () {
+    $subscription = tap(createSubscription($this->user, fake: false))->cancel();
+
+    expect($subscription->canceled())->toBeTrue();
+
+    Livewire::test(Membership::class)
+        ->assertSeeText(__('settings.membership.callouts.no-auto-renew.heading'))
+        ->assertSeeText(__('settings.membership.callouts.no-auto-renew.action'))
+        ->call('resume');
+
+    expect($subscription->refresh()->recurring())->toBeTrue();
+});
+
+function createSubscription(User $user, array $data = [], bool $fake = true): Subscription
+{
+    if ($fake) {
+        return tap(
+            $user->subscriptions()->create(array_merge([
+                'type' => 'membership',
+                'stripe_id' => 'sub_123',
+                'stripe_status' => 'active',
+                'stripe_price' => 'price_123',
+                'quantity' => 1,
+                'trial_ends_at' => null,
+                'ends_at' => null,
+            ], $data)),
+            function (Subscription $subscription) {
+                $subscription->items()->create([
+                    'subscription_id' => $subscription->id,
+                    'stripe_id' => 'si_123',
+                    'stripe_product' => config('cashier.products.membership.agepac'),
+                    'stripe_price' => 'price_123',
+                    'quantity' => 1,
+                ]);
+            }
+        );
+    }
+
+    return $user
+        ->newSubscription('membership', MembershipEnum::AGEPAC->stripePrice()->id)
+        ->create('pm_card_visa');
+}

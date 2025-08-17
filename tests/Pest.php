@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Database\Eloquent\Model;
+
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
@@ -26,7 +28,20 @@ pest()->extend(Tests\TestCase::class)
 |
 */
 
-//
+expect()->intercept('toBe', Model::class, function (Model $expected) {
+    /** @var Model $actual */
+    $actual = $this->value;
+
+    expect($actual->is($expected))->toBeTrue(
+        sprintf(
+            'Model %s[%s] does not match %s[%s].',
+            get_class($actual),
+            $actual->getKey(),
+            get_class($expected),
+            $expected->getKey(),
+        )
+    );
+});
 
 /*
 |--------------------------------------------------------------------------
