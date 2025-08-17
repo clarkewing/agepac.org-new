@@ -2,6 +2,8 @@
 
 use App\Livewire\Settings\Profile;
 use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 
 test('profile page is displayed', function () {
@@ -74,4 +76,32 @@ test('correct password must be provided to delete account', function () {
     $response->assertHasErrors(['password']);
 
     expect($user->fresh())->not->toBeNull();
+});
+
+/*
+|--------------------------------------------------------------------------
+| Resending Verification Email
+|--------------------------------------------------------------------------
+*/
+
+it('can resend verification email', function () {
+    Notification::fake();
+
+    $user = User::factory()->unverified()->create();
+    $this->actingAs($user);
+
+    Livewire::test(Profile::class)
+        ->call('resendVerificationNotification')
+        ->assertHasNoErrors();
+
+    Notification::assertSentTo($user, VerifyEmailNotification::class);
+});
+
+it('redirects already verified users when trying to resend verification', function () {
+    // Already verified
+    $this->actingAs(User::factory()->create());
+
+    Livewire::test(Profile::class)
+        ->call('resendVerificationNotification')
+        ->assertRedirect(route('dashboard', absolute: false));
 });
