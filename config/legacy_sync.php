@@ -12,7 +12,7 @@ return [
 
     'connections' => [
         'legacy' => 'legacy',
-        'new' => 'sqlite',
+        'new' => config('database.default'),
     ],
 
     /*
