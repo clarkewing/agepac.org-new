@@ -56,6 +56,6 @@ class Membership extends Component
     public function render(): View
     {
         return view('livewire.settings.membership')
-            ->title(__('navigation.settings.password').' - '.__('settings.title'));
+            ->title(__('navigation.settings.membership').' - '.__('settings.title'));
     }
 }
