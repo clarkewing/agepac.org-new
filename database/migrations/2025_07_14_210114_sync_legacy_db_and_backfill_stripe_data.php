@@ -23,7 +23,7 @@ return new class extends Migration
     protected function migrateSubscriptionTypes(): void
     {
         DB::table('subscriptions')
-            ->update(['type' => 'default']);
+            ->update(['type' => 'membership']);
     }
 
     protected function backfillStripeProductIds(): void
