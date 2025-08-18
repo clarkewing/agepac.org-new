@@ -15,7 +15,15 @@ return new class extends Migration
 
         LegacySync::syncAll(SyncDirection::LegacyToNew);
 
+        $this->migrateSubscriptionTypes();
+
         $this->backfillStripeProductIds();
+    }
+
+    protected function migrateSubscriptionTypes(): void
+    {
+        DB::table('subscriptions')
+            ->update(['type' => 'default']);
     }
 
     protected function backfillStripeProductIds(): void
