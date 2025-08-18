@@ -19,6 +19,12 @@
 
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         @vite(['resources/css/public.css', 'resources/js/public.js'])
+
+        <script
+            defer
+            src='https://static.cloudflareinsights.com/beacon.min.js'
+            data-cf-beacon='{"token": "9318628569ea49d3a823ea8f52a9b673"}'
+        ></script>
     </head>
     <body class="font-sans antialiased">
         <x-public::banner />

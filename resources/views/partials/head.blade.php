@@ -11,4 +11,10 @@
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+<script
+    defer
+    src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "9318628569ea49d3a823ea8f52a9b673"}'
+></script>
 @fluxAppearance
