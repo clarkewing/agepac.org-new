@@ -80,7 +80,12 @@
                     <flux:callout icon="information-circle" variant="success">
                         <flux:callout.heading>{{ __('settings.membership.callouts.subscription-active.heading') }}</flux:callout.heading>
                         <flux:callout.text>
-                            {{ __('settings.membership.callouts.subscription-active.text', ['plan' => Membership::fromStripeId($this->subscription->items()->first()->stripe_product)->label()]) }}
+                            {{ __('settings.membership.callouts.subscription-active.text', [
+                                'plan' => ($this->subscription->items->isNotEmpty()
+                                    ? Membership::fromStripeProduct($this->subscription->items->first()->stripe_product)
+                                    : Membership::fromStripePrice($this->subscription->stripe_price)
+                                )->label(),
+                            ]) }}
                         </flux:callout.text>
                     </flux:callout>
                 @elseif($this->subscription->ended())
