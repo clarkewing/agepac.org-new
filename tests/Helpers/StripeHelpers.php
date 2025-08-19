@@ -36,4 +36,13 @@ class StripeHelpers
             ],
         ];
     }
+
+    public static function stripePriceResponse(string $priceId, string $productId): array
+    {
+        return [
+            'id' => $priceId,
+            'object' => 'price',
+            'product' => $productId,
+        ];
+    }
 }
