@@ -6,12 +6,17 @@ use App\Livewire\Settings\Membership;
 use App\Models\User;
 use Laravel\Cashier\Subscription;
 use Livewire\Livewire;
+use Tests\Helpers\StripeHelpers;
 
 pest()->group('stripe', 'api');
 
 beforeEach(function () {
     $this->user = User::factory()->asCustomer()->create();
     $this->actingAs($this->user);
+});
+
+afterEach(function () {
+    StripeHelpers::cleanup();
 });
 
 it('renders the livewire component', function () {
@@ -82,6 +87,34 @@ it('allows resuming a canceled subscription', function () {
         ->call('resume');
 
     expect($subscription->refresh()->recurring())->toBeTrue();
+});
+
+it('shows the currently subscribed plan even if the subscription has no items', function () {
+    config()->set('cashier.products.membership', [
+        'agepac' => 'prod_agepac_123',
+        'agepac+alumni' => 'prod_alumni_456',
+    ]);
+
+    StripeHelpers::mockStripeClientWithResponse(
+        StripeHelpers::stripePriceResponse('price_123', 'prod_agepac_123')
+    );
+
+    // Create an active subscription with NO items
+    $this->user->subscriptions()->create([
+        'type' => 'membership',
+        'stripe_id' => 'sub_123',
+        'stripe_status' => 'active',
+        'stripe_price' => 'price_123',
+        'quantity' => 1,
+        'trial_ends_at' => null,
+        'ends_at' => null,
+    ]);
+
+    Livewire::test(Membership::class)
+        ->assertSeeTextInOrder([
+            __('settings.membership.callouts.subscription-active.heading'),
+            __('products.membership.agepac.name'),
+        ]);
 });
 
 function createSubscription(User $user, array $data = [], bool $fake = true): Subscription

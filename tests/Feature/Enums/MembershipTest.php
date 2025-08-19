@@ -2,8 +2,9 @@
 
 use App\Enums\Products\Membership;
 use App\Exceptions\MembershipNotFoundException;
-use Stripe\ApiRequestor;
-use Stripe\HttpClient\ClientInterface;
+use Stripe\Price;
+use Stripe\Product;
+use Tests\Helpers\StripeHelpers;
 
 beforeEach(function () {
     config()->set('cashier.products.membership', [
@@ -13,18 +14,67 @@ beforeEach(function () {
 });
 
 afterEach(function () {
-    Mockery::close();
-    ApiRequestor::setHttpClient(null);
+    StripeHelpers::cleanup();
 });
 
-it('maps fromStripeId to the correct enum case', function () {
-    expect(Membership::fromStripeId('prod_agepac_123'))->toBe(Membership::AGEPAC)
-        ->and(Membership::fromStripeId('prod_alumni_456'))->toBe(Membership::AGEPAC_ALUMNI);
+it('maps fromStripeProduct to the correct enum case', function () {
+    expect(Membership::fromStripeProduct('prod_agepac_123'))->toBe(Membership::AGEPAC)
+        ->and(Membership::fromStripeProduct('prod_alumni_456'))->toBe(Membership::AGEPAC_ALUMNI);
 });
 
-it('throws when fromStripeId does not match any product', function () {
-    Membership::fromStripeId('prod_unknown');
-})->throws(MembershipNotFoundException::class);
+it('maps fromStripeProduct with Product object to the correct enum case', function () {
+    $product = new Product('prod_agepac_123');
+    $product2 = new Product('prod_alumni_456');
+
+    expect(Membership::fromStripeProduct($product))->toBe(Membership::AGEPAC)
+        ->and(Membership::fromStripeProduct($product2))->toBe(Membership::AGEPAC_ALUMNI);
+});
+
+it('throws an exception when fromStripeProduct does not match any product', function () {
+    expect(function () {
+        Membership::fromStripeProduct('prod_unknown');
+    })->toThrow(MembershipNotFoundException::class);
+
+    expect(function () {
+        $product = new Product('prod_unknown');
+
+        Membership::fromStripeProduct($product);
+    })->toThrow(MembershipNotFoundException::class);
+});
+
+it('maps fromStripePrice with string to the correct enum case', function () {
+    StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripePriceResponse('price_123', 'prod_agepac_123'));
+    expect(Membership::fromStripePrice('price_123'))->toBe(Membership::AGEPAC);
+
+    StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripePriceResponse('price_456', 'prod_alumni_456'));
+    expect(Membership::fromStripePrice('price_456'))->toBe(Membership::AGEPAC_ALUMNI);
+});
+
+it('maps fromStripePrice with Price object to the correct enum case', function () {
+    $priceAgepac = new Price('price_123');
+    $priceAgepac->product = 'prod_agepac_123';
+
+    $priceAlumni = new Price('price_456');
+    $priceAlumni->product = 'prod_alumni_456';
+
+    expect(Membership::fromStripePrice($priceAgepac))->toBe(Membership::AGEPAC)
+        ->and(Membership::fromStripePrice($priceAlumni))->toBe(Membership::AGEPAC_ALUMNI);
+});
+
+it('throws when fromStripePrice does not match any product', function () {
+    StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripePriceResponse('price_unknown', 'prod_unknown'));
+
+    expect(function () {
+        Membership::fromStripePrice('price_unknown');
+    })->toThrow(MembershipNotFoundException::class);
+
+    expect(function () {
+        $price = new Price('price_unknown');
+        $price->product = 'prod_unknown';
+
+        Membership::fromStripePrice($price);
+    })->toThrow(MembershipNotFoundException::class);
+});
 
 it('returns the configured Stripe product id', function () {
     expect(Membership::AGEPAC->stripeProductId())->toBe('prod_agepac_123')
@@ -43,19 +93,19 @@ it('provides translated label and description', function () {
 });
 
 it('returns the Stripe price associated with the product', function () {
-    mockStripeClientWithResponse(stripeProductResponse('price_123'));
+    StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_123'));
 
     expect(Membership::AGEPAC->stripePrice()->id)->toBe('price_123');
 });
 
 it('uses the flexible cache driver to return the Stripe price', function () {
-    mockStripeClientWithResponse(stripeProductResponse('price_123'));
+    StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_123'));
 
     // First call: should hit the API
     expect(Membership::AGEPAC->stripePrice()->id)->toBe('price_123');
 
     // Change Stripe response after first API request
-    mockStripeClientWithResponse(stripeProductResponse('price_456'));
+    StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_456'));
 
     // After 5 minutes: Should still hit cache
     $this->travel(5)->minutes();
@@ -65,26 +115,3 @@ it('uses the flexible cache driver to return the Stripe price', function () {
     $this->travel(5)->minutes();
     expect(Membership::AGEPAC->stripePrice()->id)->toBe('price_456');
 });
-
-function mockStripeClientWithResponse(array $response, int $times = 1): void
-{
-    $mock = Mockery::mock(ClientInterface::class);
-
-    $mock->shouldReceive('request')
-        ->times($times)
-        ->andReturn([json_encode($response), 200, []]);
-
-    ApiRequestor::setHttpClient($mock);
-}
-
-function stripeProductResponse(string $priceId): array
-{
-    return [
-        'id' => 'prod_agepac_123',
-        'object' => 'product',
-        'default_price' => [
-            'id' => $priceId,
-            'object' => 'price',
-        ],
-    ];
-}
