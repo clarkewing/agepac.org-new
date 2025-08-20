@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'cloudflare-analytics' => [
+        'token' => env('CLOUDFLARE_ANALYTICS_TOKEN'),
+    ],
+
 ];
