@@ -51,6 +51,9 @@ jobs:
           composer install --no-interaction --no-progress --ansi
           npm ci
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: List installed dependencies
         run: composer show -D
 
