@@ -26,7 +26,6 @@ class CreateMembershipForm extends Component
             type: 'membership',
             sessionOptions: [
                 'payment_method_data' => ['allow_redisplay' => 'always'], // Ensure payment method can be redisplayed
-                'subscription_data' => ['description' => $selectedMembership->description()],
             ],
         );
     }
