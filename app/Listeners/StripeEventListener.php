@@ -2,7 +2,9 @@
 
 namespace App\Listeners;
 
+use App\Actions\RetrieveStripeProductPrice;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Events\WebhookHandled;
@@ -39,10 +41,30 @@ class StripeEventListener
         $user->updateDefaultPaymentMethod($payload['data']['object']['id']);
     }
 
-    /** @return \Laravel\Cashier\Billable|\App\Models\User|null */
+    protected function handlePriceUpdated(array $payload): void
+    {
+        $this->cacheProductPrice($payload['data']['object']['product']);
+    }
+
+    protected function handleProductUpdated(array $payload): void
+    {
+        $this->cacheProductPrice($payload['data']['object']['id']);
+    }
+
+    /**
+     * @return \Laravel\Cashier\Billable|\App\Models\User|null
+     */
     protected function getUserByStripeId(string $stripeId): ?User
     {
         return Cashier::findBillable($stripeId);
+    }
+
+    protected function cacheProductPrice(mixed $productId): void
+    {
+        Cache::forever(
+            "membership.$productId.price",
+            resolve(RetrieveStripeProductPrice::class)($productId),
+        );
     }
 
     protected function setMaxNetworkRetries(int $retries = 3): void

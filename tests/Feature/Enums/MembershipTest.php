@@ -2,6 +2,7 @@
 
 use App\Enums\Products\Membership;
 use App\Exceptions\MembershipNotFoundException;
+use Illuminate\Support\Facades\Cache;
 use Stripe\Price;
 use Stripe\Product;
 use Tests\Helpers\StripeHelpers;
@@ -98,7 +99,7 @@ it('returns the Stripe price associated with the product', function () {
     expect(Membership::AGEPAC->stripePrice()->id)->toBe('price_123');
 });
 
-it('uses the flexible cache driver to return the Stripe price', function () {
+it('uses cache to return the Stripe price', function () {
     StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_123'));
 
     // First call: should hit the API
@@ -107,11 +108,12 @@ it('uses the flexible cache driver to return the Stripe price', function () {
     // Change Stripe response after first API request
     StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_456'));
 
-    // After 5 minutes: Should still hit cache
-    $this->travel(5)->minutes();
+    // Should still hit cache and return the cached value
     expect(Membership::AGEPAC->stripePrice()->id)->toBe('price_123');
 
-    // After 10 minutes: Should have re-fetched from Stripe
-    $this->travel(5)->minutes();
+    // Clear the cache manually to simulate webhook clearing cache
+    Cache::forget('membership.prod_agepac_123.price');
+
+    // Should now fetch the new price from Stripe
     expect(Membership::AGEPAC->stripePrice()->id)->toBe('price_456');
 });

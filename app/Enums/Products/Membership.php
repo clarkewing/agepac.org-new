@@ -2,6 +2,7 @@
 
 namespace App\Enums\Products;
 
+use App\Actions\RetrieveStripeProductPrice;
 use App\Exceptions\MembershipNotFoundException;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Cashier\Cashier;
@@ -55,17 +56,9 @@ enum Membership: string
 
     public function stripePrice(): Price
     {
-        return Cache::flexible(
-            "membership.{$this->stripeProductId()}.amount",
-            [300, 600],
-            function () {
-                $stripeProduct = Cashier::stripe()->products->retrieve(
-                    $this->stripeProductId(),
-                    ['expand' => ['default_price']],
-                );
-
-                return $stripeProduct->default_price;
-            },
+        return Cache::rememberForever(
+            "membership.{$this->stripeProductId()}.price",
+            fn () => resolve(RetrieveStripeProductPrice::class)($this->stripeProductId()),
         );
     }
 
