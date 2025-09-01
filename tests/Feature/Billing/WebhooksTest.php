@@ -2,9 +2,11 @@
 
 use App\Listeners\StripeEventListener;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Laravel\Cashier\Events\WebhookHandled;
 use Laravel\Cashier\Events\WebhookReceived;
+use Tests\Helpers\StripeHelpers;
 
 function simulateWebhook(string $type, array $data = []): void
 {
@@ -83,4 +85,100 @@ describe('payment_method.attached', function () {
             ->hasDefaultPaymentMethod()->toBeTrue()
             ->pm_type->toBe('visa');
     })->group('stripe', 'api');
+});
+
+describe('price.updated', function () {
+    beforeEach(function () {
+        config()->set('cashier.products.membership', [
+            'agepac' => 'prod_agepac_123',
+        ]);
+    });
+
+    afterEach(function () {
+        StripeHelpers::cleanup();
+        Cache::flush();
+    });
+
+    it('repopulates cache with updated price data', function () {
+        $cacheKey = 'membership.prod_agepac_123.price';
+
+        Cache::forever($cacheKey, (object) ['id' => 'price_old']);
+        expect(Cache::get($cacheKey)->id)->toBe('price_old');
+
+        StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_new'));
+
+        simulateWebhook('price.updated', [
+            'id' => 'price_new',
+            'product' => 'prod_agepac_123',
+        ]);
+
+        expect(Cache::get($cacheKey)->id)->toBe('price_new');
+
+        Event::assertDispatched(WebhookHandled::class);
+    });
+
+    it('handles webhook when no cache exists', function () {
+        $cacheKey = 'membership.prod_agepac_123.price';
+
+        expect(Cache::has($cacheKey))->toBeFalse();
+
+        StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_123'));
+
+        simulateWebhook('price.updated', [
+            'id' => 'price_123',
+            'product' => 'prod_agepac_123',
+        ]);
+
+        expect(Cache::get($cacheKey)->id)->toBe('price_123');
+
+        Event::assertDispatched(WebhookHandled::class);
+    });
+});
+
+describe('product.updated', function () {
+    beforeEach(function () {
+        config()->set('cashier.products.membership', [
+            'agepac' => 'prod_agepac_123',
+        ]);
+    });
+
+    afterEach(function () {
+        StripeHelpers::cleanup();
+        Cache::flush();
+    });
+
+    it('repopulates cache with updated default price', function () {
+        $cacheKey = 'membership.prod_agepac_123.price';
+
+        Cache::forever($cacheKey, (object) ['id' => 'price_old']);
+        expect(Cache::get($cacheKey)->id)->toBe('price_old');
+
+        StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_updated'));
+
+        simulateWebhook('product.updated', [
+            'id' => 'prod_agepac_123',
+            'default_price' => 'price_updated',
+        ]);
+
+        expect(Cache::get($cacheKey)->id)->toBe('price_updated');
+
+        Event::assertDispatched(WebhookHandled::class);
+    });
+
+    it('handles webhook when no cache exists', function () {
+        $cacheKey = 'membership.prod_agepac_123.price';
+
+        expect(Cache::has($cacheKey))->toBeFalse();
+
+        StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_456'));
+
+        simulateWebhook('product.updated', [
+            'id' => 'prod_agepac_123',
+            'default_price' => 'price_456',
+        ]);
+
+        expect(Cache::get($cacheKey)->id)->toBe('price_456');
+
+        Event::assertDispatched(WebhookHandled::class);
+    });
 });
