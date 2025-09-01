@@ -64,10 +64,14 @@ enum Membership: string
 
     protected static function getProductFromPrice(string|Price $price): Product|string
     {
-        if (is_string($price)) {
-            $price = Cashier::stripe()->prices->retrieve($price);
+        if ($price instanceof Price) {
+            return $price->product;
         }
 
-        return $price->product;
+        return Cache::remember(
+            "stripe.price.$price.product",
+            now()->addHours(24),
+            fn () => Cashier::stripe()->prices->retrieve($price)->product
+        );
     }
 }

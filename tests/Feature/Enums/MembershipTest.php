@@ -117,3 +117,21 @@ it('uses cache to return the Stripe price', function () {
     // Should now fetch the new price from Stripe
     expect(Membership::AGEPAC->stripePrice()->id)->toBe('price_456');
 });
+
+it('caches product from price for 24 hours', function () {
+    StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripePriceResponse('price_123', 'prod_agepac_123'));
+
+    // First call: should hit the API and cache the result
+    expect(Membership::fromStripePrice('price_123'))->toBe(Membership::AGEPAC);
+
+    StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripePriceResponse('price_123', 'prod_alumni_456'));
+
+    // Should still hit cache and return the cached product (AGEPAC, not AGEPAC_ALUMNI)
+    expect(Membership::fromStripePrice('price_123'))->toBe(Membership::AGEPAC);
+
+    // Travel forward 25 hours to expire the 24-hour cache
+    $this->travel(25)->hours();
+
+    // Should now fetch the new product from Stripe
+    expect(Membership::fromStripePrice('price_123'))->toBe(Membership::AGEPAC_ALUMNI);
+});
