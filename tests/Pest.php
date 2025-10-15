@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,11 +14,12 @@
 |
 */
 
-use Illuminate\Database\Eloquent\Model;
-
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
+
+pest()->extend(Tests\TestCase::class)
+    ->in('Unit');
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +45,11 @@ expect()->intercept('toBe', Model::class, function (Model $expected) {
             $expected->getKey(),
         )
     );
+});
+
+expect()->intercept('toEqual', Carbon::class, function (Carbon $expected) {
+    expect($this->value->equalTo($expected))
+        ->toBeTrue("Failed to assert [{$this->value->toDateTimeString('microsecond')}] is equal to [{$expected->toDateTimeString('microsecond')}].");
 });
 
 /*
