@@ -14,8 +14,16 @@ class MailcoachApi
 {
     public function __construct()
     {
+        if (! config('services.mailcoach.url')) {
+            throw new LogicException('Mailcoach API URL not configured.');
+        }
+
         if (! config('services.mailcoach.token')) {
             throw new LogicException('Mailcoach API token not configured.');
+        }
+
+        if (! config('services.mailcoach.lists.default')) {
+            throw new LogicException('Mailcoach API default list UUID not configured.');
         }
     }
 
