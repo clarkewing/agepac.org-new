@@ -31,5 +31,7 @@
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="STRIPE_WEBHOOK_SECRET" value=""/>
         <env name="MAILCOACH_URL" value=""/>
+        <env name="MAILCOACH_TOKEN" value=""/>
+        <env name="MAILCOACH_DEFAULT_LIST_UUID" value=""/>
     </php>
 </phpunit>
