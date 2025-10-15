@@ -8,10 +8,10 @@ readonly class UpdateSubscriberEmailAction extends MailcoachAction
 {
     public function __invoke(User $user): void
     {
-        $subscriber = $this->mailcoachApi->getSubscriber($user->getOriginal('email'));
+        $subscriber = $this->mailcoach->getSubscriber($user->getOriginal('email'));
 
         if ($subscriber) {
-            $this->mailcoachApi->update($subscriber, ['email' => $user->email]);
+            $this->mailcoach->update($subscriber, ['email' => $user->email]);
         }
     }
 }

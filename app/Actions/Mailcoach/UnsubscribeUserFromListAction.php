@@ -8,16 +8,16 @@ readonly class UnsubscribeUserFromListAction extends MailcoachAction
 {
     public function __invoke(User $user, string $tag): void
     {
-        if (! $subscriber = $this->mailcoachApi->getSubscriber($user->email)) {
+        if (! $subscriber = $this->mailcoach->getSubscriber($user->email)) {
             return;
         }
 
         $isSoleTag = array_values($subscriber->tags) === [$tag];
 
-        $this->mailcoachApi->removeTag($subscriber, $tag);
+        $this->mailcoach->removeTag($subscriber, $tag);
 
         if ($isSoleTag) {
-            $this->mailcoachApi->unsubscribe($subscriber);
+            $this->mailcoach->unsubscribe($subscriber);
         }
     }
 }

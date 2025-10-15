@@ -6,5 +6,5 @@ use App\Services\Mailcoach\MailcoachApi;
 
 readonly class MailcoachAction
 {
-    public function __construct(protected MailcoachApi $mailcoachApi) {}
+    public function __construct(protected MailcoachApi $mailcoach) {}
 }

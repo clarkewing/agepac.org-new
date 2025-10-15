@@ -9,16 +9,16 @@ readonly class SubscribeUserToListAction extends MailcoachAction
 {
     public function __invoke(User $user, string $tag): void
     {
-        $subscriber = $this->mailcoachApi->getSubscriber($user->email) ?? $this->createSubscriber($user);
+        $subscriber = $this->mailcoach->getSubscriber($user->email) ?? $this->createSubscriber($user);
 
         if ($subscriber) {
-            $this->mailcoachApi->addTags($subscriber, [$tag]);
+            $this->mailcoach->addTags($subscriber, [$tag]);
         }
     }
 
     protected function createSubscriber(User $user): ?Subscriber
     {
-        return $this->mailcoachApi->subscribe(
+        return $this->mailcoach->subscribe(
             $user->email,
             $user->first_name,
             $user->last_name,
