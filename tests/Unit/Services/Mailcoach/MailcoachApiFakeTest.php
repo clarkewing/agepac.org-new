@@ -6,6 +6,8 @@ use App\Services\Mailcoach\Subscriber;
 use App\Services\Mailcoach\Testing\Fakes\MailcoachApiFake;
 
 beforeEach(function () {
+    config()->set('services.mailcoach.url', 'https://mailcoach.test/api');
+    config()->set('services.mailcoach.token', 'test-token');
     config()->set('services.mailcoach.lists.default', 'default-list-uuid');
 });
 

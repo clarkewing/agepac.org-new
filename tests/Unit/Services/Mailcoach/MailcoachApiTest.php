@@ -297,3 +297,38 @@ describe('delete', function () {
             ->toThrow(RequestException::class);
     });
 });
+
+describe('rate limiting', function () {
+    it('retries when a 429 is returned and eventually succeeds', function () {
+        Http::fakeSequence('https://mailcoach.test/api/email-lists/default-list-uuid/subscribers*')
+            ->push([], 429) // First attempt fails with Too Many Requests
+            ->push([
+                'data' => [[
+                    'uuid' => 'sub-retry',
+                    'email' => 'retry@example.com',
+                    'first_name' => 'Retry',
+                    'last_name' => 'User',
+                    'subscribed_at' => '2025-01-01 08:00:00',
+                    'unsubscribed_at' => null,
+                    'tags' => [],
+                    'extra_attributes' => [],
+                ]],
+            ]);
+
+        expect($this->api->getSubscriber('retry@example.com'))
+            ->toBeInstanceOf(Subscriber::class)
+            ->uuid->toBe('sub-retry');
+
+        // Ensure multiple attempts were made
+        Http::assertSentCount(2);
+    });
+
+    it('returns fails after five retry attempts with 429 response', function () {
+        Http::fake(['*' => 429]);
+
+        expect($this->api->getSubscriber('fail@example.com'))
+            ->toBeNull();
+
+        Http::assertSentCount(6); // Original request + 5 retries
+    });
+});

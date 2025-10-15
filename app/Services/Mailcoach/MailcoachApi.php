@@ -3,18 +3,37 @@
 namespace App\Services\Mailcoach;
 
 use Exception;
+use GuzzleRetry\GuzzleRetryMiddleware;
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use LogicException;
 
 class MailcoachApi
 {
+    public function __construct()
+    {
+        if (! config('services.mailcoach.url')) {
+            throw new LogicException('Mailcoach API URL not configured.');
+        }
+
+        if (! config('services.mailcoach.token')) {
+            throw new LogicException('Mailcoach API token not configured.');
+        }
+
+        if (! config('services.mailcoach.lists.default')) {
+            throw new LogicException('Mailcoach API default list UUID not configured.');
+        }
+    }
+
     public function getSubscriber(string $email, ?string $listUuid = null): ?Subscriber
     {
         $listUuid ??= config('services.mailcoach.lists.default');
 
         try {
-            $response = Http::timeout(10)->withToken(config('services.mailcoach.token'))
-                ->get(config('services.mailcoach.url')."/email-lists/{$listUuid}/subscribers", [
+            $response = $this->httpClient()
+                ->get("email-lists/{$listUuid}/subscribers", [
                     'filter' => [
                         'email' => $email,
                     ],
@@ -46,8 +65,8 @@ class MailcoachApi
     ): ?Subscriber {
         $listUuid ??= config('services.mailcoach.lists.default');
 
-        $response = Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->post(config('services.mailcoach.url')."/email-lists/{$listUuid}/subscribers", [
+        $response = $this->httpClient()
+            ->post("email-lists/{$listUuid}/subscribers", [
                 'email' => $email,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
@@ -64,8 +83,8 @@ class MailcoachApi
 
     public function unsubscribe(Subscriber $subscriber): void
     {
-        Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->post(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}/unsubscribe")
+        $this->httpClient()
+            ->post("subscribers/{$subscriber->uuid}/unsubscribe")
             ->throw();
     }
 
@@ -85,15 +104,15 @@ class MailcoachApi
         $attributes = Arr::only($attributes, $standardAttributes);
         $attributes['extra_attributes'] = $extraAttributes;
 
-        Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->patch(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}", $attributes)
+        $this->httpClient()
+            ->patch("subscribers/{$subscriber->uuid}", $attributes)
             ->throw();
     }
 
     public function addTags(Subscriber $subscriber, array $tags): void
     {
-        Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->patch(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}", [
+        $this->httpClient()
+            ->patch("subscribers/{$subscriber->uuid}", [
                 'tags' => array_values($tags),
                 'append_tags' => true,
             ])
@@ -104,8 +123,8 @@ class MailcoachApi
     {
         $tags = array_filter($subscriber->tags, fn (string $existingTag) => $existingTag !== $tag);
 
-        Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->patch(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}", [
+        $this->httpClient()
+            ->patch("subscribers/{$subscriber->uuid}", [
                 'tags' => array_values($tags),
                 'append_tags' => false,
             ])
@@ -114,8 +133,18 @@ class MailcoachApi
 
     public function delete(Subscriber $subscriber): void
     {
-        Http::timeout(10)->withToken(config('services.mailcoach.token'))
-            ->delete(config('services.mailcoach.url')."/subscribers/{$subscriber->uuid}")
+        $this->httpClient()
+            ->delete("subscribers/{$subscriber->uuid}")
             ->throw();
+    }
+
+    protected function httpClient(): PendingRequest
+    {
+        return Http::baseUrl(Str::finish(config('services.mailcoach.url'), '/'))
+            ->withMiddleware(GuzzleRetryMiddleware::factory([
+                'max_retry_attempts' => 5,
+            ]))
+            ->timeout(10)
+            ->withToken(config('services.mailcoach.token'));
     }
 }
