@@ -2,12 +2,10 @@
 
 use App\Actions\Mailcoach\SubscribeUserToListAction;
 use App\Models\User;
-use App\Services\Mailcoach\MailcoachApi;
-use App\Services\Mailcoach\Testing\Fakes\MailcoachApiFake;
+use App\Services\Mailcoach\Facades\Mailcoach;
 
 beforeEach(function () {
-    $this->mailcoach = new MailcoachApiFake;
-    $this->app->instance(MailcoachApi::class, $this->mailcoach);
+    Mailcoach::fake();
 });
 
 it('creates a new subscriber and adds the provided tag when not found', function () {
@@ -19,11 +17,11 @@ it('creates a new subscriber and adds the provided tag when not found', function
         'class_year' => '1843',
     ]);
 
-    expect($this->mailcoach->getSubscriber('ada@example.com'))->toBeNull();
+    expect(Mailcoach::getSubscriber('ada@example.com'))->toBeNull();
 
     app(SubscribeUserToListAction::class)($user, 'newsletter');
 
-    expect($this->mailcoach->getSubscriber('ada@example.com'))
+    expect(Mailcoach::getSubscriber('ada@example.com'))
         ->not->toBeNull()
         ->email->toBe('ada@example.com')
         ->first_name->toBe('Ada')
@@ -40,12 +38,12 @@ it('adds the tag to an existing subscriber', function () {
         'email' => 'alan@example.com',
     ]);
 
-    expect($this->mailcoach->subscribe('alan@example.com'))
+    expect(Mailcoach::subscribe('alan@example.com'))
         ->tags->toBeArray()->toBeEmpty();
 
     app(SubscribeUserToListAction::class)($user, 'newsletter');
 
-    expect($this->mailcoach->getSubscriber('alan@example.com'))
+    expect(Mailcoach::getSubscriber('alan@example.com'))
         ->not->toBeNull()
         ->tags->toContain('newsletter');
 });

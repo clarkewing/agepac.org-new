@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\Mailcoach\Facades\Mailcoach;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
 
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->beforeEach(fn () => Mailcoach::fake())
     ->in('Feature');
 
 pest()->extend(Tests\TestCase::class)

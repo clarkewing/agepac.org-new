@@ -2,17 +2,15 @@
 
 use App\Actions\Mailcoach\UpdateSubscriberEmailAction;
 use App\Models\User;
-use App\Services\Mailcoach\MailcoachApi;
-use App\Services\Mailcoach\Testing\Fakes\MailcoachApiFake;
+use App\Services\Mailcoach\Facades\Mailcoach;
 
 beforeEach(function () {
-    $this->mailcoach = new MailcoachApiFake;
-    $this->app->instance(MailcoachApi::class, $this->mailcoach);
+    Mailcoach::fake();
 });
 
 it('updates the subscriber email using the user’s original email as the lookup', function () {
     // Subscriber exists with the old email
-    $this->mailcoach->subscribe('old@example.com', 'Old', 'User');
+    Mailcoach::subscribe('old@example.com', 'Old', 'User');
 
     $user = User::factory()->make([
         'email' => 'old@example.com',
@@ -25,11 +23,11 @@ it('updates the subscriber email using the user’s original email as the lookup
 
     app(UpdateSubscriberEmailAction::class)($user);
 
-    expect($this->mailcoach->getSubscriber('new@example.com'))
+    expect(Mailcoach::getSubscriber('new@example.com'))
         ->not->toBeNull()
         ->email->toBe('new@example.com');
 
-    expect($this->mailcoach->getSubscriber('old@example.com'))->toBeNull();
+    expect(Mailcoach::getSubscriber('old@example.com'))->toBeNull();
 });
 
 it('does nothing when no subscriber was found for the original email', function () {
@@ -39,6 +37,6 @@ it('does nothing when no subscriber was found for the original email', function 
 
     app(UpdateSubscriberEmailAction::class)($user);
 
-    expect($this->mailcoach->getSubscriber('wasold@example.com'))->toBeNull();
-    expect($this->mailcoach->getSubscriber('brandnew@example.com'))->toBeNull();
+    expect(Mailcoach::getSubscriber('wasold@example.com'))->toBeNull();
+    expect(Mailcoach::getSubscriber('brandnew@example.com'))->toBeNull();
 });

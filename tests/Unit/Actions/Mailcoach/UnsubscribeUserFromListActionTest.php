@@ -2,12 +2,10 @@
 
 use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
 use App\Models\User;
-use App\Services\Mailcoach\MailcoachApi;
-use App\Services\Mailcoach\Testing\Fakes\MailcoachApiFake;
+use App\Services\Mailcoach\Facades\Mailcoach;
 
 beforeEach(function () {
-    $this->mailcoach = new MailcoachApiFake;
-    $this->app->instance(MailcoachApi::class, $this->mailcoach);
+    Mailcoach::fake();
 });
 
 it('does nothing when no subscriber exists', function () {
@@ -15,22 +13,22 @@ it('does nothing when no subscriber exists', function () {
 
     app(UnsubscribeUserFromListAction::class)($user, 'newsletter');
 
-    expect($this->mailcoach->getSubscriber('ghost@example.com'))->toBeNull();
+    expect(Mailcoach::getSubscriber('ghost@example.com'))->toBeNull();
 });
 
 it('unsubscribes when the only tag matches', function () {
     $user = User::factory()->make(['email' => 'solo@example.com']);
 
-    $subscriber = $this->mailcoach->subscribe('solo@example.com');
-    $this->mailcoach->addTags($subscriber, ['newsletter']);
+    $subscriber = Mailcoach::subscribe('solo@example.com');
+    Mailcoach::addTags($subscriber, ['newsletter']);
 
-    expect($this->mailcoach->getSubscriber('solo@example.com'))
+    expect(Mailcoach::getSubscriber('solo@example.com'))
         ->tags->toBe(['newsletter'])
         ->unsubscribedAt->toBeNull();
 
     app(UnsubscribeUserFromListAction::class)($user, 'newsletter');
 
-    expect($this->mailcoach->getSubscriber('solo@example.com'))
+    expect(Mailcoach::getSubscriber('solo@example.com'))
         ->tags->toBeArray()->toBeEmpty()
         ->unsubscribedAt->not->toBeNull();
 });
@@ -38,16 +36,16 @@ it('unsubscribes when the only tag matches', function () {
 it('removes only the provided tag when multiple tags exist', function () {
     $user = User::factory()->make(['email' => 'multi@example.com']);
 
-    $subscriber = $this->mailcoach->subscribe('multi@example.com');
-    $this->mailcoach->addTags($subscriber, ['newsletter', 'members_newsletter']);
+    $subscriber = Mailcoach::subscribe('multi@example.com');
+    Mailcoach::addTags($subscriber, ['newsletter', 'members_newsletter']);
 
-    expect($this->mailcoach->getSubscriber('multi@example.com'))
+    expect(Mailcoach::getSubscriber('multi@example.com'))
         ->tags->toBe(['newsletter', 'members_newsletter'])
         ->unsubscribedAt->toBeNull();
 
     app(UnsubscribeUserFromListAction::class)($user, 'members_newsletter');
 
-    expect($this->mailcoach->getSubscriber('multi@example.com'))
+    expect(Mailcoach::getSubscriber('multi@example.com'))
         ->tags->toEqualCanonicalizing(['newsletter'])
         ->unsubscribedAt->toBeNull();
 });

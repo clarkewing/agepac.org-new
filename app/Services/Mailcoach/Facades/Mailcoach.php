@@ -12,6 +12,8 @@ class Mailcoach extends Facade
     {
         static::swap($fake = new MailcoachApiFake);
 
+        static::$app->instance(MailcoachApi::class, $fake);
+
         return $fake;
     }
 
