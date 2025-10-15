@@ -40,16 +40,20 @@ class MailcoachApiFake extends MailcoachApi
         bool $skipConfirmation = false,
         bool $skipWelcomeMail = false,
     ): ?Subscriber {
-        return tap(new Subscriber(
-            uuid: Str::uuid()->toString(),
-            email: $email,
-            first_name: $first_name,
-            last_name: $last_name,
-            subscribedAt: now(),
-            unsubscribedAt: null,
-            tags: [],
-            extra_attributes: $extra_attributes ?? [],
-        ), fn ($subscriber) => $this->subscribers->put($this->subscriberKey($email, $listUuid), $subscriber));
+        return tap(
+            new Subscriber(
+                uuid: Str::uuid()->toString(),
+                email: $email,
+                first_name: $first_name,
+                last_name: $last_name,
+                subscribedAt: now(),
+                unsubscribedAt: null,
+                tags: [],
+                extra_attributes: $extra_attributes ?? [],
+            ),
+            fn (Subscriber $subscriber) => $this->subscribers
+                ->put($this->subscriberKey($email, $listUuid), $subscriber),
+        );
     }
 
     public function unsubscribe(Subscriber $subscriber): void
