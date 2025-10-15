@@ -25,13 +25,11 @@ it('updates the subscriber email using the user’s original email as the lookup
 
     app(UpdateSubscriberEmailAction::class)($user);
 
-    // In the fake, the key remains the old email, but the stored object's email should be updated
-    expect($this->mailcoach->getSubscriber('old@example.com'))
+    expect($this->mailcoach->getSubscriber('new@example.com'))
         ->not->toBeNull()
         ->email->toBe('new@example.com');
 
-    // There should be no separate entry under the new email key in the fake
-    expect($this->mailcoach->getSubscriber('new@example.com'))->toBeNull();
+    expect($this->mailcoach->getSubscriber('old@example.com'))->toBeNull();
 });
 
 it('does nothing when no subscriber was found for the original email', function () {

@@ -123,9 +123,13 @@ class MailcoachApiFake extends MailcoachApi
         }
 
         $subscriber = $this->subscribers->get($key);
+        $this->subscribers->forget($key);
 
         $mutator($subscriber);
 
-        $this->subscribers->put($key, $subscriber);
+        $this->subscribers->put(
+            $this->subscriberKey($subscriber->email, Str::beforeLast($key, '::')),
+            $subscriber,
+        );
     }
 }
