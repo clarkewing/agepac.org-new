@@ -55,10 +55,8 @@ it('does not duplicate the members_newsletter tag on repeated saves', function (
 
     $subscription->update(['quantity' => 2]);
 
-    expect(
-        collect($this->mailcoach->getSubscriber($user->email)->tags)
-            ->filter(fn ($t) => $t === 'members_newsletter')
-    )->toHaveCount(1);
+    expect(collect($this->mailcoach->getSubscriber($user->email)->tags))
+        ->filter(fn ($t) => $t === 'members_newsletter')->toHaveCount(1);
 });
 
 it('removes members_newsletter when membership is no longer active', function () {
