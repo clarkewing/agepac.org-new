@@ -31,6 +31,7 @@ it('unsubscribes when the only tag matches', function () {
     app(UnsubscribeUserFromListAction::class)($user, 'newsletter');
 
     expect($this->mailcoach->getSubscriber('solo@example.com'))
+        ->tags->toBeArray()->toBeEmpty()
         ->unsubscribedAt->not->toBeNull();
 });
 

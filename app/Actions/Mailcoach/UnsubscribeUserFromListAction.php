@@ -12,10 +12,12 @@ readonly class UnsubscribeUserFromListAction extends MailcoachAction
             return;
         }
 
-        if (array_values($subscriber->tags) === [$tag]) {
+        $isSoleTag = array_values($subscriber->tags) === [$tag];
+
+        $this->mailcoachApi->removeTag($subscriber, $tag);
+
+        if ($isSoleTag) {
             $this->mailcoachApi->unsubscribe($subscriber);
-        } else {
-            $this->mailcoachApi->removeTag($subscriber, $tag);
         }
     }
 }
