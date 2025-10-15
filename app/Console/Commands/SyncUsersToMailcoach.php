@@ -6,6 +6,7 @@ use App\Actions\Mailcoach\SubscribeUserToListAction;
 use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 
 class SyncUsersToMailcoach extends Command
 {
@@ -32,7 +33,7 @@ class SyncUsersToMailcoach extends Command
         $processed = 0;
         $chunk = (int) $this->option('chunk');
 
-        User::query()->orderBy('id')->chunkById($chunk, function ($users) use (&$processed) {
+        User::query()->orderBy('id')->chunkById($chunk, function (Collection $users) use (&$processed) {
             foreach ($users as $user) {
                 app(SubscribeUserToListAction::class)($user, self::NEWSLETTER_TAG);
 
