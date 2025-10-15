@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature\Console;
+
 use App\Actions\Mailcoach\SubscribeUserToListAction;
 use App\Models\User;
 use App\Services\Mailcoach\MailcoachApi;

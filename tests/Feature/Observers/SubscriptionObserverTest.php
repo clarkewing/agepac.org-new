@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Feature\Observers;
+
 use App\Models\User;
 use App\Services\Mailcoach\MailcoachApi;
 use App\Services\Mailcoach\Testing\Fakes\MailcoachApiFake;
