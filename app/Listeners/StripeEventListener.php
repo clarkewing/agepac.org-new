@@ -6,6 +6,7 @@ use App\Actions\RetrieveStripeProductPrice;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Laravel\Cashier\Billable;
 use Laravel\Cashier\Cashier;
 use Laravel\Cashier\Events\WebhookHandled;
 use Laravel\Cashier\Events\WebhookReceived;
@@ -52,7 +53,7 @@ class StripeEventListener
     }
 
     /**
-     * @return \Laravel\Cashier\Billable|\App\Models\User|null
+     * @return Billable|User|null
      */
     protected function getUserByStripeId(string $stripeId): ?User
     {

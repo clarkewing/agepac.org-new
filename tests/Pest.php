@@ -2,7 +2,9 @@
 
 use App\Services\Mailcoach\Facades\Mailcoach;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +17,12 @@ use Illuminate\Support\Carbon;
 |
 */
 
-pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
     ->beforeEach(fn () => Mailcoach::fake())
     ->in('Feature');
 
-pest()->extend(Tests\TestCase::class)
+pest()->extend(TestCase::class)
     ->in('Unit');
 
 /*

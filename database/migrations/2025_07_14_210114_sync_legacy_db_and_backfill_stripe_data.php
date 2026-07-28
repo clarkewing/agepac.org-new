@@ -41,7 +41,7 @@ return new class extends Migration
                     ->where('stripe_price', $priceId)
                     ->update(['stripe_product' => $price->product]);
 
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 report($e);
                 logger()->warning("Could not retrieve Stripe product for price ID: {$priceId}");
             }
