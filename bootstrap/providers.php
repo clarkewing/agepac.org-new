@@ -1,7 +1,11 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\MacroServiceProvider;
+use App\Services\Mailcoach\MailcoachServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\MacroServiceProvider::class,
-    App\Services\Mailcoach\MailcoachServiceProvider::class,
+    AppServiceProvider::class,
+    MacroServiceProvider::class,
+    MailcoachServiceProvider::class,
 ];

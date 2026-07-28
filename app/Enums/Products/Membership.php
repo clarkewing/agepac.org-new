@@ -16,7 +16,7 @@ enum Membership: string
     case AGEPAC_ALUMNI = 'agepac+alumni';
 
     /**
-     * @throws \App\Exceptions\MembershipNotFoundException
+     * @throws MembershipNotFoundException
      */
     public static function fromStripeProduct(string|Product $product): Membership
     {
@@ -32,7 +32,7 @@ enum Membership: string
     }
 
     /**
-     * @throws \App\Exceptions\MembershipNotFoundException
+     * @throws MembershipNotFoundException
      */
     public static function fromStripePrice(string|Price $price): Membership
     {

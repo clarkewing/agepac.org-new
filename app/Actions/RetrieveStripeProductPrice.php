@@ -3,12 +3,13 @@
 namespace App\Actions;
 
 use Laravel\Cashier\Cashier;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Price;
 
 class RetrieveStripeProductPrice
 {
     /**
-     * @throws \Stripe\Exception\ApiErrorException
+     * @throws ApiErrorException
      */
     public function __invoke(string $productId): Price
     {
