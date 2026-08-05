@@ -23,3 +23,9 @@ yarn-error.log
 /.vscode
 /.zed
 /tests/.pest
+
+# Refreshed by `boost:install` and `boost:update` (composer "post-update-cmd").
+/.mcp.json
+/.ai/
+/.claude/skills/
+/CLAUDE.md
