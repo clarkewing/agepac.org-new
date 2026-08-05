@@ -20,7 +20,7 @@
         "clarkewing/cashier-nightwatch": "^0.2.0",
         "clarkewing/handoff": "^0.1.3",
         "clarkewing/legacy-sync": "^0.2.0",
-        "laravel/cashier": "^15.7",
+        "laravel/cashier": "^16.6",
         "laravel/framework": "^12.20",
         "laravel/nightwatch": "^1.28.5",
         "laravel/tinker": "^3.0.2",
