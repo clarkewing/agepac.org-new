@@ -71,11 +71,12 @@ function withEnvironment(string $env, callable $callback): void
 {
     $originalEnv = $_ENV['APP_ENV'];
 
-    $_ENV['APP_ENV'] = $env;
+    // The framework may resolve the environment from either superglobal.
+    $_ENV['APP_ENV'] = $_SERVER['APP_ENV'] = $env;
     invade(test())->refreshApplication();
 
     $callback();
 
-    $_ENV['APP_ENV'] = $originalEnv;
+    $_ENV['APP_ENV'] = $_SERVER['APP_ENV'] = $originalEnv;
     invade(test())->refreshApplication();
 }

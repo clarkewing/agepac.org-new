@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Services\Stripe\Billable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,37 +13,30 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 
+#[Fillable([
+    'first_name',
+    'last_name',
+    'username',
+    'email',
+    'password',
+    'class_course',
+    'class_year',
+    'gender',
+    'birth_date',
+    'phone',
+    'avatar_path',
+])]
+#[Hidden([
+    'password',
+    'remember_token',
+    'email_verified_at',
+    'approved_at',
+])]
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Billable;
     use HasFactory;
     use Notifiable;
-
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'username',
-        'email',
-        'password',
-        'class_course',
-        'class_year',
-        'gender',
-        'birth_date',
-        'phone',
-        'avatar_path',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'email_verified_at',
-        'approved_at',
-    ];
 
     /**
      * Get the attributes that should be cast.

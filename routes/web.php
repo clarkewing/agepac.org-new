@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Middleware\SetLocaleFromSession;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +15,7 @@ Route::domain($rootDomain)
         StartSession::class,
         AuthenticateSession::class,
         ShareErrorsFromSession::class,
-        VerifyCsrfToken::class,
+        PreventRequestForgery::class,
     ])
     ->name('public.')
     ->group(__DIR__.'/public.php');

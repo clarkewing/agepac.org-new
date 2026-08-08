@@ -8,6 +8,8 @@
     "nightwatch": false,
     "sail": false,
     "skills": [
+        "infer-conventions",
+        "cashier-stripe-development",
         "laravel-best-practices",
         "configure-nightwatch",
         "fluxui-development",

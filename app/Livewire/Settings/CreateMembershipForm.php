@@ -5,20 +5,19 @@ namespace App\Livewire\Settings;
 use App\Actions\CreateSubscriptionCheckout;
 use App\Enums\Products\Membership as MembershipProduct;
 use Illuminate\Validation\Rule;
-use Laravel\Cashier\Checkout;
 use Livewire\Component;
 
 class CreateMembershipForm extends Component
 {
     public ?string $selectedMembership = null;
 
-    public function checkout(CreateSubscriptionCheckout $checkout): Checkout
+    public function checkout(CreateSubscriptionCheckout $checkout): void
     {
         $this->validate();
 
         $selectedMembership = MembershipProduct::from($this->selectedMembership);
 
-        return $checkout(
+        $session = $checkout(
             auth()->user(),
             $selectedMembership->stripePrice()->id,
             route('settings.membership'),
@@ -28,6 +27,8 @@ class CreateMembershipForm extends Component
                 'payment_method_data' => ['allow_redisplay' => 'always'], // Ensure payment method can be redisplayed
             ],
         );
+
+        $this->redirect($session->url);
     }
 
     protected function rules(): array
