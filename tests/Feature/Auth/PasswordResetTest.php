@@ -1,7 +1,5 @@
 <?php
 
-use App\Livewire\Auth\ForgotPassword;
-use App\Livewire\Auth\ResetPassword;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Support\Facades\Notification;
@@ -16,11 +14,11 @@ beforeEach(function () {
 test('forgot password screen can be rendered', function () {
     $this->get(route('password.request'))
         ->assertOk()
-        ->assertSeeLivewire(ForgotPassword::class);
+        ->assertSeeLivewire('pages::auth.forgot-password');
 });
 
 test('reset password link can be requested', function () {
-    Livewire::test(ForgotPassword::class)
+    Livewire::test('pages::auth.forgot-password')
         ->set('email', $this->user->email)
         ->call('sendPasswordResetLink');
 
@@ -28,26 +26,26 @@ test('reset password link can be requested', function () {
 });
 
 test('reset password screen can be rendered', function () {
-    Livewire::test(ForgotPassword::class)
+    Livewire::test('pages::auth.forgot-password')
         ->set('email', $this->user->email)
         ->call('sendPasswordResetLink');
 
     Notification::assertSentTo($this->user, ResetPasswordNotification::class, function ($notification) {
         $this->get(route('password.reset', ['token' => $notification->token]))
             ->assertOk()
-            ->assertSeeLivewire(ResetPassword::class);
+            ->assertSeeLivewire('pages::auth.reset-password');
 
         return true;
     });
 });
 
 test('password can be reset with valid token', function () {
-    Livewire::test(ForgotPassword::class)
+    Livewire::test('pages::auth.forgot-password')
         ->set('email', $this->user->email)
         ->call('sendPasswordResetLink');
 
     Notification::assertSentTo($this->user, ResetPasswordNotification::class, function ($notification) {
-        Livewire::test(ResetPassword::class, ['token' => $notification->token])
+        Livewire::test('pages::auth.reset-password', ['token' => $notification->token])
             ->set('email', $this->user->email)
             ->set('password', 'password')
             ->set('password_confirmation', 'password')
@@ -61,12 +59,12 @@ test('password can be reset with valid token', function () {
 
 describe('validation', function () {
     it('rejects an invalid email', function () {
-        Livewire::test(ForgotPassword::class)
+        Livewire::test('pages::auth.forgot-password')
             ->set('email', $this->user->email)
             ->call('sendPasswordResetLink');
 
         Notification::assertSentTo($this->user, ResetPasswordNotification::class, function ($notification) {
-            Livewire::test(ResetPassword::class, ['token' => $notification->token])
+            Livewire::test('pages::auth.reset-password', ['token' => $notification->token])
                 ->set('email', 'invalid@grounded-labs.co')
                 ->set('password', 'password')
                 ->set('password_confirmation', 'password')
@@ -78,7 +76,7 @@ describe('validation', function () {
     });
 
     it('rejects an invalid token', function () {
-        Livewire::test(ResetPassword::class, ['token' => 'invalid-token'])
+        Livewire::test('pages::auth.reset-password', ['token' => 'invalid-token'])
             ->set('email', $this->user->email)
             ->set('password', 'password')
             ->set('password_confirmation', 'password')
@@ -87,7 +85,7 @@ describe('validation', function () {
     });
 
     it('rejects an expired token', function () {
-        Livewire::test(ForgotPassword::class)
+        Livewire::test('pages::auth.forgot-password')
             ->set('email', $this->user->email)
             ->call('sendPasswordResetLink');
 
@@ -95,7 +93,7 @@ describe('validation', function () {
             // Travel forward in time beyond token expiration (61 minutes)
             $this->travel(61)->minutes();
 
-            Livewire::test(ResetPassword::class, ['token' => $notification->token])
+            Livewire::test('pages::auth.reset-password', ['token' => $notification->token])
                 ->set('email', $this->user->email)
                 ->set('password', 'password')
                 ->set('password_confirmation', 'password')

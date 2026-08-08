@@ -1,3 +1,5 @@
+@blaze
+
 <div {{ $attributes }}>
     <dt class="space-y-5">
         @isset($icon)

@@ -1,3 +1,5 @@
+@blaze
+
 @props(['type' => 'success'])
 
 @php

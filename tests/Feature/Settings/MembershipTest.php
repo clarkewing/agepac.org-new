@@ -1,8 +1,6 @@
 <?php
 
 use App\Enums\Products\Membership as MembershipEnum;
-use App\Livewire\Settings\CreateMembershipForm;
-use App\Livewire\Settings\Membership;
 use App\Models\User;
 use Laravel\Cashier\Subscription;
 use Livewire\Livewire;
@@ -22,11 +20,11 @@ afterEach(function () {
 it('renders the livewire component', function () {
     $this->get(route('settings.membership'))
         ->assertOk()
-        ->assertSeeLivewire(Membership::class);
+        ->assertSeeLivewire('pages::settings.membership');
 });
 
 it('computes the current user’s membership subscription', function () {
-    $component = Livewire::test(Membership::class);
+    $component = Livewire::test('pages::settings.membership');
 
     expect($component->get('subscription'))->toBeNull();
 
@@ -42,14 +40,14 @@ it('computes the current user’s membership subscription', function () {
 it('only retrieves subscriptions of membership type', function () {
     createSubscription($this->user, ['type' => 'default']);
 
-    Livewire::test(Membership::class)
+    Livewire::test('pages::settings.membership')
         ->assertSetStrict('subscription', null);
 });
 
 it('allows visiting the billing portal', function () {
     createSubscription($this->user);
 
-    Livewire::test(Membership::class)
+    Livewire::test('pages::settings.membership')
         ->assertSeeText(__('settings.membership.manage-action'))
         ->call('openBillingPortal')
         ->assertRedirectContains('https://billing.stripe.com/p/session');
@@ -57,15 +55,15 @@ it('allows visiting the billing portal', function () {
 
 it('shows the form to create a subscription if none exist or are valid', function () {
     // Case where the user has no subscription
-    Livewire::test(Membership::class)
-        ->assertSeeLivewire(CreateMembershipForm::class);
+    Livewire::test('pages::settings.membership')
+        ->assertSeeLivewire('pages::settings.create-membership-form');
 
     // Case where the subscription is canceled and has expired
     createSubscription($this->user, ['stripe_status' => 'canceled', 'ends_at' => now()->subHour()]);
     $this->user->refresh();
 
-    Livewire::test(Membership::class)
-        ->assertSeeLivewire(CreateMembershipForm::class);
+    Livewire::test('pages::settings.membership')
+        ->assertSeeLivewire('pages::settings.create-membership-form');
 });
 
 it('displays appropriate callouts upon checkout return', function () {
@@ -81,7 +79,7 @@ it('allows resuming a canceled subscription', function () {
 
     expect($subscription->canceled())->toBeTrue();
 
-    Livewire::test(Membership::class)
+    Livewire::test('pages::settings.membership')
         ->assertSeeText(__('settings.membership.callouts.no-auto-renew.heading'))
         ->assertSeeText(__('settings.membership.callouts.no-auto-renew.action'))
         ->call('resume');
@@ -110,7 +108,7 @@ it('shows the currently subscribed plan even if the subscription has no items', 
         'ends_at' => null,
     ]);
 
-    Livewire::test(Membership::class)
+    Livewire::test('pages::settings.membership')
         ->assertSeeTextInOrder([
             __('settings.membership.callouts.subscription-active.heading'),
             __('products.membership.agepac.name'),

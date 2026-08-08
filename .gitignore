@@ -30,7 +30,8 @@ Thumbs.db
 /tests/.pest
 
 # Refreshed by `boost:install` and `boost:update` (composer "post-update-cmd").
+# Committed rules live in .ai/rules; only the machine-specific MCP config is ignored.
 /.mcp.json
-/.ai/
+/.ai/mcp/
 /.claude/skills/
 /CLAUDE.md

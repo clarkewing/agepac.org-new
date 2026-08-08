@@ -1,3 +1,5 @@
+@blaze
+
 <div>
     <dt class="text-lg text-justify font-medium text-gray-900">
         {{ $question }}

@@ -1,4 +1,64 @@
-@use(App\Enums\Products\Membership)
+<?php
+
+use App\Enums\Products\Membership;
+use Illuminate\Contracts\View\View;
+use Illuminate\Routing\Redirector;
+use Laravel\Cashier\Subscription;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
+
+new class extends Component
+{
+    public function mount(): void
+    {
+        $this->handleCheckoutReturn();
+    }
+
+    #[Computed]
+    public function subscription(): ?Subscription
+    {
+        return auth()->user()->subscription('membership');
+    }
+
+    public function openBillingPortal(): Redirector
+    {
+        // if (! auth()->user()->hasStripeId()) {
+        //     auth()->user()->createAsStripeCustomer();
+        // }
+
+        return redirect(auth()->user()->billingPortalUrl(
+            route('settings.membership'),
+            ['locale' => app()->getLocale()],
+        ));
+    }
+
+    public function resume(): void
+    {
+        $this->subscription()->resume();
+    }
+
+    protected function handleCheckoutReturn(): void
+    {
+        $this->js("history.pushState({}, '', location.pathname)");
+    }
+
+    public function followsSuccessfulCheckout(): bool
+    {
+        return ! request()->boolean('checkout_canceled') && request()->has('session_id');
+    }
+
+    public function followsCanceledCheckout(): bool
+    {
+        return request()->boolean('checkout_canceled');
+    }
+
+    public function rendering(View $view): void
+    {
+        $view->title(__('navigation.settings.membership').' - '.__('settings.title'));
+    }
+};
+?>
+
 
 <section class="w-full">
     @include('partials.settings-heading')
@@ -98,7 +158,7 @@
 
         <div class="mt-6">
             @if(! $this->subscription || $this->subscription?->ended())
-                <livewire:settings.create-membership-form />
+                <livewire:pages::settings.create-membership-form />
             @else
                 <flux:button wire:click="openBillingPortal">{{ __('settings.membership.manage-action') }}</flux:button>
             @endif

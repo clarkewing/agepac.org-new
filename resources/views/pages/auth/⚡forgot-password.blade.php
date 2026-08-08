@@ -1,3 +1,29 @@
+<?php
+
+use Illuminate\Support\Facades\Password;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
+
+new #[Layout('layouts::auth')] class extends Component
+{
+    public string $email = '';
+
+    /**
+     * Send a password reset link to the provided email address.
+     */
+    public function sendPasswordResetLink(): void
+    {
+        $this->validate([
+            'email' => ['required', 'string', 'email'],
+        ]);
+
+        Password::sendResetLink($this->only('email'));
+
+        session()->flash('status', __('auth.forgot-password.status.link-sent'));
+    }
+};
+?>
+
  <div class="flex flex-col gap-6">
     <x-auth-header :title="__('auth.forgot-password.heading')" :description="__('auth.forgot-password.description')" />
 

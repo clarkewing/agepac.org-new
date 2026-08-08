@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\Products\Membership as MembershipProduct;
-use App\Livewire\Settings\CreateMembershipForm;
 use App\Models\User;
 use Illuminate\Validation\Rules\Enum as EnumRule;
 use Livewire\Livewire;
@@ -12,7 +11,7 @@ beforeEach(function () {
 });
 
 it('shows the available subscriptions', function () {
-    Livewire::test(CreateMembershipForm::class)
+    Livewire::test('pages::settings.create-membership-form')
         ->assertSeeTextInOrder(array_map(
             fn (MembershipProduct $case) => $case->label(),
             MembershipProduct::cases(),
@@ -20,7 +19,7 @@ it('shows the available subscriptions', function () {
 });
 
 it('creates a checkout session and redirects to it', function () {
-    Livewire::test(CreateMembershipForm::class)
+    Livewire::test('pages::settings.create-membership-form')
         ->set('selectedMembership', MembershipProduct::AGEPAC)
         ->call('checkout')
         ->assertRedirectContains('https://checkout.stripe.com/c/pay');
@@ -28,13 +27,13 @@ it('creates a checkout session and redirects to it', function () {
 
 describe('validation', function () {
     it('requires selectedMembership', function () {
-        Livewire::test(CreateMembershipForm::class)
+        Livewire::test('pages::settings.create-membership-form')
             ->call('checkout')
             ->assertHasErrors(['selectedMembership' => 'required']);
     });
 
     it('rejects invalid selectedMembership values', function () {
-        Livewire::test(CreateMembershipForm::class)
+        Livewire::test('pages::settings.create-membership-form')
             ->set('selectedMembership', 'invalid')
             ->call('checkout')
             ->assertHasErrors(['selectedMembership' => EnumRule::class]);

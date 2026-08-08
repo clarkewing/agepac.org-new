@@ -1,3 +1,5 @@
+@blaze
+
 @php
     $tooltipAttributes = $attributes->only([
         'position',

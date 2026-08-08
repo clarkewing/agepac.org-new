@@ -1,3 +1,46 @@
+<?php
+
+use Illuminate\Contracts\View\View;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
+
+new class extends Component
+{
+    #[Validate]
+    public string $language;
+
+    public bool $languageUpdated = false;
+
+    public function mount(): void
+    {
+        $this->language = session()->get('locale', config('app.locale'));
+    }
+
+    public function setLocale(): void
+    {
+        $this->validate();
+
+        session()->put('locale', $this->language);
+        app()->setLocale($this->language);
+
+        $this->languageUpdated = true;
+    }
+
+    protected function rules(): array
+    {
+        return [
+            'language' => ['required', Rule::in(['en', 'fr'])],
+        ];
+    }
+
+    public function rendering(View $view): void
+    {
+        $view->title(__('navigation.settings.appearance').' - '.__('settings.title'));
+    }
+};
+?>
+
 <section class="w-full">
     @include('partials.settings-heading')
 

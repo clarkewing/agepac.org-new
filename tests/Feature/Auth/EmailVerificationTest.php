@@ -1,6 +1,5 @@
 <?php
 
-use App\Livewire\Auth\VerifyEmail;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
@@ -25,7 +24,7 @@ it('renders the email verification screen', function () {
     $this->actingAs($user)
         ->get(route('verification.notice'))
         ->assertOk()
-        ->assertSeeLivewire(VerifyEmail::class);
+        ->assertSeeLivewire('pages::auth.verify-email');
 });
 
 it('requires the user to be authenticated to proceed', function () {
@@ -107,7 +106,7 @@ it('can resend verification email', function () {
     $user = User::factory()->unverified()->create();
     $this->actingAs($user);
 
-    Livewire::test(VerifyEmail::class)
+    Livewire::test('pages::auth.verify-email')
         ->call('sendVerification')
         ->assertHasNoErrors();
 
@@ -118,7 +117,7 @@ it('redirects already verified users when trying to resend verification', functi
     // Already verified
     $this->actingAs(User::factory()->create());
 
-    Livewire::test(VerifyEmail::class)
+    Livewire::test('pages::auth.verify-email')
         ->call('sendVerification')
         ->assertRedirect(route('dashboard', absolute: false));
 });
@@ -134,7 +133,7 @@ it('can logout from the verification screen', function () {
 
     $this->actingAs($user);
 
-    Livewire::test(VerifyEmail::class)
+    Livewire::test('pages::auth.verify-email')
         ->call('logout')
         ->assertRedirect(route('login'));
 

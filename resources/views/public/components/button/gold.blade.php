@@ -1,3 +1,5 @@
+@blaze
+
 <a {{ $attributes->class(['relative rounded-lg px-4 py-2 hover:animate-wiggle focus:outline-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:text-white/70 overflow-hidden']) }}>
     <div
         class="absolute inset-0"

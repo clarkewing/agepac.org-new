@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d856ba0a1a761c5f02032590d9c60d3",
+    "content-hash": "ddf8723d4237af3af89b62d48dc64843",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -2720,6 +2720,64 @@
             "time": "2026-03-08T20:05:35+00:00"
         },
         {
+            "name": "livewire/blaze",
+            "version": "v1.0.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/livewire/blaze.git",
+                "reference": "dfd2b6b5a1ad824e71f35c631ccfbf52a3279aa2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/livewire/blaze/zipball/dfd2b6b5a1ad824e71f35c631ccfbf52a3279aa2",
+                "reference": "dfd2b6b5a1ad824e71f35c631ccfbf52a3279aa2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
+                "illuminate/view": "^10.0|^11.0|^12.0|^13.0",
+                "nikic/php-parser": "^5.0",
+                "php": "^8.1"
+            },
+            "conflict": {
+                "livewire/flux": "<2.12.1"
+            },
+            "require-dev": {
+                "livewire/flux": "dev-main",
+                "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
+                "pestphp/pest": "^2.0|^3.0|^4.0",
+                "pestphp/pest-plugin-laravel": "^2.0|^3.0|^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Livewire\\Blaze\\BlazeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Livewire\\Blaze\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caleb Porzio"
+                }
+            ],
+            "description": "A tool for optimizing Blade component performance by folding them into parent templates",
+            "support": {
+                "issues": "https://github.com/livewire/blaze/issues",
+                "source": "https://github.com/livewire/blaze/tree/v1.0.14"
+            },
+            "time": "2026-08-02T03:19:21+00:00"
+        },
+        {
             "name": "livewire/flux",
             "version": "v2.15.1",
             "source": {
@@ -2860,16 +2918,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.8.3",
+            "version": "v4.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "ab9c2ac9305008aa9ab0f1beecec8ed6c3a591b2"
+                "reference": "7ef4b2a876c71744e86463079dd506b26eeab624"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/ab9c2ac9305008aa9ab0f1beecec8ed6c3a591b2",
-                "reference": "ab9c2ac9305008aa9ab0f1beecec8ed6c3a591b2",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/7ef4b2a876c71744e86463079dd506b26eeab624",
+                "reference": "7ef4b2a876c71744e86463079dd506b26eeab624",
                 "shasum": ""
             },
             "require": {
@@ -2924,7 +2982,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.8.3"
+                "source": "https://github.com/livewire/livewire/tree/v4.3.5"
             },
             "funding": [
                 {
@@ -2932,7 +2990,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-31T00:08:18+00:00"
+            "time": "2026-08-03T04:09:44+00:00"
         },
         {
             "name": "moneyphp/money",

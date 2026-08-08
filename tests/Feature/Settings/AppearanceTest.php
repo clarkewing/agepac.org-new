@@ -1,6 +1,5 @@
 <?php
 
-use App\Livewire\Settings\Appearance;
 use App\Models\User;
 use Livewire\Livewire;
 
@@ -12,7 +11,7 @@ beforeEach(function () {
 it('renders the livewire component', function () {
     $this->get(route('settings.appearance'))
         ->assertOk()
-        ->assertSeeLivewire(Appearance::class);
+        ->assertSeeLivewire('pages::settings.appearance');
 });
 
 it('renders with correct title', function () {
@@ -23,7 +22,7 @@ it('renders with correct title', function () {
 it('mounts with current locale from session', function () {
     session()->put('locale', 'fr');
 
-    Livewire::test(Appearance::class)
+    Livewire::test('pages::settings.appearance')
         ->assertSet('language', 'fr')
         ->assertSet('languageUpdated', false);
 });
@@ -31,7 +30,7 @@ it('mounts with current locale from session', function () {
 it('mounts with default locale when no session locale exists', function () {
     session()->forget('locale');
 
-    Livewire::test(Appearance::class)
+    Livewire::test('pages::settings.appearance')
         ->assertSet('language', config('app.locale'));
 });
 
@@ -39,7 +38,7 @@ it('sets locale and updates session', function () {
     expect(session()->has('locale'))->toBeFalse();
     expect(app()->getLocale())->toBe(config('app.locale'));
 
-    Livewire::test(Appearance::class)
+    Livewire::test('pages::settings.appearance')
         ->set('language', 'fr')
         ->call('setLocale')
         ->assertSet('languageUpdated', true);
@@ -49,7 +48,7 @@ it('sets locale and updates session', function () {
 });
 
 it('updates the languageUpdated flag when language is changed', function () {
-    $component = Livewire::test(Appearance::class);
+    $component = Livewire::test('pages::settings.appearance');
 
     $component->assertSet('languageUpdated', false);
 
@@ -61,28 +60,28 @@ it('updates the languageUpdated flag when language is changed', function () {
 
 describe('validation', function () {
     it('requires the language field', function () {
-        Livewire::test(Appearance::class)
+        Livewire::test('pages::settings.appearance')
             ->set('language', '')
             ->call('setLocale')
             ->assertHasErrors(['language' => 'required']);
     });
 
     it('only accepts valid language values', function () {
-        Livewire::test(Appearance::class)
+        Livewire::test('pages::settings.appearance')
             ->set('language', 'invalid-language')
             ->call('setLocale')
             ->assertHasErrors(['language' => 'in']);
     });
 
     it('accepts english as valid language', function () {
-        Livewire::test(Appearance::class)
+        Livewire::test('pages::settings.appearance')
             ->set('language', 'en')
             ->call('setLocale')
             ->assertHasNoErrors('language');
     });
 
     it('accepts french as valid language', function () {
-        Livewire::test(Appearance::class)
+        Livewire::test('pages::settings.appearance')
             ->set('language', 'fr')
             ->call('setLocale')
             ->assertHasNoErrors('language');

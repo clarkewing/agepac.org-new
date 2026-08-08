@@ -1,3 +1,5 @@
+@blaze(memo: true)
+
 <svg viewBox="0 0 88 38" {{ $attributes }}>
     @once
         <linearGradient id="8831ce87-98b4-45ee-8322-6ce3111059a2" gradientUnits="userSpaceOnUse" x1="8.409" y1="1.593" x2="25.56" y2="31.301">
