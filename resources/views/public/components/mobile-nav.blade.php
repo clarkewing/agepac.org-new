@@ -1,3 +1,5 @@
+@blaze
+
 <div x-data="{ open: false }">
     <span x-on:click="open = true">
         {{ $trigger }}

@@ -1,3 +1,5 @@
+@blaze
+
 @if(today()->isBefore('2023-03-01'))
     <div class="sticky top-0 z-100 bg-vermilion-400 shadow-lg shadow-gray-600/25">
         <div class="mx-auto max-w-7xl py-3 px-3 sm:px-6 md:py-4 lg:px-8">

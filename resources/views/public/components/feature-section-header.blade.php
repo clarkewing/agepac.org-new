@@ -1,3 +1,5 @@
+@blaze
+
 <h3 class="text-2xl font-extrabold text-universe tracking-tight sm:text-3xl">
     {{ $title }}
 </h3>

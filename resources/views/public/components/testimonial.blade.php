@@ -1,3 +1,5 @@
+@blaze
+
 @props(['author', 'photo', 'alt' => ''])
 
 <div class="relative pt-64 pb-10 rounded-2xl shadow-xl overflow-hidden">

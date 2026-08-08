@@ -1,3 +1,5 @@
+@blaze
+
 @props([
     'align' => 'left',
     'flyoutClasses' => 'max-w-xs',

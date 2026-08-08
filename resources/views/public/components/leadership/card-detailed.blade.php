@@ -1,3 +1,5 @@
+@blaze
+
 @php
     if (! isset($photo)) {
         $slugPhotoPath = 'media/leadership/' . Str::of($name)->slug() . '.jpg';

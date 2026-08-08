@@ -1,3 +1,5 @@
+@blaze
+
 @props(['branding' => 'logo'])
 
 @php($isOverlayed = $attributes->has('overlay'))

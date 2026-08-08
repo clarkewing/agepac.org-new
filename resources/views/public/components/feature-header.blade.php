@@ -1,3 +1,5 @@
+@blaze
+
 <div class="relative">
     <h2 class="text-center text-3xl leading-8 font-extrabold tracking-tight text-universe sm:text-4xl">
         {{ $title }}
