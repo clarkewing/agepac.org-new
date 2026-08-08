@@ -1,6 +1,5 @@
 <?php
 
-use App\Livewire\Auth\Login;
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Event;
@@ -17,12 +16,12 @@ test('login screen can be rendered', function () {
 
 test('login screen only shows developer login in local environment', function () {
     withEnvironment('local',
-        fn () => Livewire::test('auth.login')
+        fn () => Livewire::test('pages::auth.login')
             ->assertSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">')
     );
 
     withEnvironment('production',
-        fn () => Livewire::test('auth.login')
+        fn () => Livewire::test('pages::auth.login')
             ->assertDontSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">')
     );
 });
@@ -89,7 +88,7 @@ test('users can logout', function () {
 
 function attemptLogin(string $email, string $password): Testable
 {
-    return Livewire::test(Login::class)
+    return Livewire::test('pages::auth.login')
         ->set('email', $email)
         ->set('password', $password)
         ->call('login');

@@ -1,6 +1,5 @@
 <?php
 
-use App\Livewire\Settings\Profile;
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
 use Illuminate\Support\Facades\Notification;
@@ -17,7 +16,7 @@ test('profile information can be updated', function () {
 
     $this->actingAs($user);
 
-    $response = Livewire::test(Profile::class)
+    $response = Livewire::test('pages::settings.profile')
         // ->set('name', 'Test User')
         ->set('email', 'test@example.com')
         ->call('updateProfileInformation');
@@ -36,7 +35,7 @@ test('email verification status is unchanged when email address is unchanged', f
 
     $this->actingAs($user);
 
-    $response = Livewire::test(Profile::class)
+    $response = Livewire::test('pages::settings.profile')
         ->set('name', 'Test User')
         ->set('email', $user->email)
         ->call('updateProfileInformation');
@@ -51,7 +50,7 @@ test('user can delete their account', function () {
 
     $this->actingAs($user);
 
-    $response = Livewire::test('settings.delete-user-form')
+    $response = Livewire::test('pages::settings.delete-user-form')
         ->set('password', 'password')
         ->call('deleteUser');
 
@@ -69,7 +68,7 @@ test('correct password must be provided to delete account', function () {
 
     $this->actingAs($user);
 
-    $response = Livewire::test('settings.delete-user-form')
+    $response = Livewire::test('pages::settings.delete-user-form')
         ->set('password', 'wrong-password')
         ->call('deleteUser');
 
@@ -90,7 +89,7 @@ it('can resend verification email', function () {
     $user = User::factory()->unverified()->create();
     $this->actingAs($user);
 
-    Livewire::test(Profile::class)
+    Livewire::test('pages::settings.profile')
         ->call('resendVerificationNotification')
         ->assertHasNoErrors();
 
@@ -101,7 +100,7 @@ it('redirects already verified users when trying to resend verification', functi
     // Already verified
     $this->actingAs(User::factory()->create());
 
-    Livewire::test(Profile::class)
+    Livewire::test('pages::settings.profile')
         ->call('resendVerificationNotification')
         ->assertRedirect(route('dashboard', absolute: false));
 });

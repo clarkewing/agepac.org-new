@@ -1,3 +1,32 @@
+<?php
+
+use App\Actions\Logout;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+
+new class extends Component
+{
+    public string $password = '';
+
+    /**
+     * Delete the currently authenticated user.
+     */
+    public function deleteUser(Logout $logout): void
+    {
+        $this->validate([
+            'password' => ['required', 'string', 'current_password'],
+        ]);
+
+        tap(Auth::user(), $logout(...))->delete();
+
+        session()->flash('status', __('settings.profile.delete-account.status.deleted'));
+
+        // TODO: Add navigate: true
+        $this->redirectRoute('login');
+    }
+};
+?>
+
 <section class="mt-10 space-y-6">
     <div class="relative mb-5">
         <flux:heading>{{ __('settings.profile.delete-account.heading') }}</flux:heading>
