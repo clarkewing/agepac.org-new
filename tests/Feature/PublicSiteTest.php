@@ -4,6 +4,8 @@ use Illuminate\Routing\Route as RouteObject;
 use Illuminate\Support\Facades\Route;
 
 beforeEach(function () {
+    pest()->browser()->withHost(Route::getRoutes()->getByName('public.home')->getDomain());
+
     $this->routes = collect(Route::getRoutes())
         ->filter(fn (RouteObject $route) => str_starts_with($route->getName(), 'public.')
                                             && in_array('GET', $route->methods())
