@@ -17,7 +17,7 @@ use Livewire\Component;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Propaganistas\LaravelPhone\Rules\Phone;
 
-#[Layout('components.layouts.auth')]
+#[Layout('layouts::auth')]
 class Register extends Component
 {
     public string $first_name = '';
