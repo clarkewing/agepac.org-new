@@ -83,7 +83,7 @@ return [
             ],
 
             'exclude' => [
-                'legacy' => ['stripe_product'],
+                'legacy' => ['stripe_product', 'meter_id', 'meter_event_name'],
                 'new' => [],
             ],
         ],

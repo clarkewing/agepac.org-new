@@ -18,12 +18,12 @@
         "blade-ui-kit/blade-heroicons": "^2.6",
         "caseyamcl/guzzle_retry_middleware": "^2.13",
         "clarkewing/cashier-nightwatch": "^0.2.0",
-        "clarkewing/handoff": "^0.1.3",
-        "clarkewing/legacy-sync": "^0.2.0",
-        "laravel/cashier": "^15.7",
-        "laravel/framework": "^12.20",
+        "clarkewing/handoff": "^0.1.5",
+        "clarkewing/legacy-sync": "^0.2.2",
+        "laravel/cashier": "^16.7",
+        "laravel/framework": "^13.0",
         "laravel/nightwatch": "^1.28.5",
-        "laravel/tinker": "^3.0.2",
+        "laravel/tinker": "^3.0",
         "livewire/flux": "^2.2.2",
         "livewire/flux-pro": "^2.2",
         "livewire/livewire": "^3.7.4",
@@ -33,15 +33,16 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "laravel/boost": "^2.4",
+        "laravel/boost": "^2.5",
         "laravel/pail": "^1.2.2",
+        "laravel/pao": "^1.1",
         "laravel/pint": "^1.23",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "pestphp/pest": "^4.0",
-        "pestphp/pest-plugin-browser": "^4.0",
-        "pestphp/pest-plugin-laravel": "^4.0",
-        "pestphp/pest-plugin-type-coverage": "^4.0",
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-browser": "^5.0",
+        "pestphp/pest-plugin-laravel": "^5.0",
+        "pestphp/pest-plugin-type-coverage": "^5.0",
         "spatie/invade": "^2.1"
     },
     "autoload": {
@@ -75,20 +76,31 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+            "@php artisan dev"
         ],
         "lint": "pint -v --parallel",
         "test:lint": "pint --test -v --parallel",
         "test:coverage": "pest --coverage --min=100",
         "test:type-coverage": "pest --type-coverage --min=100  --memory-limit=-1",
         "test:unit": [
-            "@php artisan config:clear --ansi",
+            "@php artisan config:clear --ansi @no_additional_args",
             "pest --colors=always"
         ],
         "test": [
             "@test:lint",
             "@test:type-coverage",
             "@test:unit"
+        ],
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate",
+            "@php artisan migrate --force",
+            "npm install --ignore-scripts",
+            "npm run build"
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ]
     },
     "extra": {
