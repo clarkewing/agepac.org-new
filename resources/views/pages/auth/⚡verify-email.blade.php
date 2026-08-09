@@ -47,7 +47,7 @@ new #[Layout('layouts::auth')] class extends Component
     <flux:text class="text-center">{{ __('auth.verify-email.heading') }}</flux:text>
 
     @if (session('status') == 'verification-link-sent')
-        <flux:text class="!dark:text-green-400 text-center font-medium !text-green-600">
+        <flux:text class="text-center font-medium text-green-600! dark:text-green-400!">
             {{ __('auth.verify-email.status.verification-link-sent') }}
         </flux:text>
     @endif

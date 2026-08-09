@@ -117,7 +117,7 @@ new class extends Component
                         </flux:text>
 
                         @if (session('status') === 'verification-link-sent')
-                            <flux:text class="!dark:text-green-400 mt-2 font-medium !text-green-600">
+                            <flux:text class="mt-2 font-medium text-green-600! dark:text-green-400!">
                                 {{ __('settings.profile.email-verification.status.verification-link-sent') }}
                             </flux:text>
                         @endif

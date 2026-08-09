@@ -31,7 +31,7 @@
         <flux:navbar class="me-1.5 space-x-0.5 py-0! rtl:space-x-reverse">
             <flux:tooltip :content="__('Search')" position="bottom">
                 <flux:navbar.item
-                    class="[&>div>svg]:size-5 !h-10"
+                    class="[&>div>svg]:size-5 h-10!"
                     icon="magnifying-glass"
                     href="#"
                     :label="__('Search')"
