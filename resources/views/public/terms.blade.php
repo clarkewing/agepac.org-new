@@ -1,22 +1,14 @@
 @use(Illuminate\Support\Str)
 @use(Laravel\Head\Facades\Head)
+@use(League\CommonMark\Extension\FrontMatter\FrontMatterExtension)
 
 @php
-    $document = $terms;
+    $document = new FrontMatterExtension()->getFrontMatterParser()
+        ->parse(file_get_contents(resource_path("markdown/$terms.md")));
 
-    $terms = file_get_contents(resource_path("markdown/$document.md"));
+    ['title' => $title, 'description' => $description] = $document->getFrontMatter();
 
-    if (preg_match('/^# ([^\n]+)\n/', $terms, $matches)) {
-        $title = $matches[1];
-        unset($matches);
-
-        $terms = Str::after($terms, "# $title");
-    }
-
-    Head::title($title)->description(match ($document) {
-        'privacy' => 'Comment l’AGEPAC collecte, traite et protège vos données personnelles.',
-        'terms' => 'Les conditions encadrant juridiquement l’utilisation du site de l’AGEPAC et de ses services.',
-    });
+    Head::title($title)->description($description);
 @endphp
 
 <x-public::layout>
@@ -41,7 +33,7 @@
             </div>
 
             <div class="mt-12 prose prose-cyan prose-lg text-gray-500 mx-auto">
-                {!! Str::markdown($terms) !!}
+                {!! Str::markdown($document->getContent()) !!}
             </div>
         </div>
     </div>

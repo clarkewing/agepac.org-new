@@ -1,5 +1,7 @@
-# Conditions Générales d’Utilisation
-
+---
+title: Conditions Générales d’Utilisation
+description: Les conditions encadrant juridiquement l’utilisation du site de l’AGEPAC et de ses services.
+---
 
 ## Objet
 Les présentes « conditions générales d’utilisation » ont pour objet l’encadrement juridique de l’utilisation du site de l’AGEPAC et de ses services.

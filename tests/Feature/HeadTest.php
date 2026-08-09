@@ -59,14 +59,16 @@ it('points the canonical URL at the current page, without its query string', fun
         ->assertSeeHtml('<link rel="canonical" href="'.secure_url('/association/team').'">');
 });
 
-it('takes the legal page titles from their markdown headings', function () {
+it('takes the legal page metadata from the markdown front matter', function () {
     $this->get(route('public.privacy'))
         ->assertOk()
-        ->assertSeeHtml('<title>Politique de Confidentialité | AGEPAC</title>');
+        ->assertSeeHtml('<title>Politique de Confidentialité | AGEPAC</title>')
+        ->assertSeeHtml('<meta name="description" content="Comment l’AGEPAC collecte, traite et protège vos données personnelles.">');
 
     $this->get(route('public.terms'))
         ->assertOk()
-        ->assertSeeHtml('<title>Conditions Générales d’Utilisation | AGEPAC</title>');
+        ->assertSeeHtml('<title>Conditions Générales d’Utilisation | AGEPAC</title>')
+        ->assertSeeHtml('<meta name="description" content="Les conditions encadrant juridiquement l’utilisation du site de l’AGEPAC et de ses services.">');
 });
 
 describe('app pages', function () {

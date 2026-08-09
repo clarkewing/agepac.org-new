@@ -1,4 +1,7 @@
-# Politique de Confidentialité
+---
+title: Politique de Confidentialité
+description: Comment l’AGEPAC collecte, traite et protège vos données personnelles.
+---
 
 ## Introduction
 Dans le cadre de son activité, l’AGEPAC, dont le siège social est situé au 7 avenue Edouard Belin, 31400 Toulouse, est amenée à collecter et à traiter des informations dont certaines sont qualifiées de « données personnelles ».
