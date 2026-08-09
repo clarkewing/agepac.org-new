@@ -10,13 +10,7 @@
 
         @vite(['resources/css/public.css', 'resources/js/public.js'])
 
-        @if(config('services.cloudflare-analytics.token'))
-            <script
-                defer
-                src='https://static.cloudflareinsights.com/beacon.min.js'
-                data-cf-beacon='{"token": "{{ config('services.cloudflare-analytics.token') }}"}'
-            ></script>
-        @endif
+        @include('partials.analytics')
     </head>
     <body class="font-sans antialiased">
         <x-public::banner />
