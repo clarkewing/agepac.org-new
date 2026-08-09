@@ -40,6 +40,15 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
 
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Install Blade formatting dependencies
+        run: npm ci --ignore-scripts
+
       - name: Coding Style Checks
         run: composer test:lint
 
