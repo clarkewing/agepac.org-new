@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\Validation\ValidationException;
+use Laravel\Head\Facades\Head;
 use Livewire\Component;
 
 new class extends Component
@@ -40,9 +40,9 @@ new class extends Component
         $this->dispatch('password-updated');
     }
 
-    public function rendering(View $view): void
+    public function rendering(): void
     {
-        $view->title(__('navigation.settings.password').' - '.__('settings.title'));
+        Head::title(__('navigation.settings.password').' - '.__('settings.title'));
     }
 };
 ?>

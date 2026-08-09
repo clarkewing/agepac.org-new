@@ -1,32 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @if($attributes->has('title'))
-            <title>{{ $attributes->get('title') . ' | AGEPAC' }}</title>
-        @else
-            <title>AGEPAC – The ENAC Pilot Association</title>
-        @endif
+        @head
 
-        <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-        <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
-        <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
-        <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
-        <meta name="theme-color" content="rgb(0, 10, 51)">
+        @fonts('inter')
 
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         @vite(['resources/css/public.css', 'resources/js/public.js'])
 
-        @if(config('services.cloudflare-analytics.token'))
-            <script
-                defer
-                src='https://static.cloudflareinsights.com/beacon.min.js'
-                data-cf-beacon='{"token": "{{ config('services.cloudflare-analytics.token') }}"}'
-            ></script>
-        @endif
+        @include('partials.analytics')
     </head>
     <body class="font-sans antialiased">
         <x-public::banner />
@@ -75,7 +59,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main {{ $attributes->except('title') }}>
+            <main {{ $attributes }}>
                 {{ $slot }}
             </main>
 

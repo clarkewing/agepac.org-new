@@ -1,4 +1,12 @@
-<x-public::layout title="Presse & médias">
+@use(Laravel\Head\Facades\Head)
+
+@php
+    Head::title('Presse & médias')
+        ->description('Contacts presse, informations sur l’AGEPAC et la formation Élève Pilote de Ligne de l’ENAC, et ressources photo pour les journalistes.')
+        ->ogImage(asset('media/cameraman-in-sim.jpg'), alt: 'Une équipe de tournage filmant une interview en simulateur');
+@endphp
+
+<x-public::layout>
     <x-slot
         name="header"
         backdrop="{{ asset('media/cameraman-in-sim.jpg') }}"

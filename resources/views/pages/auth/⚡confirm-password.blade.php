@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Laravel\Head\Facades\Head;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -30,6 +31,11 @@ new #[Layout('layouts::auth')] class extends Component
         session(['auth.password_confirmed_at' => time()]);
 
         $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+    }
+
+    public function rendering(): void
+    {
+        Head::title(__('auth.confirm-password.title'));
     }
 };
 ?>

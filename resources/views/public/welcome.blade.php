@@ -1,3 +1,38 @@
+@use(Laravel\Head\Facades\Head)
+@use(Laravel\Head\Facades\Schema)
+
+@php
+    Head::title('AGEPAC – The ENAC Pilot Association', exact: true)
+        ->description($description = 'L’AGEPAC est l’Association Générale des Élèves Pilotes de l’Aviation Civile, l’association des Élèves Pilotes de Ligne issus de la formation ENAC.')
+        ->og(url: route('public.home'))
+        ->ogImage(asset('media/cockpit-ifr-leana.jpg'), alt: 'Une EPL en cours de navigation IFR en TB20')
+        ->schema(Schema::organization()
+            ->name('AGEPAC')
+            ->legalName('Association Générale des Élèves Pilotes de l’Aviation Civile')
+            ->description($description)
+            ->url(route('public.home'))
+            ->logo(asset('icon-512.png'))
+            ->email('bonjour@agepac.org')
+            ->foundingDate('1992')
+            ->address(Schema::make('PostalAddress')
+                ->streetAddress('7 avenue Edouard Belin')
+                ->postOfficeBoxNumber('BP 54005')
+                ->postalCode('31055')
+                ->addressLocality('Toulouse Cedex 4')
+                ->addressCountry('FR'))
+            ->contactPoint([
+                Schema::make('ContactPoint')->contactType('media relations')->email('media@agepac.org'),
+                Schema::make('ContactPoint')->contactType('recruitment')->email('recruitment@agepac.org'),
+                Schema::make('ContactPoint')->contactType('partnerships')->email('partners@agepac.org'),
+                Schema::make('ContactPoint')->contactType('social media')->email('social@agepac.org'),
+            ])
+            ->sameAs([
+                'https://twitter.com/agepac',
+                'https://www.instagram.com/epl_agepac/',
+                'https://www.linkedin.com/company/agepac/',
+            ]));
+@endphp
+
 <x-public::layout>
     <x-slot
         name="header"

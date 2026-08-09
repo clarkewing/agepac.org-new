@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Laravel\Head\Facades\Head;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -81,6 +82,11 @@ new #[Layout('layouts::auth')] class extends Component
             Password::INVALID_TOKEN => 'auth.reset-password.status.token',
             Password::RESET_THROTTLED => 'auth.reset-password.status.throttled',
         });
+    }
+
+    public function rendering(): void
+    {
+        Head::title(__('auth.reset-password.title'));
     }
 };
 ?>

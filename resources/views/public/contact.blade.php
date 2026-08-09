@@ -1,4 +1,12 @@
-<x-public::layout title="Contact">
+@use(Laravel\Head\Facades\Head)
+
+@php
+    Head::title('Contact')
+        ->description('Des questions sur nos actions ? Une envie de partenariat ? Retrouvez les meilleurs canaux pour joindre l’AGEPAC.')
+        ->ogImage(asset('media/innsbruck-flight-line.jpg'), alt: 'Deux élèves pilotes marchant vers leur avion sur le tarmac d’Innsbruck');
+@endphp
+
+<x-public::layout>
     <x-slot
         name="header"
         backdrop="{{ asset('media/innsbruck-flight-line.jpg') }}"

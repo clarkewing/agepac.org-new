@@ -1,17 +1,17 @@
 @use(Illuminate\Support\Str)
+@use(Laravel\Head\Facades\Head)
+@use(League\CommonMark\Extension\FrontMatter\FrontMatterExtension)
 
 @php
-    $terms = file_get_contents(resource_path("markdown/$terms.md"));
+    $document = new FrontMatterExtension()->getFrontMatterParser()
+        ->parse(file_get_contents(resource_path("markdown/$terms.md")));
 
-    if (preg_match('/^# ([^\n]+)\n/', $terms, $matches)) {
-        $title = $matches[1];
-        unset($matches);
+    ['title' => $title, 'description' => $description] = $document->getFrontMatter();
 
-        $terms = Str::after($terms, "# $title");
-    }
+    Head::title($title)->description($description);
 @endphp
 
-<x-public::layout :title="$title">
+<x-public::layout>
     <div class="relative py-16 bg-white overflow-hidden">
         <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
             <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
@@ -33,7 +33,7 @@
             </div>
 
             <div class="mt-12 prose prose-cyan prose-lg text-gray-500 mx-auto">
-                {!! Str::markdown($terms) !!}
+                {!! Str::markdown($document->getContent()) !!}
             </div>
         </div>
     </div>

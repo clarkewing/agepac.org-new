@@ -2,10 +2,10 @@
 
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Laravel\Head\Facades\Head;
 use Livewire\Component;
 
 new class extends Component
@@ -72,9 +72,9 @@ new class extends Component
         Session::flash('status', 'verification-link-sent');
     }
 
-    public function rendering(View $view): void
+    public function rendering(): void
     {
-        $view->title(__('navigation.settings.profile').' - '.__('settings.title'));
+        Head::title(__('navigation.settings.profile').' - '.__('settings.title'));
     }
 };
 ?>

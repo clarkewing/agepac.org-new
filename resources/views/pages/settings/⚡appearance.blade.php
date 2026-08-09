@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Validation\Rule;
+use Laravel\Head\Facades\Head;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -34,9 +34,9 @@ new class extends Component
         ];
     }
 
-    public function rendering(View $view): void
+    public function rendering(): void
     {
-        $view->title(__('navigation.settings.appearance').' - '.__('settings.title'));
+        Head::title(__('navigation.settings.appearance').' - '.__('settings.title'));
     }
 };
 ?>

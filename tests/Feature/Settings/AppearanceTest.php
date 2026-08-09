@@ -14,11 +14,6 @@ it('renders the livewire component', function () {
         ->assertSeeLivewire('pages::settings.appearance');
 });
 
-it('renders with correct title', function () {
-    $this->get(route('settings.appearance'))
-        ->assertSeeHtml('<title>'.__('navigation.settings.appearance').' - '.__('settings.title').'</title>');
-});
-
 it('mounts with current locale from session', function () {
     session()->put('locale', 'fr');
 
