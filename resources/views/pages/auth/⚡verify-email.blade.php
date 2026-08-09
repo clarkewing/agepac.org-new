@@ -3,6 +3,7 @@
 use App\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Laravel\Head\Facades\Head;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -33,6 +34,11 @@ new #[Layout('layouts::auth')] class extends Component
 
         // TODO: Add navigate: true
         $this->redirectRoute('login');
+    }
+
+    public function rendering(): void
+    {
+        Head::title(__('auth.verify-email.title'));
     }
 };
 ?>

@@ -14,6 +14,7 @@ return [
     */
 
     'login' => [
+        'title' => 'Connexion',
         'heading' => 'Heureux de vous revoir',
         'forgot-password' => 'Mot de passe oublié ?',
         'remember' => 'Se souvenir de moi',
@@ -27,6 +28,7 @@ return [
     ],
 
     'register' => [
+        'title' => 'Inscription',
         'heading' => 'Inscription',
         'description' => 'Saisissez vos informations ci‑dessous pour créer votre compte.',
         'action' => 'Créer un compte',
@@ -35,6 +37,7 @@ return [
     ],
 
     'verify-email' => [
+        'title' => 'Vérification de l’e‑mail',
         'heading' => 'Veuillez confirmer votre adresse e‑mail en cliquant sur le lien que nous venons de vous envoyer.',
         'action' => 'Renvoyer l’e‑mail de vérification',
         'logout-link' => 'Se déconnecter',
@@ -44,6 +47,7 @@ return [
     ],
 
     'forgot-password' => [
+        'title' => 'Mot de passe oublié',
         'heading' => 'Mot de passe oublié',
         'description' => 'Saisissez votre e‑mail pour recevoir un lien de réinitialisation.',
         'action' => 'Envoyer le lien de réinitialisation',
@@ -55,6 +59,7 @@ return [
     ],
 
     'reset-password' => [
+        'title' => 'Réinitialiser le mot de passe',
         'heading' => 'Réinitialiser le mot de passe',
         'description' => 'Veuillez saisir votre nouveau mot de passe ci‑dessous.',
         'action' => 'Réinitialiser',
@@ -68,6 +73,7 @@ return [
     ],
 
     'confirm-password' => [
+        'title' => 'Confirmer le mot de passe',
         'heading' => 'Confirmer le mot de passe',
         'description' => 'Il s’agit d’une zone sécurisée de l’application. Veuillez confirmer votre mot de passe avant de continuer.',
         'action' => 'Confirmer',

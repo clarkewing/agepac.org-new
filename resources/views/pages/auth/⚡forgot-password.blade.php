@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Password;
+use Laravel\Head\Facades\Head;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -20,6 +21,11 @@ new #[Layout('layouts::auth')] class extends Component
         Password::sendResetLink($this->only('email'));
 
         session()->flash('status', __('auth.forgot-password.status.link-sent'));
+    }
+
+    public function rendering(): void
+    {
+        Head::title(__('auth.forgot-password.title'));
     }
 };
 ?>

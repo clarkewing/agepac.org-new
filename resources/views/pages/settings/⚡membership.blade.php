@@ -1,9 +1,9 @@
 <?php
 
 use App\Enums\Products\Membership;
-use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Redirector;
 use Laravel\Cashier\Subscription;
+use Laravel\Head\Facades\Head;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -52,9 +52,9 @@ new class extends Component
         return request()->boolean('checkout_canceled');
     }
 
-    public function rendering(View $view): void
+    public function rendering(): void
     {
-        $view->title(__('navigation.settings.membership').' - '.__('settings.title'));
+        Head::title(__('navigation.settings.membership').' - '.__('settings.title'));
     }
 };
 ?>

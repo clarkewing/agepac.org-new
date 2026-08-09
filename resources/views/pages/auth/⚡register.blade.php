@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
+use Laravel\Head\Facades\Head;
 use libphonenumber\NumberParseException;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -71,6 +72,11 @@ new #[Layout('layouts::auth')] class extends Component
             $this->phone = new PhoneNumber($this->phone, 'FR')->formatInternational();
         } catch (NumberParseException) {
         }
+    }
+
+    public function rendering(): void
+    {
+        Head::title(__('auth.register.title'));
     }
 };
 ?>
