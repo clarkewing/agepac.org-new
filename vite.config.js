@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { bunny } from 'laravel-vite-plugin/fonts';
+import { bunny, local } from 'laravel-vite-plugin/fonts';
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
@@ -16,6 +16,13 @@ export default defineConfig({
             fonts: [
                 bunny('Instrument Sans', {
                     weights: [400, 500, 600],
+                }),
+                local('Inter', {
+                    variants: [
+                        { src: 'resources/fonts/inter-latin-opsz-normal.woff2', weight: '100 900' },
+                        { src: 'resources/fonts/inter-latin-opsz-italic.woff2', weight: '100 900', style: 'italic' },
+                    ],
+                    preload: [{ weight: '100 900' }],
                 }),
             ],
         }),

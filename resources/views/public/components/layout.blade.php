@@ -6,7 +6,7 @@
 
         @head
 
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+        @fonts('inter')
 
         @vite(['resources/css/public.css', 'resources/js/public.js'])
 
