@@ -12,27 +12,39 @@
 @endphp
 
 <x-public::layout>
-    <div class="relative py-16 bg-white overflow-hidden">
-        <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
-            <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
-               <x-public::pattern.dots class="absolute top-12 left-full transform translate-x-32" width="404" height="384" />
-               <x-public::pattern.dots class="absolute top-1/2 right-full transform -translate-y-1/2 -translate-x-32" width="404" height="384" />
-               <x-public::pattern.dots class="absolute bottom-12 left-full transform translate-x-32" width="404" height="384" />
+    <div class="relative overflow-hidden bg-white py-16">
+        <div class="hidden lg:absolute lg:inset-y-0 lg:block lg:h-full lg:w-full">
+            <div class="relative mx-auto h-full max-w-prose text-lg" aria-hidden="true">
+                <x-public::pattern.dots
+                    class="absolute top-12 left-full translate-x-32 transform"
+                    width="404"
+                    height="384"
+                />
+                <x-public::pattern.dots
+                    class="absolute top-1/2 right-full -translate-x-32 -translate-y-1/2 transform"
+                    width="404"
+                    height="384"
+                />
+                <x-public::pattern.dots
+                    class="absolute bottom-12 left-full translate-x-32 transform"
+                    width="404"
+                    height="384"
+                />
             </div>
         </div>
         <div class="relative px-4 sm:px-6 lg:px-8">
-            <div class="text-lg max-w-prose mx-auto">
+            <div class="mx-auto max-w-prose text-lg">
                 <h1>
-                    <span class="block text-base text-center text-wedgewood-500 font-semibold tracking-wide uppercase">
+                    <span class="text-wedgewood-500 block text-center text-base font-semibold tracking-wide uppercase">
                         Juridique
                     </span>
-                    <span class="mt-2 block text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    <span class="mt-2 block text-center text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                         {{ $title }}
                     </span>
                 </h1>
             </div>
 
-            <div class="mt-12 prose prose-cyan prose-lg text-gray-500 mx-auto">
+            <div class="prose prose-cyan prose-lg mx-auto mt-12 text-gray-500">
                 {!! Str::markdown($document->getContent()) !!}
             </div>
         </div>

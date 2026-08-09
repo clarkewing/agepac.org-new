@@ -79,7 +79,6 @@ new class extends Component
 };
 ?>
 
-
 <section class="w-full">
     @include('partials.settings-heading')
 
@@ -103,14 +102,14 @@ new class extends Component
                     autocomplete="email"
                 />
 
-                @if (auth()->user() instanceof MustVerifyEmail &&! auth()->user()->hasVerifiedEmail())
+                @if (auth()->user() instanceof MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())
                     <div class="mt-4">
                         <flux:text>
-                            <flux:icon name="exclamation-triangle" class="inline mr-px h-5 w-5 text-amber-400" />
+                            <flux:icon name="exclamation-triangle" class="mr-px inline h-5 w-5 text-amber-400" />
                             {{ __('settings.profile.email-verification.prompt') }}
 
                             <flux:link
-                                class="text-sm cursor-pointer"
+                                class="cursor-pointer text-sm"
                                 wire:click.prevent="resendVerificationNotification"
                             >
                                 {{ __('settings.profile.email-verification.action') }}
@@ -118,7 +117,7 @@ new class extends Component
                         </flux:text>
 
                         @if (session('status') === 'verification-link-sent')
-                            <flux:text class="mt-2 font-medium !dark:text-green-400 !text-green-600">
+                            <flux:text class="!dark:text-green-400 mt-2 font-medium !text-green-600">
                                 {{ __('settings.profile.email-verification.status.verification-link-sent') }}
                             </flux:text>
                         @endif
