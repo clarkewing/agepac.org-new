@@ -1,4 +1,12 @@
-<x-public::layout title="Notre équipe">
+@use(Laravel\Head\Facades\Head)
+
+@php
+    Head::title('Notre équipe')
+        ->description('Le Bureau et le Conseil de l’AGEPAC : les EPL qui portent la voix de l’Association au quotidien.')
+        ->ogImage(asset('media/auditorium-audience.jpg'), alt: 'Des EPL diplômés en uniforme discutant dans un auditorium');
+@endphp
+
+<x-public::layout>
     <x-slot
         name="header"
         backdrop="{{ asset('media/auditorium-audience.jpg') }}"

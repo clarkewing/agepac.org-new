@@ -1,4 +1,12 @@
-<x-public::layout title="La sélection EPL">
+@use(Laravel\Head\Facades\Head)
+
+@php
+    Head::title('La sélection EPL')
+        ->description('L’ENAC propose 4 voies d’accès au cursus EPL. Toutes ont en commun un concours très sélectif. Découvrez les filières, les étapes du concours et le Guide EPL.')
+        ->ogImage(asset('media/flight-group-tb20.jpg'), alt: 'Un groupe de vol EPL posant devant leur TB20');
+@endphp
+
+<x-public::layout>
     <x-slot
         name="header"
         class="bg-white"

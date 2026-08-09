@@ -1,7 +1,10 @@
 @use(Illuminate\Support\Str)
+@use(Laravel\Head\Facades\Head)
 
 @php
-    $terms = file_get_contents(resource_path("markdown/$terms.md"));
+    $document = $terms;
+
+    $terms = file_get_contents(resource_path("markdown/$document.md"));
 
     if (preg_match('/^# ([^\n]+)\n/', $terms, $matches)) {
         $title = $matches[1];
@@ -9,9 +12,14 @@
 
         $terms = Str::after($terms, "# $title");
     }
+
+    Head::title($title)->description(match ($document) {
+        'privacy' => 'Comment l’AGEPAC collecte, traite et protège vos données personnelles.',
+        'terms' => 'Les conditions encadrant juridiquement l’utilisation du site de l’AGEPAC et de ses services.',
+    });
 @endphp
 
-<x-public::layout :title="$title">
+<x-public::layout>
     <div class="relative py-16 bg-white overflow-hidden">
         <div class="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
             <div class="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">

@@ -1,4 +1,12 @@
-<x-public::layout title="La sélection EPL">
+@use(Laravel\Head\Facades\Head)
+
+@php
+    Head::title('En hommage à nos EPL disparus')
+        ->description('L’AGEPAC honore la mémoire des Élèves Pilotes de Ligne qui nous ont quittés.')
+        ->ogImage(asset('media/737-into-sunset.jpg'), alt: 'Un avion de ligne vu de l’arrière volant vers le coucher de soleil');
+@endphp
+
+<x-public::layout>
     <x-slot
         name="header"
         class="relative bg-universe"

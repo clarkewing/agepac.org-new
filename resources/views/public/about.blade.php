@@ -1,4 +1,12 @@
-<x-public::layout title="Qui sommes-nous ?" class="bg-white">
+@use(Laravel\Head\Facades\Head)
+
+@php
+    Head::title('Qui sommes-nous ?')
+        ->description('Depuis 1992, l’AGEPAC regroupe les Élèves Pilotes de Ligne formés à l’ENAC pour garantir la pérennité de la filière publique de formation au pilotage.')
+        ->ogImage(asset('media/flight-group-be58.jpg'), alt: 'Quatre EPL posant devant un Beechcraft Baron 58');
+@endphp
+
+<x-public::layout class="bg-white">
     <x-slot
         name="header"
         backdrop="{{ asset('media/flight-group-be58.jpg') }}"

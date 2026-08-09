@@ -1,4 +1,12 @@
-<x-public::layout title="La formation EPL">
+@use(Laravel\Head\Facades\Head)
+
+@php
+    Head::title('La formation EPL')
+        ->description('La formation d’un EPL se déroule en 5 phases, débutant par la préparation de l’ATPL théorique et finissant par l’apprentissage du travail en équipage.')
+        ->ogImage(asset('media/students-on-tb20-wing.jpg'), alt: 'Deux EPL préparant leurs sacoches de vol sur l’aile d’un TB20');
+@endphp
+
+<x-public::layout>
     <x-slot
         name="header"
         class="bg-white"
