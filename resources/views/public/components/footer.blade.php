@@ -2,41 +2,49 @@
 
 <footer class="bg-universe" aria-labelledby="footerHeading">
     <h2 id="footerHeading" class="sr-only">Footer</h2>
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div class="pb-8 xl:grid xl:grid-cols-5 xl:gap-8">
             <div class="grid grid-cols-2 gap-8 xl:col-span-4">
                 <div class="md:grid md:grid-cols-2 md:gap-8">
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                            Être EPL
-                        </h3>
+                        <h3 class="text-sm font-semibold tracking-wider text-gray-400 uppercase">Être EPL</h3>
                         <ul class="mt-4 space-y-4">
                             <li>
-                                <a href="{{ route('public.epl.selection') }}" class="text-base text-gray-300 hover:text-white">
+                                <a
+                                    href="{{ route('public.epl.selection') }}"
+                                    class="text-base text-gray-300 hover:text-white"
+                                >
                                     La Sélection
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ route('public.epl.training') }}" class="text-base text-gray-300 hover:text-white">
+                                <a
+                                    href="{{ route('public.epl.training') }}"
+                                    class="text-base text-gray-300 hover:text-white"
+                                >
                                     La Formation
                                 </a>
                             </li>
                         </ul>
                     </div>
                     <div class="mt-12 md:mt-0">
-                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                            Association
-                        </h3>
+                        <h3 class="text-sm font-semibold tracking-wider text-gray-400 uppercase">Association</h3>
                         <ul class="mt-4 space-y-4">
                             <li>
-                                <a href="{{ route('public.association.about') }}" class="text-base text-gray-300 hover:text-white">
+                                <a
+                                    href="{{ route('public.association.about') }}"
+                                    class="text-base text-gray-300 hover:text-white"
+                                >
                                     À propos
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ route('public.association.team') }}" class="text-base text-gray-300 hover:text-white">
+                                <a
+                                    href="{{ route('public.association.team') }}"
+                                    class="text-base text-gray-300 hover:text-white"
+                                >
                                     Notre équipe
                                 </a>
                             </li>
@@ -48,7 +56,10 @@
                             </li>
 
                             <li>
-                                <a href="{{ route('public.contact') }}" class="text-base text-gray-300 hover:text-white">
+                                <a
+                                    href="{{ route('public.contact') }}"
+                                    class="text-base text-gray-300 hover:text-white"
+                                >
                                     Contactez-nous
                                 </a>
                             </li>
@@ -57,36 +68,38 @@
                 </div>
                 <div class="md:grid md:grid-cols-2 md:gap-8">
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                            Recrutement
-                        </h3>
+                        <h3 class="text-sm font-semibold tracking-wider text-gray-400 uppercase">Recrutement</h3>
                         <ul class="mt-4 space-y-4">
                             <li>
-                                <a href="mailto:recruitment@agepac.org" class="text-base text-gray-300 hover:text-white">
+                                <a
+                                    href="mailto:recruitment@agepac.org"
+                                    class="text-base text-gray-300 hover:text-white"
+                                >
                                     Nous Recruter
                                 </a>
                             </li>
 
-{{--                            <li>--}}
-{{--                                <a href="#" class="text-base text-gray-300 hover:text-white">--}}
-{{--                                    Pourquoi nous recruter--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
+                            {{--                            <li>--}}
+                            {{--                                <a href="#" class="text-base text-gray-300 hover:text-white">--}}
+                            {{--                                    Pourquoi nous recruter--}}
+                            {{--                                </a>--}}
+                            {{--                            </li>--}}
 
-{{--                            <li>--}}
-{{--                                <a href="#" class="text-base text-gray-300 hover:text-white">--}}
-{{--                                    Ils nous font confiance--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
+                            {{--                            <li>--}}
+                            {{--                                <a href="#" class="text-base text-gray-300 hover:text-white">--}}
+                            {{--                                    Ils nous font confiance--}}
+                            {{--                                </a>--}}
+                            {{--                            </li>--}}
                         </ul>
                     </div>
                     <div class="mt-12 md:mt-0">
-                        <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                            Juridique
-                        </h3>
+                        <h3 class="text-sm font-semibold tracking-wider text-gray-400 uppercase">Juridique</h3>
                         <ul class="mt-4 space-y-4">
                             <li>
-                                <a href="{{ route('public.privacy') }}" class="text-base text-gray-300 hover:text-white">
+                                <a
+                                    href="{{ route('public.privacy') }}"
+                                    class="text-base text-gray-300 hover:text-white"
+                                >
                                     Confidentialité
                                 </a>
                             </li>
@@ -100,41 +113,41 @@
                     </div>
                 </div>
             </div>
-{{--            <div class="mt-12 xl:mt-0">--}}
-{{--                <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">--}}
-{{--                    Langue--}}
-{{--                </h3>--}}
-{{--                <form class="mt-4 sm:max-w-xs">--}}
-{{--                    <fieldset class="w-full">--}}
-{{--                        <label for="language" class="sr-only">Langue</label>--}}
-{{--                        <div class="relative">--}}
-{{--                            <select id="language" name="language" class="appearance-none block w-full bg-none bg-gray-700 border border-transparent rounded-md py-2 pl-3 pr-10 text-base text-white focus:outline-hidden focus:ring-white focus:border-white sm:text-sm">--}}
-{{--                                <option>English</option>--}}
-{{--                                <option selected>Français</option>--}}
-{{--                            </select>--}}
-{{--                            <div class="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">--}}
-{{--                                <x-heroicon-s-chevron-down class="h-4 w-4 text-white" />--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </fieldset>--}}
-{{--                </form>--}}
-{{--            </div>--}}
+            {{--            <div class="mt-12 xl:mt-0">--}}
+            {{--                <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">--}}
+            {{--                    Langue--}}
+            {{--                </h3>--}}
+            {{--                <form class="mt-4 sm:max-w-xs">--}}
+            {{--                    <fieldset class="w-full">--}}
+            {{--                        <label for="language" class="sr-only">Langue</label>--}}
+            {{--                        <div class="relative">--}}
+            {{--                            <select id="language" name="language" class="appearance-none block w-full bg-none bg-gray-700 border border-transparent rounded-md py-2 pl-3 pr-10 text-base text-white focus:outline-hidden focus:ring-white focus:border-white sm:text-sm">--}}
+            {{--                                <option>English</option>--}}
+            {{--                                <option selected>Français</option>--}}
+            {{--                            </select>--}}
+            {{--                            <div class="pointer-events-none absolute inset-y-0 right-0 px-2 flex items-center">--}}
+            {{--                                <x-heroicon-s-chevron-down class="h-4 w-4 text-white" />--}}
+            {{--                            </div>--}}
+            {{--                        </div>--}}
+            {{--                    </fieldset>--}}
+            {{--                </form>--}}
+            {{--            </div>--}}
         </div>
-{{--        <div class="border-t border-gray-700 pt-8 lg:flex lg:items-center lg:justify-between xl:mt-0">--}}
-{{--            <div>--}}
-{{--                <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">--}}
-{{--                    Faire un don--}}
-{{--                </h3>--}}
-{{--                <p class="mt-2 text-base text-gray-300">--}}
-{{--                    Soutenez la mission de l’AGEPAC avec un don--}}
-{{--                </p>--}}
-{{--            </div>--}}
-{{--            <div class="mt-4 lg:mt-0">--}}
-{{--                <button type="button" class="w-full bg-red-700 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-red-600 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-red-500">--}}
-{{--                    Faire un don--}}
-{{--                </button>--}}
-{{--            </div>--}}
-{{--        </div>--}}
+        {{--        <div class="border-t border-gray-700 pt-8 lg:flex lg:items-center lg:justify-between xl:mt-0">--}}
+        {{--            <div>--}}
+        {{--                <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">--}}
+        {{--                    Faire un don--}}
+        {{--                </h3>--}}
+        {{--                <p class="mt-2 text-base text-gray-300">--}}
+        {{--                    Soutenez la mission de l’AGEPAC avec un don--}}
+        {{--                </p>--}}
+        {{--            </div>--}}
+        {{--            <div class="mt-4 lg:mt-0">--}}
+        {{--                <button type="button" class="w-full bg-red-700 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-red-600 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-red-500">--}}
+        {{--                    Faire un don--}}
+        {{--                </button>--}}
+        {{--            </div>--}}
+        {{--        </div>--}}
         <div class="mt-8 border-t border-gray-700 pt-8 md:flex md:items-start md:justify-between">
             <div class="flex space-x-6 md:order-2">
                 <a href="https://www.linkedin.com/company/agepac/" class="text-gray-400 hover:text-gray-300">
@@ -159,14 +172,15 @@
                 </a>
             </div>
 
-            <div class="mt-8 md:mt-0 md:order-1">
-                <p class="text-base text-gray-400">
-                    &copy; 2022 AGEPAC. Tous droits réservés.
-                </p>
+            <div class="mt-8 md:order-1 md:mt-0">
+                <p class="text-base text-gray-400">&copy; 2022 AGEPAC. Tous droits réservés.</p>
 
                 <a href="{{ route('public.remembering') }}" class="group mt-1 inline-flex items-center text-base">
                     <span class="text-gray-400 group-hover:text-white">En hommage à nos EPL disparus</span>
-                    <x-public::icon.dove class="w-4 h-4 text-gray-500 group-hover:text-gray-300 ml-2" aria-hidden="true" />
+                    <x-public::icon.dove
+                        class="ml-2 h-4 w-4 text-gray-500 group-hover:text-gray-300"
+                        aria-hidden="true"
+                    />
                 </a>
             </div>
         </div>

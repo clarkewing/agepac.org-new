@@ -81,7 +81,6 @@ new #[Layout('layouts::auth')] class extends Component
 };
 ?>
 
-
 <div class="flex flex-col gap-6">
     <x-auth-header :title="__('auth.register.heading')" :description="__('auth.register.description')" />
 
@@ -117,17 +116,13 @@ new #[Layout('layouts::auth')] class extends Component
             required
             :placeholder="__('fields.gender.placeholder')"
         >
-            @foreach(Gender::options() as $value => $label)
+            @foreach (Gender::options() as $value => $label)
                 <flux:select.option :$value :$label />
             @endforeach
         </flux:select>
 
         <!-- Birth Date -->
-        <flux:date-picker
-            wire:model="birth_date"
-            :label="__('fields.birth-date.label')"
-            required
-        >
+        <flux:date-picker wire:model="birth_date" :label="__('fields.birth-date.label')" required>
             <x-slot name="trigger">
                 <flux:date-picker.input autocomplete="bday" />
             </x-slot>
@@ -140,7 +135,7 @@ new #[Layout('layouts::auth')] class extends Component
             required
             :placeholder="__('fields.class-course.placeholder')"
         >
-            @foreach(ClassCourse::options() as $option)
+            @foreach (ClassCourse::options() as $option)
                 <flux:select.option :value="$option" :label="$option" />
             @endforeach
         </flux:select>
@@ -204,9 +199,7 @@ new #[Layout('layouts::auth')] class extends Component
         />
 
         <div class="flex items-center justify-end">
-            <flux:button type="submit" variant="primary" class="w-full">
-                {{ __('auth.register.action') }}
-            </flux:button>
+            <flux:button type="submit" variant="primary" class="w-full">{{ __('auth.register.action') }}</flux:button>
         </div>
     </form>
 

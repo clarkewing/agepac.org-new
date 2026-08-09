@@ -30,7 +30,7 @@ new #[Layout('layouts::auth')] class extends Component
 };
 ?>
 
- <div class="flex flex-col gap-6">
+<div class="flex flex-col gap-6">
     <x-auth-header :title="__('auth.forgot-password.heading')" :description="__('auth.forgot-password.description')" />
 
     <!-- Session Status -->
@@ -47,7 +47,9 @@ new #[Layout('layouts::auth')] class extends Component
             placeholder="email@example.com"
         />
 
-        <flux:button variant="primary" type="submit" class="w-full">{{ __('auth.forgot-password.action') }}</flux:button>
+        <flux:button variant="primary" type="submit" class="w-full">
+            {{ __('auth.forgot-password.action') }}
+        </flux:button>
     </form>
 
     <flux:subheading class="text-center text-zinc-600 dark:text-zinc-400">

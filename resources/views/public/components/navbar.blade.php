@@ -4,24 +4,22 @@
 
 @php($isOverlayed = $attributes->has('overlay'))
 
-<div
-    @class([
-        'relative',
-        'bg-white' => ! $isOverlayed,
-    ])
->
-    <div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-6 sm:px-6 md:justify-start md:space-x-6 lg:space-x-10">
+<div @class([
+    'relative',
+    'bg-white' => ! $isOverlayed,
+])>
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-6 sm:px-6 md:justify-start md:space-x-6 lg:space-x-10">
         <div>
             <a href="{{ route('public.home') }}" class="flex">
                 <span class="sr-only">AGEPAC</span>
-                @if($branding === 'logo')
+                @if ($branding === 'logo')
                     <x-public::application-logo class="h-8 w-auto sm:h-10 {{ $isOverlayed ? 'text-white' : '' }}" />
-                @elseif($branding === 'mark')
+                @elseif ($branding === 'mark')
                     <x-public::application-mark class="h-8 w-auto sm:h-10 {{ $isOverlayed ? 'text-white' : '' }}" />
                 @endif
             </a>
         </div>
-        <div class="-mr-2 -my-2 md:hidden">
+        <div class="-my-2 -mr-2 md:hidden">
             <x-public::mobile-nav>
                 <x-slot name="trigger">
                     <button
@@ -38,12 +36,9 @@
                 </x-slot>
             </x-public::mobile-nav>
         </div>
-        <div class="hidden md:flex-1 md:flex md:items-center md:justify-between">
+        <div class="hidden md:flex md:flex-1 md:items-center md:justify-between">
             <nav class="flex space-x-6 lg:space-x-10">
-                <x-public::flyout-menu
-                    align="center"
-                    flyout-classes="max-w-md"
-                >
+                <x-public::flyout-menu align="center" flyout-classes="max-w-md">
                     <x-slot
                         name="trigger"
                         class="{{ $isOverlayed ? 'text-white' : 'text-gray-500' }}"
@@ -53,55 +48,58 @@
                     </x-slot>
 
                     <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                        <a href="{{ route('public.epl.selection') }}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
-                            <x-heroicon-o-users class="shrink-0 h-6 w-6 text-wedgewood-500" />
+                        <a
+                            href="{{ route('public.epl.selection') }}"
+                            class="-m-3 flex items-start rounded-lg p-3 transition duration-150 ease-in-out hover:bg-gray-50"
+                        >
+                            <x-heroicon-o-users class="text-wedgewood-500 h-6 w-6 shrink-0" />
                             <div class="ml-4">
-                                <p class="text-base font-medium text-gray-900">
-                                    La Sélection
-                                </p>
+                                <p class="text-base font-medium text-gray-900">La Sélection</p>
                                 <p class="mt-1 text-sm text-gray-500">
                                     Découvrez les différentes voies d’accès à la filière EPL.
                                 </p>
                             </div>
                         </a>
 
-                        <a href="{{ route('public.epl.training') }}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
-                            <x-heroicon-o-academic-cap class="shrink-0 h-6 w-6 text-wedgewood-500" />
+                        <a
+                            href="{{ route('public.epl.training') }}"
+                            class="-m-3 flex items-start rounded-lg p-3 transition duration-150 ease-in-out hover:bg-gray-50"
+                        >
+                            <x-heroicon-o-academic-cap class="text-wedgewood-500 h-6 w-6 shrink-0" />
                             <div class="ml-4">
-                                <p class="text-base font-medium text-gray-900">
-                                    La Formation
-                                </p>
+                                <p class="text-base font-medium text-gray-900">La Formation</p>
                                 <p class="mt-1 text-sm text-gray-500">
                                     Apprenez-en plus sur le cursus EPL et les différentes phases qu’il comporte.
                                 </p>
                             </div>
                         </a>
                     </div>
-                    <div class="px-5 py-5 bg-gray-50 space-y-6 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
+                    <div class="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
                         <div class="flow-root">
                             <a
                                 href="https://youtu.be/g8d4rvT29z8"
                                 target="_blank"
-                                class="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100 transition ease-in-out duration-150"
+                                class="-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 transition duration-150 ease-in-out hover:bg-gray-100"
                             >
-                                <x-heroicon-o-play class="shrink-0 h-6 w-6 text-gray-400" />
+                                <x-heroicon-o-play class="h-6 w-6 shrink-0 text-gray-400" />
                                 <span class="ml-3">Présentation</span>
                             </a>
                         </div>
 
                         <div class="flow-root">
-                            <a href="https://www.enac.fr" target="_blank" class="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100 transition ease-in-out duration-150">
-                                <x-heroicon-o-arrow-top-right-on-square class="shrink-0 h-6 w-6 text-gray-400" />
+                            <a
+                                href="https://www.enac.fr"
+                                target="_blank"
+                                class="-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 transition duration-150 ease-in-out hover:bg-gray-100"
+                            >
+                                <x-heroicon-o-arrow-top-right-on-square class="h-6 w-6 shrink-0 text-gray-400" />
                                 <span class="ml-3">Découvrir l’ENAC</span>
                             </a>
                         </div>
                     </div>
                 </x-public::flyout-menu>
 
-                <x-public::flyout-menu
-                    align="center"
-                    flyout-classes="max-w-md"
-                >
+                <x-public::flyout-menu align="center" flyout-classes="max-w-md">
                     <x-slot
                         name="trigger"
                         class="{{ $isOverlayed ? 'text-white' : 'text-gray-500' }}"
@@ -111,24 +109,26 @@
                     </x-slot>
 
                     <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                        <a href="{{ route('public.association.about') }}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
-                            <x-heroicon-o-building-library class="shrink-0 h-6 w-6 text-wedgewood-500" />
+                        <a
+                            href="{{ route('public.association.about') }}"
+                            class="-m-3 flex items-start rounded-lg p-3 transition duration-150 ease-in-out hover:bg-gray-50"
+                        >
+                            <x-heroicon-o-building-library class="text-wedgewood-500 h-6 w-6 shrink-0" />
                             <div class="ml-4">
-                                <p class="text-base font-medium text-gray-900">
-                                    Qui sommes-nous ?
-                                </p>
+                                <p class="text-base font-medium text-gray-900">Qui sommes-nous ?</p>
                                 <p class="mt-1 text-sm text-gray-500">
                                     Qu’est-ce que l’AGEPAC ? Découvrez notre association et ses valeurs.
                                 </p>
                             </div>
                         </a>
 
-                        <a href="{{ route('public.association.team') }}" class="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-50 transition ease-in-out duration-150">
-                            <x-heroicon-o-user-group class="shrink-0 h-6 w-6 text-wedgewood-500" />
+                        <a
+                            href="{{ route('public.association.team') }}"
+                            class="-m-3 flex items-start rounded-lg p-3 transition duration-150 ease-in-out hover:bg-gray-50"
+                        >
+                            <x-heroicon-o-user-group class="text-wedgewood-500 h-6 w-6 shrink-0" />
                             <div class="ml-4">
-                                <p class="text-base font-medium text-gray-900">
-                                    Notre équipe
-                                </p>
+                                <p class="text-base font-medium text-gray-900">Notre équipe</p>
                                 <p class="mt-1 text-sm text-gray-500">
                                     Rencontrez les membres du Bureau et du Conseil de l’AGEPAC.
                                 </p>
@@ -149,7 +149,7 @@
                 </a>
             </nav>
 
-            @unless($attributes->has('compact'))
+            @unless ($attributes->has('compact'))
                 <div class="flex items-center md:ml-12">
                     <a
                         href="{{ route('dashboard') }}"
@@ -159,7 +159,7 @@
                             'text-white hover:text-white/75 lg:bg-white/10 lg:hover:bg-white/20' => $isOverlayed,
                         ])
                     >
-                        <x-heroicon-o-user-circle class="shrink-0 h-7 w-7 lg:h-5 lg:w-5" />
+                        <x-heroicon-o-user-circle class="h-7 w-7 shrink-0 lg:h-5 lg:w-5" />
                         <span class="sr-only lg:not-sr-only lg:ml-2">Espace Membres</span>
                     </a>
                 </div>

@@ -59,40 +59,55 @@ new class extends Component
 };
 ?>
 
-
 <section class="w-full">
     @include('partials.settings-heading')
 
     <x-settings.layout :heading="__('settings.membership.heading')" :subheading="__('settings.membership.subheading')">
         <div class="space-y-4">
-            @if($this->followsSuccessfulCheckout())
+            @if ($this->followsSuccessfulCheckout())
                 <flux:callout icon="hand-thumb-up">
-                    <flux:callout.heading>{{ __('settings.membership.callouts.checkout-completed.heading') }}</flux:callout.heading>
-                    <flux:callout.text>{{ __('settings.membership.callouts.checkout-completed.text') }}</flux:callout.text>
+                    <flux:callout.heading>
+                        {{ __('settings.membership.callouts.checkout-completed.heading') }}
+                    </flux:callout.heading>
+                    <flux:callout.text>
+                        {{ __('settings.membership.callouts.checkout-completed.text') }}
+                    </flux:callout.text>
                 </flux:callout>
-            @elseif($this->followsCanceledCheckout())
+            @elseif ($this->followsCanceledCheckout())
                 <flux:callout icon="x-mark" variant="warning">
-                    <flux:callout.heading>{{ __('settings.membership.callouts.checkout-interrupted.heading') }}</flux:callout.heading>
-                    <flux:callout.text>{{ __('settings.membership.callouts.checkout-interrupted.text') }}</flux:callout.text>
+                    <flux:callout.heading>
+                        {{ __('settings.membership.callouts.checkout-interrupted.heading') }}
+                    </flux:callout.heading>
+                    <flux:callout.text>
+                        {{ __('settings.membership.callouts.checkout-interrupted.text') }}
+                    </flux:callout.text>
                 </flux:callout>
             @endif
 
-            @if($this->subscription)
-                @if($this->subscription->hasIncompletePayment())
-                    @if($this->subscription->pastDue())
+            @if ($this->subscription)
+                @if ($this->subscription->hasIncompletePayment())
+                    @if ($this->subscription->pastDue())
                         <flux:callout icon="exclamation-circle" variant="danger">
-                            <flux:callout.heading>{{ __('settings.membership.callouts.subscription-past-due.heading') }}</flux:callout.heading>
-                            <flux:callout.text>{{ __('settings.membership.callouts.subscription-past-due.text') }}</flux:callout.text>
+                            <flux:callout.heading>
+                                {{ __('settings.membership.callouts.subscription-past-due.heading') }}
+                            </flux:callout.heading>
+                            <flux:callout.text>
+                                {{ __('settings.membership.callouts.subscription-past-due.text') }}
+                            </flux:callout.text>
                             <x-slot name="actions">
                                 <flux:button size="sm" wire:click="openBillingPortal">
                                     {{ __('settings.membership.callouts.subscription-past-due.action') }}
                                 </flux:button>
                             </x-slot>
                         </flux:callout>
-                    @elseif($this->subscription->incomplete())
+                    @elseif ($this->subscription->incomplete())
                         <flux:callout icon="exclamation-circle" variant="danger">
-                            <flux:callout.heading>{{ __('settings.membership.callouts.subscription-incomplete.heading') }}</flux:callout.heading>
-                            <flux:callout.text>{{ __('settings.membership.callouts.subscription-incomplete.text') }}</flux:callout.text>
+                            <flux:callout.heading>
+                                {{ __('settings.membership.callouts.subscription-incomplete.heading') }}
+                            </flux:callout.heading>
+                            <flux:callout.text>
+                                {{ __('settings.membership.callouts.subscription-incomplete.text') }}
+                            </flux:callout.text>
                             <x-slot name="actions">
                                 <flux:button size="sm" wire:click="openBillingPortal">
                                     {{ __('settings.membership.callouts.subscription-incomplete.action') }}
@@ -102,9 +117,11 @@ new class extends Component
                     @endif
                 @endif
 
-                @if($this->subscription->onGracePeriod())
+                @if ($this->subscription->onGracePeriod())
                     <flux:callout icon="exclamation-triangle" variant="warning">
-                        <flux:callout.heading>{{ __('settings.membership.callouts.no-auto-renew.heading') }}</flux:callout.heading>
+                        <flux:callout.heading>
+                            {{ __('settings.membership.callouts.no-auto-renew.heading') }}
+                        </flux:callout.heading>
                         <flux:callout.text>
                             {{ __('settings.membership.callouts.no-auto-renew.text', ['date' => $this->subscription->ends_at->toFormattedDateString()]) }}
                         </flux:callout.text>
@@ -123,41 +140,55 @@ new class extends Component
                 {{--    </flux:callout>--}}
                 {{--@endif--}}
 
-                @if($this->subscription->onTrial())
+                @if ($this->subscription->onTrial())
                     <flux:callout icon="information-circle" variant="warning">
-                        <flux:callout.heading>{{ __('settings.membership.callouts.subscription-trial.heading') }}</flux:callout.heading>
+                        <flux:callout.heading>
+                            {{ __('settings.membership.callouts.subscription-trial.heading') }}
+                        </flux:callout.heading>
                         <flux:callout.text>
                             {{ __('settings.membership.callouts.subscription-trial.text', ['date' => $this->subscription->trial_ends_at->toFormattedDateString()]) }}
                         </flux:callout.text>
                     </flux:callout>
-                @elseif($this->subscription->active())
+                @elseif ($this->subscription->active())
                     <flux:callout icon="information-circle" variant="success">
-                        <flux:callout.heading>{{ __('settings.membership.callouts.subscription-active.heading') }}</flux:callout.heading>
+                        <flux:callout.heading>
+                            {{ __('settings.membership.callouts.subscription-active.heading') }}
+                        </flux:callout.heading>
                         <flux:callout.text>
-                            {{ __('settings.membership.callouts.subscription-active.text', [
-                                'plan' => ($this->subscription->items->isNotEmpty()
+                            {{
+                                __('settings.membership.callouts.subscription-active.text', [
+                                    'plan' => ($this->subscription->items->isNotEmpty()
                                     ? Membership::fromStripeProduct($this->subscription->items->first()->stripe_product)
                                     : Membership::fromStripePrice($this->subscription->stripe_price)
-                                )->label(),
-                            ]) }}
+                                    )->label(),
+                                ])
+                            }}
                         </flux:callout.text>
                     </flux:callout>
-                @elseif($this->subscription->ended())
+                @elseif ($this->subscription->ended())
                     <flux:callout icon="x-circle" variant="danger">
-                        <flux:callout.heading>{{ __('settings.membership.callouts.subscription-ended.heading') }}</flux:callout.heading>
-                        <flux:callout.text>{{ __('settings.membership.callouts.subscription-ended.text') }}</flux:callout.text>
+                        <flux:callout.heading>
+                            {{ __('settings.membership.callouts.subscription-ended.heading') }}
+                        </flux:callout.heading>
+                        <flux:callout.text>
+                            {{ __('settings.membership.callouts.subscription-ended.text') }}
+                        </flux:callout.text>
                     </flux:callout>
                 @endif
             @else
                 <flux:callout icon="x-circle" variant="danger">
-                    <flux:callout.heading>{{ __('settings.membership.callouts.subscription-inactive.heading') }}</flux:callout.heading>
-                    <flux:callout.text>{{ __('settings.membership.callouts.subscription-inactive.text') }}</flux:callout.text>
+                    <flux:callout.heading>
+                        {{ __('settings.membership.callouts.subscription-inactive.heading') }}
+                    </flux:callout.heading>
+                    <flux:callout.text>
+                        {{ __('settings.membership.callouts.subscription-inactive.text') }}
+                    </flux:callout.text>
                 </flux:callout>
             @endif
         </div>
 
         <div class="mt-6">
-            @if(! $this->subscription || $this->subscription?->ended())
+            @if (! $this->subscription || $this->subscription?->ended())
                 <livewire:pages::settings.create-membership-form />
             @else
                 <flux:button wire:click="openBillingPortal">{{ __('settings.membership.manage-action') }}</flux:button>

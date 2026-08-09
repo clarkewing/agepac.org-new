@@ -42,7 +42,6 @@ new class extends Component
 };
 ?>
 
-
 <div class="space-y-4">
     <flux:radio.group
         variant="cards"
@@ -50,11 +49,11 @@ new class extends Component
         :label="__('settings.membership.product.label')"
         wire:model="selectedMembership"
     >
-        @foreach(Membership::cases() as $membershipOption)
+        @foreach (Membership::cases() as $membershipOption)
             <flux:radio :value="$membershipOption->value">
                 <flux:radio.indicator />
                 <div class="flex-1">
-                    <div class="flex max-sm:flex-col md:items-center gap-1 md:gap-2">
+                    <div class="flex gap-1 max-sm:flex-col md:items-center md:gap-2">
                         <flux:heading class="leading-4">{{ $membershipOption->label() }}</flux:heading>
                         <flux:text>{{ Number::currency($membershipOption->stripePrice()->unit_amount / 100) }}</flux:text>
                     </div>

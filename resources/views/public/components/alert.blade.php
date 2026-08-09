@@ -3,7 +3,7 @@
 @props(['type' => 'success'])
 
 @php
-    $icon = 'heroicon-m-' . match ($type) {
+    $icon = 'heroicon-m-'.match ($type) {
         'info' => 'information-circle',
         'success' => 'check-circle',
         'warning' => 'exclamation-triangle',
@@ -20,13 +20,15 @@
     };
 @endphp
 
-<div {{ $attributes->class([
-    'rounded-md p-4',
-    'bg-blue-50' => $color === 'blue',
-    'bg-green-50' => $color === 'green',
-    'bg-yellow-50' => $color === 'yellow',
-    'bg-red-50' => $color === 'red',
-]) }}>
+<div {{
+    $attributes->class([
+        'rounded-md p-4',
+        'bg-blue-50' => $color === 'blue',
+        'bg-green-50' => $color === 'green',
+        'bg-yellow-50' => $color === 'yellow',
+        'bg-red-50' => $color === 'red',
+    ])
+}}>
     <div class="flex">
         <div class="shrink-0">
             <x-dynamic-component

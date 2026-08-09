@@ -41,7 +41,10 @@ new #[Layout('layouts::auth')] class extends Component
 ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('auth.confirm-password.heading')" :description="__('auth.confirm-password.description')" />
+    <x-auth-header
+        :title="__('auth.confirm-password.heading')"
+        :description="__('auth.confirm-password.description')"
+    />
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
@@ -58,6 +61,8 @@ new #[Layout('layouts::auth')] class extends Component
             viewable
         />
 
-        <flux:button variant="primary" type="submit" class="w-full">{{ __('auth.confirm-password.action') }}</flux:button>
+        <flux:button variant="primary" type="submit" class="w-full">
+            {{ __('auth.confirm-password.action') }}
+        </flux:button>
     </form>
 </div>

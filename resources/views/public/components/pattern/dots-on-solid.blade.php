@@ -18,6 +18,12 @@
         </pattern>
     </defs>
 
-    <rect y="{{ $height * 72 / 784 }}" width="{{ $width }}" height="{{ $width }}" class="text-gray-50" fill="currentColor" />
+    <rect
+        y="{{ $height * 72 / 784 }}"
+        width="{{ $width }}"
+        height="{{ $width }}"
+        class="text-gray-50"
+        fill="currentColor"
+    />
     <rect x="{{ $width * 118 / 640 }}" width="{{ $width * 404 / 640 }}" height="{{ $height }}" fill="url(#{{ $id }})" />
 </svg>
