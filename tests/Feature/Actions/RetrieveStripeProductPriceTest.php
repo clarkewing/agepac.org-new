@@ -1,19 +1,27 @@
 <?php
 
 use App\Actions\RetrieveStripeProductPrice;
+use Laravel\Cashier\Cashier;
 use Stripe\Price;
-use Tests\Helpers\StripeHelpers;
+
+beforeEach(function () {
+    $this->action = resolve(RetrieveStripeProductPrice::class);
+
+    $this->product = Cashier::stripe()->products->create([
+        'name' => '[TESTING] Generic Product',
+        'default_price_data' => [
+            'currency' => 'eur',
+            'unit_amount' => 3000,
+        ],
+    ]);
+});
 
 afterEach(function () {
-    StripeHelpers::cleanup();
+    Cashier::stripe()->products->update($this->product->id, ['active' => false]);
 });
 
 it('retrieves the default price from Stripe product', function () {
-    StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_123'));
-
-    $action = resolve(RetrieveStripeProductPrice::class);
-
-    expect($action('prod_test_123'))
+    expect(($this->action)($this->product->id))
         ->toBeInstanceOf(Price::class)
-        ->id->toBe('price_123');
-});
+        ->id->toBe($this->product->default_price);
+})->group('stripe-api');
