@@ -3,7 +3,7 @@
 use App\Actions\MakeUsername;
 
 beforeEach(function () {
-    $this->action = new MakeUsername;
+    $this->action = resolve(MakeUsername::class);
 });
 
 it('generates a simple username in first.last format', function () {
