@@ -34,9 +34,6 @@
         <env name="MAILCOACH_URL" value=""/>
         <env name="MAILCOACH_TOKEN" value=""/>
         <env name="MAILCOACH_DEFAULT_LIST_UUID" value=""/>
-        <env name="STRIPE_WEBHOOK_SECRET" value=""/>
-        <env name="CASHIER_PRODUCT_MEMBERSHIP_AGEPAC" value="prod_agepac"/>
-        <env name="CASHIER_PRODUCT_MEMBERSHIP_AGEPAC_ALUMNI" value="prod_agepac_alumni"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
     </php>

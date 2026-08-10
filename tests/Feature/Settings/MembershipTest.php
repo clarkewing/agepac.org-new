@@ -1,20 +1,46 @@
 <?php
 
-use App\Enums\Products\Membership as MembershipEnum;
 use App\Models\User;
 use Laravel\Cashier\Subscription;
 use Livewire\Livewire;
-use Tests\Helpers\StripeHelpers;
+use Tests\Concerns\InteractsWithStripe;
 
-pest()->group('stripe', 'api');
+uses(InteractsWithStripe::class);
+
+function createSubscription(User $user, array $data = []): Subscription
+{
+    return tap(
+        $user->subscriptions()->create(array_merge([
+            'type' => 'membership',
+            'stripe_id' => 'sub_123',
+            'stripe_status' => 'active',
+            'stripe_price' => 'price_123',
+            'quantity' => 1,
+            'trial_ends_at' => null,
+            'ends_at' => null,
+        ], $data)),
+        fn (Subscription $subscription) => $subscription->items()->create([
+            'subscription_id' => $subscription->id,
+            'stripe_id' => 'si_123',
+            'stripe_product' => config('cashier.products.membership.agepac'),
+            'stripe_price' => 'price_123',
+            'quantity' => 1,
+        ])
+    );
+}
 
 beforeEach(function () {
+    $this->fakeStripeMembershipProducts()->mockStripe([
+        '/v1/customers' => ['object' => 'customer', 'id' => 'cus_test_foobar'],
+        '/v1/billing_portal/sessions' => [
+            'object' => 'billing_portal.session',
+            'id' => 'bps_test_foobar',
+            'url' => 'https://billing.stripe.com/p/session/test_foobar',
+        ],
+    ]);
+
     $this->user = User::factory()->asCustomer()->create();
     $this->actingAs($this->user);
-});
-
-afterEach(function () {
-    StripeHelpers::cleanup();
 });
 
 it('renders the livewire component', function () {
@@ -75,16 +101,34 @@ it('displays appropriate callouts upon checkout return', function () {
 });
 
 it('allows resuming a canceled subscription', function () {
-    $subscription = tap(createSubscription($this->user, fake: false))->cancel();
+    $subscription = createSubscription($this->user, ['ends_at' => now()->addMonth()]);
 
-    expect($subscription->canceled())->toBeTrue();
+    expect($subscription)
+        ->canceled()->toBeTrue()
+        ->recurring()->toBeFalse();
+
+    // Mock the request to resume the subscription.
+    $this->mockStripe([
+        '/v1/subscriptions/sub_123' => [
+            'object' => 'subscription',
+            'id' => 'sub_test_123',
+            'status' => 'active',
+            'cancel_at_period_end' => false,
+        ],
+    ]);
 
     Livewire::test('pages::settings.membership')
         ->assertSeeText(__('settings.membership.callouts.no-auto-renew.heading'))
         ->assertSeeText(__('settings.membership.callouts.no-auto-renew.action'))
         ->call('resume');
 
-    expect($subscription->refresh()->recurring())->toBeTrue();
+    // The Stripe SDK encodes booleans as strings before they reach the HTTP client.
+    expect($this->stripeRequestParams('/v1/subscriptions/sub_123'))
+        ->cancel_at_period_end->toBe('false');
+
+    expect($subscription->refresh())
+        ->canceled()->toBeFalse()
+        ->recurring()->toBeTrue();
 });
 
 it('shows the currently subscribed plan even if the subscription has no items', function () {
@@ -93,9 +137,13 @@ it('shows the currently subscribed plan even if the subscription has no items', 
         'agepac+alumni' => 'prod_alumni_456',
     ]);
 
-    StripeHelpers::mockStripeClientWithResponse(
-        StripeHelpers::stripePriceResponse('price_123', 'prod_agepac_123')
-    );
+    $this->mockStripe([
+        '/v1/prices/price_123' => [
+            'object' => 'price',
+            'id' => 'price_123',
+            'product' => 'prod_agepac_123',
+        ],
+    ]);
 
     // Create an active subscription with NO items
     $this->user->subscriptions()->create([
@@ -114,33 +162,3 @@ it('shows the currently subscribed plan even if the subscription has no items', 
             __('products.membership.agepac.name'),
         ]);
 });
-
-function createSubscription(User $user, array $data = [], bool $fake = true): Subscription
-{
-    if ($fake) {
-        return tap(
-            $user->subscriptions()->create(array_merge([
-                'type' => 'membership',
-                'stripe_id' => 'sub_123',
-                'stripe_status' => 'active',
-                'stripe_price' => 'price_123',
-                'quantity' => 1,
-                'trial_ends_at' => null,
-                'ends_at' => null,
-            ], $data)),
-            function (Subscription $subscription) {
-                $subscription->items()->create([
-                    'subscription_id' => $subscription->id,
-                    'stripe_id' => 'si_123',
-                    'stripe_product' => config('cashier.products.membership.agepac'),
-                    'stripe_price' => 'price_123',
-                    'quantity' => 1,
-                ]);
-            }
-        );
-    }
-
-    return $user
-        ->newSubscription('membership', MembershipEnum::AGEPAC->stripePrice()->id)
-        ->create('pm_card_visa');
-}
