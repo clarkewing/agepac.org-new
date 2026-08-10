@@ -1,11 +1,12 @@
 <?php
 
-use App\Actions\RetrieveStripeProductPrice;
 use App\Models\User;
 use ClarkeWing\Handoff\Http\Middleware\RedirectToHandoff;
 use Illuminate\Routing\Route as RouteObject;
 use Illuminate\Support\Facades\Route;
-use Stripe\Price;
+use Tests\Concerns\InteractsWithStripe;
+
+uses(InteractsWithStripe::class);
 
 $publicPages = [
     'home' => ['public.home', 'AGEPAC – The ENAC Pilot Association'],
@@ -72,12 +73,10 @@ it('takes the legal page metadata from the markdown front matter', function () {
 });
 
 describe('app pages', function () {
-    // The membership page prices its plans through Stripe. Faking the action that
-    // talks to the API keeps this walk offline, so it needs no credentials to run.
+    // The membership page prices its plans through Stripe. Faking the product
+    // catalog keeps this walk offline, so it needs no credentials to run.
     beforeEach(function () {
-        $this->mock(RetrieveStripeProductPrice::class)
-            ->shouldReceive('__invoke')
-            ->andReturn(Price::constructFrom(['id' => 'price_test', 'object' => 'price', 'unit_amount' => 2500]));
+        $this->fakeStripeMembershipProducts();
     });
 
     it('gives every app page a title and keeps it out of the index', function (string $name, array $parameters, string $title, bool $auth) {

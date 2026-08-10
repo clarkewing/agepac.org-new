@@ -19,7 +19,14 @@ use Tests\TestCase;
 
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
-    ->beforeEach(fn () => Mailcoach::fake())
+    ->beforeEach(function () {
+        Mailcoach::fake();
+
+        // Real-API tests talk to Stripe directly instead of tripping the stray-request guard.
+        if (in_array('stripe-api', $this->groups(), true)) {
+            $this->allowStripeRequests();
+        }
+    })
     ->in('Feature');
 
 pest()->extend(TestCase::class)

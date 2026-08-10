@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Laravel\Cashier\Events\WebhookHandled;
 use Laravel\Cashier\Events\WebhookReceived;
-use Tests\Helpers\StripeHelpers;
+use Tests\Concerns\InteractsWithStripe;
+
+uses(InteractsWithStripe::class);
 
 function simulateWebhook(string $type, array $data = []): void
 {
@@ -20,6 +22,8 @@ function simulateWebhook(string $type, array $data = []): void
 }
 
 beforeEach(function () {
+    config()->set('cashier.webhook.secret', null);
+
     Event::fake();
 });
 
@@ -37,6 +41,15 @@ it('does nothing if the webhook is not handled', function () {
 
 describe('payment_method.attached', function () {
     it('sets a default payment method', function () {
+        $this->mockStripe([
+            '/v1/customers*' => [
+                'id' => 'cus_test_foobar',
+                'object' => 'customer',
+                'invoice_settings' => ['default_payment_method' => null],
+            ],
+            '/v1/payment_methods/pm_card_visa*' => $this->paymentMethodResponse('pm_card_visa', 'visa'),
+        ]);
+
         $user = User::factory()->asCustomer()->create();
 
         $paymentMethod = $user->addPaymentMethod('pm_card_visa');
@@ -52,7 +65,7 @@ describe('payment_method.attached', function () {
         expect($user->fresh())
             ->hasDefaultPaymentMethod()->toBeTrue()
             ->pm_type->toBe('visa');
-    })->group('stripe', 'api');
+    });
 
     it('does nothing if no billable user found', function () {
         User::factory()->create();
@@ -63,9 +76,19 @@ describe('payment_method.attached', function () {
         ]);
 
         $this->assertDatabaseMissing(User::class, ['pm_type' => 'visa']);
-    })->group('stripe', 'api');
+    });
 
     it('does nothing if the user already has a default payment method', function () {
+        $this->mockStripe([
+            '/v1/customers*' => [
+                'id' => 'cus_test_foobar',
+                'object' => 'customer',
+                'invoice_settings' => ['default_payment_method' => null],
+            ],
+            '/v1/payment_methods/pm_card_visa*' => $this->paymentMethodResponse('pm_card_visa', 'visa'),
+            '/v1/payment_methods/pm_card_mastercard*' => $this->paymentMethodResponse('pm_card_mastercard', 'mastercard'),
+        ]);
+
         $user = User::factory()->asCustomer()->create();
 
         $user->updateDefaultPaymentMethod('pm_card_visa');
@@ -84,7 +107,7 @@ describe('payment_method.attached', function () {
         expect($user->fresh())
             ->hasDefaultPaymentMethod()->toBeTrue()
             ->pm_type->toBe('visa');
-    })->group('stripe', 'api');
+    });
 });
 
 describe('price.updated', function () {
@@ -95,7 +118,6 @@ describe('price.updated', function () {
     });
 
     afterEach(function () {
-        StripeHelpers::cleanup();
         Cache::flush();
     });
 
@@ -105,7 +127,9 @@ describe('price.updated', function () {
         Cache::forever($cacheKey, (object) ['id' => 'price_old']);
         expect(Cache::get($cacheKey)->id)->toBe('price_old');
 
-        StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_new'));
+        $this->mockStripe([
+            '/v1/products/prod_agepac_123' => $this->productResponse('prod_agepac_123', 'price_new'),
+        ]);
 
         simulateWebhook('price.updated', [
             'id' => 'price_new',
@@ -122,7 +146,9 @@ describe('price.updated', function () {
 
         expect(Cache::has($cacheKey))->toBeFalse();
 
-        StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_123'));
+        $this->mockStripe([
+            '/v1/products/prod_agepac_123' => $this->productResponse('prod_agepac_123', 'price_123'),
+        ]);
 
         simulateWebhook('price.updated', [
             'id' => 'price_123',
@@ -143,7 +169,6 @@ describe('product.updated', function () {
     });
 
     afterEach(function () {
-        StripeHelpers::cleanup();
         Cache::flush();
     });
 
@@ -153,14 +178,16 @@ describe('product.updated', function () {
         Cache::forever($cacheKey, (object) ['id' => 'price_old']);
         expect(Cache::get($cacheKey)->id)->toBe('price_old');
 
-        StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_updated'));
+        $this->mockStripe([
+            '/v1/products/prod_agepac_123' => $this->productResponse('prod_agepac_123', 'price_new'),
+        ]);
 
         simulateWebhook('product.updated', [
             'id' => 'prod_agepac_123',
-            'default_price' => 'price_updated',
+            'default_price' => 'price_new',
         ]);
 
-        expect(Cache::get($cacheKey)->id)->toBe('price_updated');
+        expect(Cache::get($cacheKey)->id)->toBe('price_new');
 
         Event::assertDispatched(WebhookHandled::class);
     });
@@ -170,7 +197,9 @@ describe('product.updated', function () {
 
         expect(Cache::has($cacheKey))->toBeFalse();
 
-        StripeHelpers::mockStripeClientWithResponse(StripeHelpers::stripeProductResponse('price_456'));
+        $this->mockStripe([
+            '/v1/products/prod_agepac_123' => $this->productResponse('prod_agepac_123', 'price_456'),
+        ]);
 
         simulateWebhook('product.updated', [
             'id' => 'prod_agepac_123',
