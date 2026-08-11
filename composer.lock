@@ -2233,16 +2233,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.9.1",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "73cb188c785abfa7a7bec73487148202968274c6"
+                "reference": "72e9a87efcf41a8e83be3ed0866b69d77565cb12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/73cb188c785abfa7a7bec73487148202968274c6",
-                "reference": "73cb188c785abfa7a7bec73487148202968274c6",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/72e9a87efcf41a8e83be3ed0866b69d77565cb12",
+                "reference": "72e9a87efcf41a8e83be3ed0866b69d77565cb12",
                 "shasum": ""
             },
             "require": {
@@ -2336,7 +2336,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-09T14:10:38+00:00"
+            "time": "2026-08-11T00:58:45+00:00"
         },
         {
             "name": "league/config",
@@ -2850,16 +2850,16 @@
         },
         {
             "name": "livewire/flux",
-            "version": "v2.15.1",
+            "version": "v2.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/flux.git",
-                "reference": "4b194b1ebe971c76d27a33099643ab62af87593b"
+                "reference": "b7e993d567dd7ffdcba42dcc7cdcb2163183b7f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/flux/zipball/4b194b1ebe971c76d27a33099643ab62af87593b",
-                "reference": "4b194b1ebe971c76d27a33099643ab62af87593b",
+                "url": "https://api.github.com/repos/livewire/flux/zipball/b7e993d567dd7ffdcba42dcc7cdcb2163183b7f8",
+                "reference": "b7e993d567dd7ffdcba42dcc7cdcb2163183b7f8",
                 "shasum": ""
             },
             "require": {
@@ -2910,25 +2910,25 @@
             ],
             "support": {
                 "issues": "https://github.com/livewire/flux/issues",
-                "source": "https://github.com/livewire/flux/tree/v2.15.1"
+                "source": "https://github.com/livewire/flux/tree/v2.16.0"
             },
-            "time": "2026-08-06T12:04:36+00:00"
+            "time": "2026-08-09T17:23:35+00:00"
         },
         {
             "name": "livewire/flux-pro",
-            "version": "2.15.1",
+            "version": "2.16.0",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.fluxui.dev/download/a2700889-12e5-4484-8b2c-b82e3e0cc876/flux-pro-2.15.1.zip",
-                "reference": "003247ac30422392a5d1823d5675907e07efe205",
-                "shasum": "998599d83d150e250eacbae3f07ba24b22a460d5"
+                "url": "https://composer.fluxui.dev/download/a2785ad0-57b4-455c-8f7d-4f2810c5080b/flux-pro-2.16.0.zip",
+                "reference": "60a4c24de8676775a18c672561796f105a80bf72",
+                "shasum": "dbfe0b2c330b271e828e828ee69bcf5a34639d3a"
             },
             "require": {
                 "illuminate/console": "^10.0|^11.0|^12.0|^13.0",
                 "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
                 "illuminate/view": "^10.0|^11.0|^12.0|^13.0",
                 "laravel/prompts": "^0.1.24|^0.2|^0.3",
-                "livewire/flux": "2.15.1|dev-main",
+                "livewire/flux": "2.16.0|dev-main",
                 "livewire/livewire": "^3.7.4|^4.0|dev-main",
                 "php": "^8.1",
                 "symfony/console": "^6.0|^7.0|^8.0"
@@ -2985,20 +2985,20 @@
                 "livewire",
                 "ui"
             ],
-            "time": "2026-08-06T12:50:33+00:00"
+            "time": "2026-08-10T16:07:15+00:00"
         },
         {
             "name": "livewire/livewire",
-            "version": "v4.3.5",
+            "version": "v4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "7ef4b2a876c71744e86463079dd506b26eeab624"
+                "reference": "514b29d5a23594d4e4846494f580268b20c2f11e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/7ef4b2a876c71744e86463079dd506b26eeab624",
-                "reference": "7ef4b2a876c71744e86463079dd506b26eeab624",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/514b29d5a23594d4e4846494f580268b20c2f11e",
+                "reference": "514b29d5a23594d4e4846494f580268b20c2f11e",
                 "shasum": ""
             },
             "require": {
@@ -3053,7 +3053,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v4.3.5"
+                "source": "https://github.com/livewire/livewire/tree/v4.4.0"
             },
             "funding": [
                 {
@@ -3061,7 +3061,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-08-03T04:09:44+00:00"
+            "time": "2026-08-10T15:24:22+00:00"
         },
         {
             "name": "moneyphp/money",
