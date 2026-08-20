@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Approvable;
+use App\Models\Concerns\HasRole;
 use App\Services\Stripe\Billable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -32,17 +35,14 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
     'email_verified_at',
     'approved_at',
 ])]
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
+    use Approvable;
     use Billable;
     use HasFactory;
+    use HasRole;
     use Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -51,7 +51,6 @@ class User extends Authenticatable implements MustVerifyEmail
             'birth_date' => 'date:Y-m-d',
             'phone' => E164PhoneNumberCast::class.':FR',
             'flight_hours' => 'integer',
-            'approved_at' => 'datetime',
         ];
     }
 
@@ -63,21 +62,21 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => Str::nameCase($value),
+            set: fn (string $value): string => Str::nameCase($value),
         );
     }
 
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => Str::nameCase($value),
+            set: fn (string $value): string => Str::nameCase($value),
         );
     }
 
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => implode(' ', [
+            get: fn (mixed $value, array $attributes): string => implode(' ', [
                 $attributes['first_name'],
                 $attributes['last_name'],
             ]),

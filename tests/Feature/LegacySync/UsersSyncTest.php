@@ -28,6 +28,14 @@ test('user is synced to legacy database when saved', function () {
     ]);
 });
 
+test('role is not synced to legacy database', function () {
+    // The legacy users table has no role column, so the insert
+    // would fail if the column weren't excluded from the sync.
+    $user = User::factory()->admin()->create();
+
+    Helpers::verifyLegacySync('users', $user->id);
+});
+
 test('user updates are synced to legacy database', function () {
     $user = User::factory()->create([
         'first_name' => 'John',

@@ -57,7 +57,7 @@ return [
             // fresh one squawk just wrote.
             // Mirrors the same exclude on the legacy app's config/legacy_sync.php.
             'exclude' => [
-                'legacy' => [],
+                'legacy' => ['role'],
                 'new' => ['stripe_id', 'pm_type', 'pm_last_four', 'trial_ends_at'],
             ],
         ],

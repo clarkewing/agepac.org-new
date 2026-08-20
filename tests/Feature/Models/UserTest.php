@@ -74,7 +74,7 @@ it('can mass assign all fillable attributes', function () {
         'username' => 'johndoe',
         'email' => 'john@example.com',
         'password' => 'password123',
-        'class_course' => 'PPL',
+        'class_course' => 'EPL/S',
         'class_year' => '2023',
         'gender' => 'M',
         'birth_date' => '1990-05-15',
@@ -87,12 +87,82 @@ it('can mass assign all fillable attributes', function () {
         ->last_name->toBe('Doe')
         ->username->toBe('johndoe')
         ->email->toBe('john@example.com')
-        ->class_course->toBe('PPL')
+        ->class_course->toBe('EPL/S')
         ->class_year->toBe('2023')
         ->gender->toBe('M')
         ->birth_date->toDateString()->toBe('1990-05-15')
         ->phone->formatE164()->toBe('+33669696969')
         ->avatar_path->toBe('avatars/john.jpg');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Approval
+|--------------------------------------------------------------------------
+*/
+
+it('reports its approval state', function () {
+    expect(User::factory()->make()->isApproved())->toBeTrue()
+        ->and(User::factory()->unapproved()->make()->isApproved())->toBeFalse();
+});
+
+it('can be approved', function () {
+    $user = User::factory()->unapproved()->create();
+
+    $user->approve();
+
+    expect($user->refresh()->isApproved())->toBeTrue();
+});
+
+it('scopes queries by approval state', function () {
+    $approved = User::factory()->create();
+    $unapproved = User::factory()->unapproved()->create();
+
+    expect(User::approved()->pluck('id')->all())->toBe([$approved->id])
+        ->and(User::unapproved()->pluck('id')->all())->toBe([$unapproved->id]);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Roles & Permissions
+|--------------------------------------------------------------------------
+*/
+
+it('cannot mass assign a role', function () {
+    $user = new User(['role' => 'admin']);
+
+    expect($user->role)->toBeNull();
+});
+
+it('grants the permissions of its role', function () {
+    $admin = User::factory()->admin()->make();
+
+    expect($admin->hasPermission('users:manage'))->toBeTrue()
+        ->and($admin->hasPermission('forum:moderate'))->toBeFalse();
+});
+
+it('grants no permissions without a role', function () {
+    $user = User::factory()->make();
+
+    expect($user->hasPermission('users:manage'))->toBeFalse();
+});
+
+it('can be assigned and stripped of a role', function () {
+    $user = User::factory()->create();
+
+    $user->assignRole('admin');
+    expect($user->refresh()->role)->toBe('admin');
+
+    $user->assignRole(null);
+    expect($user->refresh()->role)->toBeNull();
+});
+
+it('exposes role permissions through the gate', function () {
+    $admin = User::factory()->admin()->create();
+    $user = User::factory()->create();
+
+    expect($admin->can('users:manage'))->toBeTrue()
+        ->and($user->can('users:manage'))->toBeFalse();
 });
 
 /*

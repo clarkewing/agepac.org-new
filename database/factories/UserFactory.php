@@ -60,6 +60,13 @@ class UserFactory extends Factory
         ]);
     }
 
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+        ]);
+    }
+
     public function unapproved(): static
     {
         return $this->state(fn (array $attributes) => [
