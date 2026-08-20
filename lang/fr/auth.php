@@ -16,10 +16,10 @@ return [
     'login' => [
         'title' => 'Connexion',
         'heading' => 'Heureux de vous revoir',
-        'forgot-password' => 'Mot de passe oublié ?',
+        'forgot-password' => 'Mot de passe oublié ?',
         'remember' => 'Se souvenir de moi',
         'action' => 'Se connecter',
-        'register-prompt' => 'Première visite ici ?',
+        'register-prompt' => 'Première visite ici ?',
         'register-link' => 'S’inscrire',
         'status' => [
             'failed' => 'Les identifiants saisis sont erronés.',
@@ -32,7 +32,7 @@ return [
         'heading' => 'Inscription',
         'description' => 'Saisissez vos informations ci‑dessous pour créer votre compte.',
         'action' => 'Créer un compte',
-        'login-prompt' => 'Vous avez déjà un compte ?',
+        'login-prompt' => 'Vous avez déjà un compte ?',
         'login-link' => 'Se connecter',
     ],
 

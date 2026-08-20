@@ -32,7 +32,7 @@ return [
             'subheading' => 'Supprimez définitivement votre compte et toutes ses ressources',
             'action' => 'Supprimer le compte',
             'confirmation-modal' => [
-                'heading' => 'Êtes‑vous sûr de vouloir supprimer votre compte ?',
+                'heading' => 'Êtes‑vous sûr de vouloir supprimer votre compte ?',
                 'subheading' => 'Une fois votre compte supprimé, toutes ses ressources et ses données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.',
                 'cancel-action' => 'Annuler',
             ],
@@ -85,7 +85,7 @@ return [
             ],
             'checkout-completed' => [
                 'heading' => 'Paiement terminé',
-                'text' => 'Votre paiement est en cours de traitement ; l’apparition de votre nouvelle adhésion peut prendre quelques minutes.',
+                'text' => 'Votre paiement est en cours de traitement ; l’apparition de votre nouvelle adhésion peut prendre quelques minutes.',
             ],
             'checkout-interrupted' => [
                 'heading' => 'Paiement interrompu',
