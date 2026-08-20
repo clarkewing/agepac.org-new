@@ -116,8 +116,8 @@ new #[Layout('layouts::auth')] class extends Component
             required
             :placeholder="__('fields.gender.placeholder')"
         >
-            @foreach (Gender::options() as $value => $label)
-                <flux:select.option :$value :$label />
+            @foreach (Gender::cases() as $gender)
+                <flux:select.option :value="$gender->value" :label="$gender->getLabel()" />
             @endforeach
         </flux:select>
 
@@ -135,8 +135,8 @@ new #[Layout('layouts::auth')] class extends Component
             required
             :placeholder="__('fields.class-course.placeholder')"
         >
-            @foreach (ClassCourse::options() as $option)
-                <flux:select.option :value="$option" :label="$option" />
+            @foreach (ClassCourse::cases() as $course)
+                <flux:select.option :value="$course->value" :label="$course->getLabel()" />
             @endforeach
         </flux:select>
 

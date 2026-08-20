@@ -24,6 +24,11 @@
         <flux:spacer />
 
         <flux:navlist variant="outline">
+            @can('access-admin-panel')
+                <flux:navlist.item icon="shield-check" href="{{ route('filament.admin.pages.dashboard') }}">
+                    {{ __('navigation.sidebar.admin') }}
+                </flux:navlist.item>
+            @endcan
             <flux:navlist.item icon="globe-alt" href="{{ route('public.home') }}" target="_blank">
                 {{ __('navigation.sidebar.public-site') }}
             </flux:navlist.item>

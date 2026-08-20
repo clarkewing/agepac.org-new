@@ -3,6 +3,7 @@
 return [
     'sidebar' => [
         'dashboard' => 'Dashboard',
+        'admin' => 'Administration',
         'public-site' => 'Public Site',
     ],
 

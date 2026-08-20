@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-enum ClassCourse: string
+use Filament\Support\Contracts\HasLabel;
+
+enum ClassCourse: string implements HasLabel
 {
     case PREPA_ATPL = 'Cursus Prépa ATPL';
     case EPL_S = 'EPL/S';
@@ -11,8 +13,19 @@ enum ClassCourse: string
     case EPL = 'EPL';
     case EPT = 'EPT';
 
-    public static function options(): array
+    public function getLabel(): string
     {
-        return array_column(self::cases(), 'value');
+        return match ($this) {
+            self::PREPA_ATPL => 'Cycle Préparatoire ATPL',
+            default => $this->value,
+        };
+    }
+
+    public function getShortLabel(): string
+    {
+        return match ($this) {
+            self::PREPA_ATPL => 'Prépa ATPL',
+            default => $this->getLabel(),
+        };
     }
 }

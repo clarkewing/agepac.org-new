@@ -38,9 +38,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'class_course' => fake()->randomElement(ClassCourse::options()),
+            'class_course' => fake()->randomElement(ClassCourse::cases())->value,
             'class_year' => fake()->year,
-            'gender' => fake()->randomElement(array_keys(Gender::options())),
+            'gender' => fake()->randomElement(Gender::cases())->value,
             'birth_date' => fake()->date('Y-m-d', today()->subYears(18)), // At least 18 years old
             'phone' => fake()->randomElement([ // Use predefined numbers for testing as Faker can generate some weirdos
                 '0669696969',
@@ -57,6 +57,13 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
         ]);
     }
 

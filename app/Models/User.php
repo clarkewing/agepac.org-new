@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\ClassCourse;
+use App\Models\Concerns\Approvable;
+use App\Models\Concerns\HasRole;
+use App\Observers\UserObserver;
 use App\Services\Stripe\Billable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,52 +39,46 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
     'email_verified_at',
     'approved_at',
 ])]
-class User extends Authenticatable implements MustVerifyEmail
+#[ObservedBy(UserObserver::class)]
+#[RouteKey('username')]
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
+    use Approvable;
     use Billable;
     use HasFactory;
+    use HasRole;
     use Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'class_course' => ClassCourse::class,
             'birth_date' => 'date:Y-m-d',
             'phone' => E164PhoneNumberCast::class.':FR',
             'flight_hours' => 'integer',
-            'approved_at' => 'datetime',
         ];
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'username';
     }
 
     protected function firstName(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => Str::nameCase($value),
+            set: fn (string $value): string => Str::nameCase($value),
         );
     }
 
     protected function lastName(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => Str::nameCase($value),
+            set: fn (string $value): string => Str::nameCase($value),
         );
     }
 
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => implode(' ', [
+            get: fn (mixed $value, array $attributes): string => implode(' ', [
                 $attributes['first_name'],
                 $attributes['last_name'],
             ]),
@@ -87,15 +88,23 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function class(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => implode(' ', [
-                $attributes['class_course'],
+            get: fn (mixed $value, array $attributes): ?string => trim(implode(' ', [
+                ClassCourse::tryFrom((string) $attributes['class_course'])?->getLabel(),
                 $attributes['class_year'],
-            ]),
+            ])) ?: null,
         );
     }
 
     public function initials(): string
     {
         return Str::substr($this->first_name, 0, 1).Str::substr($this->last_name, 0, 1);
+    }
+
+    public function shortClass(): ?string
+    {
+        return trim(implode(' ', [
+            $this->class_course?->getShortLabel(),
+            $this->class_year,
+        ])) ?: null;
     }
 }

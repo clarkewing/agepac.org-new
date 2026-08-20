@@ -30,3 +30,14 @@ it('uses fallback locale when session does not have locale', function () {
 
     expect(app()->getLocale())->toBe('en');
 });
+
+it('keeps the pluralizer in step with the locale', function (string $locale, string $plural) {
+    session()->put('locale', $locale);
+
+    $this->get('locale-check');
+
+    expect(Str::plural('animal'))->toBe($plural);
+})->with([
+    'french inflection' => ['fr', 'animaux'],
+    'english inflection' => ['en', 'animals'],
+]);

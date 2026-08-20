@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Observers\SubscriptionItemObserver as CashierSubscriptionItemObserver;
 use App\Observers\SubscriptionObserver as CashierSubscriptionObserver;
-use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
@@ -54,9 +52,12 @@ class AppServiceProvider extends ServiceProvider
             ->appleTouchIcon('/apple-touch-icon.png'));
     }
 
+    /**
+     * Register observers for vendor models, which cannot carry the
+     * #[ObservedBy] attribute; app models declare theirs on the class.
+     */
     public function bootModelObservers(): void
     {
-        User::observe(UserObserver::class);
         CashierSubscription::observe(CashierSubscriptionObserver::class);
         CashierSubscriptionItem::observe(CashierSubscriptionItemObserver::class);
     }

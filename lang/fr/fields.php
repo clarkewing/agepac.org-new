@@ -44,6 +44,10 @@ return [
         'label' => 'Année de promotion',
         'placeholder' => 'Année de promotion',
     ],
+    'username' => [
+        'label' => 'Nom d’utilisateur',
+        'placeholder' => 'Nom d’utilisateur',
+    ],
     'email' => [
         'label' => 'Adresse e‑mail',
         'placeholder' => 'Adresse e‑mail',
@@ -68,6 +72,10 @@ return [
     'new-password' => [
         'label' => 'Nouveau mot de passe',
         'placeholder' => 'Nouveau mot de passe',
+    ],
+    'role' => [
+        'label' => 'Rôle',
+        'placeholder' => 'Sélectionner le rôle…',
     ],
     'theme' => [
         'label' => 'Thème',
