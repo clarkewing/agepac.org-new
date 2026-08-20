@@ -4,11 +4,14 @@ namespace App\Models;
 
 use App\Models\Concerns\Approvable;
 use App\Models\Concerns\HasRole;
+use App\Observers\UserObserver;
 use App\Services\Stripe\Billable;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -35,6 +38,8 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
     'email_verified_at',
     'approved_at',
 ])]
+#[ObservedBy(UserObserver::class)]
+#[RouteKey('username')]
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use Approvable;
@@ -52,11 +57,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
             'phone' => E164PhoneNumberCast::class.':FR',
             'flight_hours' => 'integer',
         ];
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'username';
     }
 
     protected function firstName(): Attribute
