@@ -6,7 +6,7 @@ it('returns an array of options', function () {
     expect(ClassCourse::options())
         ->toBeArray()
         ->toBe([
-            'Cursus Prépa ATPL',
+            'Cycle Préparatoire ATPL',
             'EPL/S',
             'EPL/U',
             'EPL/P',
