@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ClassCourse;
 use App\Models\Concerns\Approvable;
 use App\Models\Concerns\HasRole;
 use App\Observers\UserObserver;
@@ -53,6 +54,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'class_course' => ClassCourse::class,
             'birth_date' => 'date:Y-m-d',
             'phone' => E164PhoneNumberCast::class.':FR',
             'flight_hours' => 'integer',
@@ -86,15 +88,23 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected function class(): Attribute
     {
         return Attribute::make(
-            get: fn (mixed $value, array $attributes) => implode(' ', [
-                $attributes['class_course'],
+            get: fn (mixed $value, array $attributes): ?string => trim(implode(' ', [
+                ClassCourse::tryFrom((string) $attributes['class_course'])?->getLabel(),
                 $attributes['class_year'],
-            ]),
+            ])) ?: null,
         );
     }
 
     public function initials(): string
     {
         return Str::substr($this->first_name, 0, 1).Str::substr($this->last_name, 0, 1);
+    }
+
+    public function shortClass(): ?string
+    {
+        return trim(implode(' ', [
+            $this->class_course?->getShortLabel(),
+            $this->class_year,
+        ])) ?: null;
     }
 }

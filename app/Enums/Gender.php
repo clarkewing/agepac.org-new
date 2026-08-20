@@ -2,22 +2,17 @@
 
 namespace App\Enums;
 
-enum Gender: string
+use Filament\Support\Contracts\HasLabel;
+
+enum Gender: string implements HasLabel
 {
     case MALE = 'M';
     case FEMALE = 'F';
     case OTHER = 'O';
     case UNDECLARED = 'U';
 
-    public function label(): string
+    public function getLabel(): string
     {
         return __('genders.'.strtolower($this->name));
-    }
-
-    public static function options(): array
-    {
-        return collect(self::cases())
-            ->mapWithKeys(fn (self $case) => [$case->value => $case->label()])
-            ->all();
     }
 }

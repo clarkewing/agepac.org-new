@@ -23,7 +23,7 @@ readonly class SubscribeUserToListAction extends MailcoachAction
             $user->first_name,
             $user->last_name,
             [
-                'class_course' => $user->class_course,
+                'class_course' => $user->class_course?->value,
                 'class_year' => $user->class_year,
             ],
             skipConfirmation: true,

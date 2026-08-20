@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ClassCourse;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -57,6 +58,7 @@ it('casts attributes correctly', function () {
     expect(User::factory()->make())
         ->birth_date->toBeInstanceOf(Carbon::class)
         ->phone->toBeInstanceOf(PhoneNumber::class)
+        ->class_course->toBeInstanceOf(ClassCourse::class)
         ->email_verified_at->toBeInstanceOf(Carbon::class)
         ->approved_at->toBeInstanceOf(Carbon::class);
 });
@@ -87,7 +89,7 @@ it('can mass assign all fillable attributes', function () {
         ->last_name->toBe('Doe')
         ->username->toBe('johndoe')
         ->email->toBe('john@example.com')
-        ->class_course->toBe('EPL/S')
+        ->class_course->toBe(ClassCourse::EPL_S)
         ->class_year->toBe('2023')
         ->gender->toBe('M')
         ->birth_date->toDateString()->toBe('1990-05-15')
@@ -191,6 +193,34 @@ it('returns class from class attribute', function () {
     ]);
 
     expect($user->class)->toBe('EPL/S 2015');
+});
+
+it('uses the course label in the class attribute', function () {
+    $user = User::factory()->make([
+        'class_course' => 'Cursus Prépa ATPL',
+        'class_year' => '2015',
+    ]);
+
+    expect($user->class)->toBe('Cycle Préparatoire ATPL 2015');
+});
+
+it('returns the short class', function () {
+    $user = User::factory()->make([
+        'class_course' => 'Cursus Prépa ATPL',
+        'class_year' => '2015',
+    ]);
+
+    expect($user->shortClass())->toBe('Prépa ATPL 2015');
+});
+
+it('handles users without class information', function () {
+    $user = User::factory()->make([
+        'class_course' => null,
+        'class_year' => null,
+    ]);
+
+    expect($user->class)->toBeNull()
+        ->and($user->shortClass())->toBeNull();
 });
 
 it('returns correct initials', function () {
