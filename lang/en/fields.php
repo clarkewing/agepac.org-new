@@ -44,6 +44,10 @@ return [
         'label' => 'Class Year',
         'placeholder' => 'Class year',
     ],
+    'username' => [
+        'label' => 'Username',
+        'placeholder' => 'Username',
+    ],
     'email' => [
         'label' => 'Email Address',
         'placeholder' => 'Email address',
@@ -68,6 +72,10 @@ return [
     'new-password' => [
         'label' => 'New Password',
         'placeholder' => 'New password',
+    ],
+    'role' => [
+        'label' => 'Role',
+        'placeholder' => 'Select role…',
     ],
     'theme' => [
         'label' => 'Theme',

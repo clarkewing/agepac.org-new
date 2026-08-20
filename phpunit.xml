@@ -20,6 +20,7 @@
     <php>
         <ini name="memory_limit" value="512M"/>
         <env name="APP_ENV" value="testing"/>
+        <env name="APP_URL" value="http://squawk.agepac.org.test"/>
         <env name="APP_LOCALE" value="en"/>
         <env name="APP_FALLBACK_LOCALE" value="en"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
