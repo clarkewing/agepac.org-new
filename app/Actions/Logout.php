@@ -2,17 +2,16 @@
 
 namespace App\Actions;
 
-use Illuminate\Routing\Redirector;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Symfony\Component\HttpFoundation\Response;
 
 class Logout
 {
     /**
      * Log the current user out of the application.
      */
-    public function __invoke(): Redirector|Response
+    public function __invoke(): RedirectResponse
     {
         Auth::guard('web')->logout();
 
