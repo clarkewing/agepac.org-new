@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\Products\Membership;
-use Illuminate\Routing\Redirector;
 use Laravel\Cashier\Subscription;
 use Laravel\Head\Facades\Head;
 use Livewire\Attributes\Computed;
@@ -20,13 +19,13 @@ new class extends Component
         return auth()->user()->subscription('membership');
     }
 
-    public function openBillingPortal(): Redirector
+    public function openBillingPortal(): void
     {
         // if (! auth()->user()->hasStripeId()) {
         //     auth()->user()->createAsStripeCustomer();
         // }
 
-        return redirect(auth()->user()->billingPortalUrl(
+        $this->redirect(auth()->user()->billingPortalUrl(
             route('settings.membership'),
             ['locale' => app()->getLocale()],
         ));
