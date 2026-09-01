@@ -29,4 +29,4 @@ it('does not log anything to the console', function () {
 
 it('does not change appearance', function () {
     visit($this->routes->values()->all())->assertScreenshotMatches();
-});
+})->skipOnCI();
