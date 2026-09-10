@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttachmentsController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -8,6 +9,11 @@ Route::middleware(['auth'])->group(function () {
     Route::view('dashboard', 'dashboard')
         ->middleware(['verified', 'handoff:/home'])
         ->name('dashboard');
+
+    Route::get('attachments/{attachment}/{name?}', [AttachmentsController::class, 'show'])
+        ->where('name', '[a-z0-9._-]+')
+        ->middleware('approved')
+        ->name('attachments.show');
 
     Route::prefix('settings')->group(function () {
         Route::livewire('profile', 'pages::settings.profile')->name('settings.profile')->middleware('handoff:/account/info');
