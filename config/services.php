@@ -33,6 +33,12 @@ return [
         'token' => env('CLOUDFLARE_ANALYTICS_TOKEN'),
     ],
 
+    'legacy' => [
+        // Grants read access to the legacy app's filemanager bridge routes
+        // during the pages import; must match the legacy app's value.
+        'export_token' => env('LEGACY_EXPORT_TOKEN'),
+    ],
+
     'mailcoach' => [
         'url' => env('MAILCOACH_URL'),
         'token' => env('MAILCOACH_TOKEN'),
