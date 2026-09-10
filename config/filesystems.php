@@ -38,11 +38,35 @@ return [
             'report' => false,
         ],
 
-        'public' => [
-            'driver' => 'local',
+        'private' => [
+            // Local development can point this disk at local storage instead of R2.
+            'driver' => env('PRIVATE_DISK_DRIVER', 's3'),
+            'root' => storage_path('app/private'),
+            'serve' => true,
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/private',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_PRIVATE_BUCKET'),
+            'endpoint' => env('R2_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'visibility' => 'private',
+            'throw' => false,
+            'report' => false,
+        ],
+
+        'cdn' => [
+            // Local development can point this disk at local storage instead of R2.
+            'driver' => env('CDN_DISK_DRIVER', 's3'),
             'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
-            'visibility' => 'public',
+            'key' => env('R2_ACCESS_KEY_ID'),
+            'secret' => env('R2_SECRET_ACCESS_KEY'),
+            'region' => 'auto',
+            'bucket' => env('R2_PUBLIC_BUCKET'),
+            'endpoint' => env('R2_ENDPOINT'),
+            // R2 buckets are only publicly reachable through a public custom domain, never the S3 endpoint.
+            'url' => env('R2_PUBLIC_URL') ?: rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'use_path_style_endpoint' => true,
             'throw' => false,
             'report' => false,
         ],
@@ -60,8 +84,10 @@ return [
     |
     */
 
-    'links' => [
-        public_path('storage') => storage_path('app/public'),
-    ],
+    'links' => array_filter([
+        public_path('storage') => env('CDN_DISK_DRIVER', 's3') === 'local'
+            ? storage_path('app/public')
+            : null,
+    ]),
 
 ];
