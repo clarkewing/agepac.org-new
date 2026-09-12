@@ -20,6 +20,33 @@ return [
         'label' => 'Nom',
         'placeholder' => 'Nom',
     ],
+    'title' => [
+        'label' => 'Titre',
+        'placeholder' => 'Titre',
+    ],
+    'path' => [
+        'label' => 'Chemin',
+        'placeholder' => 'ma-page',
+    ],
+    'body' => [
+        'label' => 'Contenu',
+    ],
+    'format' => [
+        'label' => 'Format',
+    ],
+    'visibility' => [
+        'label' => 'Visibilité',
+        'options' => [
+            'restricted' => 'Membres uniquement',
+            'public' => 'Publique',
+        ],
+    ],
+    'restricted' => [
+        'label' => 'Réservée aux membres',
+    ],
+    'published-at' => [
+        'label' => 'Publication (UTC)',
+    ],
     'first-name' => [
         'label' => 'Prénom',
         'placeholder' => 'Prénom',

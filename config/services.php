@@ -18,12 +18,6 @@ return [
         'key' => env('POSTMARK_API_KEY'),
     ],
 
-    'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-    ],
-
     'resend' => [
         'key' => env('RESEND_API_KEY'),
     ],
@@ -37,6 +31,12 @@ return [
 
     'cloudflare-analytics' => [
         'token' => env('CLOUDFLARE_ANALYTICS_TOKEN'),
+    ],
+
+    'legacy' => [
+        // Grants read access to the legacy app's filemanager bridge routes
+        // during the pages import; must match the legacy app's value.
+        'export_token' => env('LEGACY_EXPORT_TOKEN'),
     ],
 
     'mailcoach' => [

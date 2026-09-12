@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
+@plugin '@tailwindcss/typography';
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
@@ -61,6 +63,14 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+/* Download links in page bodies, styled after Flux's outline button. */
+.page-body .download-button {
+    @apply inline-flex h-10 items-center gap-2 rounded-lg border border-zinc-200 border-b-zinc-300/80 bg-white px-4 text-sm font-medium text-zinc-800 no-underline shadow-xs hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600/75;
+
+    &::before {
+        @apply size-4 bg-current;
+        content: '';
+        mask-image: url('../../vendor/blade-ui-kit/blade-heroicons/resources/svg/m-arrow-down-tray.svg');
+        mask-size: 100% 100%;
+    }
+}

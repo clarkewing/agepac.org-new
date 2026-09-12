@@ -14,7 +14,7 @@ return [
 
     'admin' => [
         'name' => 'Administrateur',
-        'description' => 'Gestion complète des membres dans l’espace d’administration.',
+        'description' => 'Gestion complète des membres et des pages dans l’espace d’administration.',
     ],
 
 ];
