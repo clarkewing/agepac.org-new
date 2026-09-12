@@ -122,4 +122,54 @@ return [
         ],
     ],
 
+    'nav-type' => [
+        'label' => 'Type',
+        'options' => [
+            'group' => 'Groupe',
+            'page' => 'Page',
+            'url' => 'Lien',
+        ],
+    ],
+    'label' => [
+        'label' => 'Libellé',
+    ],
+    'parent' => [
+        'label' => 'Groupe',
+    ],
+    'page' => [
+        'label' => 'Page',
+    ],
+    'url' => [
+        'label' => 'URL',
+    ],
+    'icon' => [
+        'label' => 'Icône',
+    ],
+    'badge' => [
+        'label' => 'Badge',
+    ],
+    'badge-color' => [
+        'label' => 'Couleur du badge',
+        'options' => [
+            'zinc' => 'Gris',
+            'red' => 'Rouge',
+            'amber' => 'Ambre',
+            'green' => 'Vert',
+            'blue' => 'Bleu',
+        ],
+    ],
+    'collapsible' => [
+        'label' => 'Repliable',
+    ],
+    'target' => [
+        'label' => 'Ouvrir dans',
+        'options' => [
+            '_blank' => 'Un nouvel onglet',
+        ],
+        'placeholder' => 'Le même onglet',
+    ],
+    'disabled' => [
+        'label' => 'Désactivé',
+    ],
+
 ];

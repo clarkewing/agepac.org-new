@@ -122,4 +122,54 @@ return [
         ],
     ],
 
+    'nav-type' => [
+        'label' => 'Type',
+        'options' => [
+            'group' => 'Group',
+            'page' => 'Page',
+            'url' => 'Link',
+        ],
+    ],
+    'label' => [
+        'label' => 'Label',
+    ],
+    'parent' => [
+        'label' => 'Group',
+    ],
+    'page' => [
+        'label' => 'Page',
+    ],
+    'url' => [
+        'label' => 'URL',
+    ],
+    'icon' => [
+        'label' => 'Icon',
+    ],
+    'badge' => [
+        'label' => 'Badge',
+    ],
+    'badge-color' => [
+        'label' => 'Badge color',
+        'options' => [
+            'zinc' => 'Gray',
+            'red' => 'Red',
+            'amber' => 'Amber',
+            'green' => 'Green',
+            'blue' => 'Blue',
+        ],
+    ],
+    'collapsible' => [
+        'label' => 'Collapsible',
+    ],
+    'target' => [
+        'label' => 'Opens in',
+        'options' => [
+            '_blank' => 'A new tab',
+        ],
+        'placeholder' => 'The same tab',
+    ],
+    'disabled' => [
+        'label' => 'Disabled',
+    ],
+
 ];

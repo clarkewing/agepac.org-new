@@ -66,6 +66,15 @@ return [
         ],
     ],
 
+    'nav' => [
+        'label' => 'nav item',
+        'title' => 'Navigation',
+        'help' => [
+            'label' => 'Leave empty to use the page title.',
+            'icon' => 'A Heroicon name, e.g. "home" or "users".',
+        ],
+    ],
+
     'users' => [
         'label' => 'user',
         'sections' => [
