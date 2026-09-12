@@ -1,9 +1,16 @@
 <?php
 
 use App\Http\Controllers\AttachmentsController;
+use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
+
+// Outside the auth group: unrestricted pages are viewable by anyone, and
+// the policy handles restricted and unpublished pages per request.
+Route::get('pages/{page:path}', [PagesController::class, 'show'])
+    ->where('page', '.+')
+    ->name('pages.show');
 
 Route::middleware(['auth'])->group(function () {
     Route::view('dashboard', 'dashboard')

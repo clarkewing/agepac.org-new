@@ -2,8 +2,12 @@
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
 
+@source '../views/components/page-article.blade.php';
 @source '../views/public';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+/* The public site is light-only. */
+@custom-variant dark (&:not(*));
 
 @layer base {
     button:not(:disabled),
@@ -64,4 +68,16 @@
     --color-shiraz-900: oklch(0.254 0.0922 20.63);
 
     --color-blush: oklch(0.9873 0.0069 354.79);
+}
+
+/* Download links in page bodies, matching the public site's buttons. */
+.page-body .download-button {
+    @apply inline-flex items-center gap-2 rounded-md bg-gray-800 px-4 py-2 text-sm font-semibold text-white no-underline transition duration-150 ease-in-out hover:bg-gray-700 active:bg-gray-900;
+
+    &::before {
+        @apply size-4 bg-current;
+        content: '';
+        mask-image: url('../../vendor/blade-ui-kit/blade-heroicons/resources/svg/m-arrow-down-tray.svg');
+        mask-size: 100% 100%;
+    }
 }

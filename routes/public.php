@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'public.welcome')->name('home');
@@ -17,3 +18,7 @@ Route::view('/privacy', 'public.terms', ['terms' => 'privacy'])->name('privacy')
 Route::view('/terms', 'public.terms', ['terms' => 'terms'])->name('terms');
 
 Route::view('remembering', 'public.remembering')->name('remembering');
+
+Route::get('pages/{page:path}', [PagesController::class, 'showPublic'])
+    ->where('page', '.+')
+    ->name('pages.show');
