@@ -19,6 +19,8 @@
                     {{ __('navigation.sidebar.dashboard') }}
                 </flux:navlist.item>
             </flux:navlist.group>
+
+            <x-sidebar-nav />
         </flux:navlist>
 
         <flux:spacer />
