@@ -14,8 +14,6 @@ use RuntimeException;
 
 class ImportLegacyPages extends Command
 {
-    protected const string LEGACY_FILES_PATTERN = 'https?://members\.agepac\.org/laravel-filemanager/';
-
     protected int $failedDownloads = 0;
 
     /**
@@ -153,7 +151,7 @@ class ImportLegacyPages extends Command
         // URLs are percent-encoded in both formats, so they contain no
         // spaces and end at markdown link syntax, quotes, or whitespace.
         return preg_replace_callback(
-            '~'.static::LEGACY_FILES_PATTERN.'[^\s)"\'<]+~',
+            '~https?://'.preg_quote(uri(config('handoff.target_host'))->host(), '~').'/laravel-filemanager/[^\s)"\'<]+~',
             fn (array $matches): string => $this->relocatedUrl($matches[0]),
             $body,
         );
