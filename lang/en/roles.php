@@ -14,7 +14,7 @@ return [
 
     'admin' => [
         'name' => 'Administrator',
-        'description' => 'Full access to manage members and pages in the admin area.',
+        'description' => 'Full access to manage members, pages, and navigation in the admin area.',
     ],
 
 ];
