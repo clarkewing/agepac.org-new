@@ -40,8 +40,9 @@ return [
 
         'private' => [
             // Local development can point this disk at local storage instead of R2.
+            // The root only applies there: on s3 it would become a key prefix.
             'driver' => env('PRIVATE_DISK_DRIVER', 's3'),
-            'root' => storage_path('app/private'),
+            'root' => env('PRIVATE_DISK_DRIVER', 's3') === 'local' ? storage_path('app/private') : '',
             'serve' => true,
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/private',
             'key' => env('R2_ACCESS_KEY_ID'),
@@ -57,8 +58,9 @@ return [
 
         'cdn' => [
             // Local development can point this disk at local storage instead of R2.
+            // The root only applies there: on s3 it would become a key prefix.
             'driver' => env('CDN_DISK_DRIVER', 's3'),
-            'root' => storage_path('app/public'),
+            'root' => env('CDN_DISK_DRIVER', 's3') === 'local' ? storage_path('app/public') : '',
             'key' => env('R2_ACCESS_KEY_ID'),
             'secret' => env('R2_SECRET_ACCESS_KEY'),
             'region' => 'auto',
