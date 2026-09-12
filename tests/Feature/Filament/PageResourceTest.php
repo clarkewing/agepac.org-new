@@ -202,6 +202,30 @@ it('converts the body when switching format', function () {
         });
 });
 
+it('styles front matter as metadata in the markdown editor', function () {
+    $page = visit(PageResource::getUrl('create', isAbsolute: false))
+        ->assertMissing('.cm-front-matter')
+        ->type('.CodeMirror textarea', "---\ndescription: Une page.\n---\nContenu")
+        ->assertVisible('.cm-front-matter >> nth=0')
+        ->assertNoJavaScriptErrors();
+
+    // Every front-matter line must read uniformly: no token span may keep
+    // its own color, weight, or an opacity that would compound the line's.
+    expect($page->script(<<<'JS'
+        [...document.querySelectorAll('.cm-front-matter')].every((line) => {
+            const lineStyle = getComputedStyle(line)
+
+            return [...line.querySelectorAll('span')].every((span) => {
+                const spanStyle = getComputedStyle(span)
+
+                return spanStyle.opacity === '1'
+                    && spanStyle.color === lineStyle.color
+                    && spanStyle.fontWeight === lineStyle.fontWeight
+            })
+        })
+    JS))->toBeTrue();
+});
+
 it('warns when a public page references attachments', function () {
     visit(PageResource::getUrl('create', isAbsolute: false))
         ->type('.CodeMirror textarea', 'Voir /attachments/abc/document.pdf')

@@ -77,6 +77,25 @@ it('never renders non-document links as download buttons', function () {
         ->not->toContain('download-button');
 });
 
+it('strips front matter from rendered markdown', function () {
+    expect(renderMarkdown("---\ndescription: Une page de test.\n---\n\n## Titre"))
+        ->toContain('<h2>Titre</h2>')
+        ->not->toContain('description')
+        ->not->toContain('---');
+});
+
+it('parses front matter from markdown pages only', function () {
+    $renderer = resolve(PageRenderer::class);
+
+    $markdown = Page::factory()->make(['body' => "---\ndescription: Une page de test.\n---\n\nContenu"]);
+    $plain = Page::factory()->make(['body' => 'Contenu']);
+    $html = Page::factory()->html()->make(['body' => '<p>Contenu</p>']);
+
+    expect($renderer->frontMatter($markdown))->toBe(['description' => 'Une page de test.'])
+        ->and($renderer->frontMatter($plain))->toBe([])
+        ->and($renderer->frontMatter($html))->toBe([]);
+});
+
 it('renders a page through its format as blade-safe html', function () {
     $page = Page::factory()->make([
         'body' => '**gras**',

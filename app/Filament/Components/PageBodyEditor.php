@@ -34,20 +34,80 @@ class PageBodyEditor extends MarkdownEditor
             fn (Attachment $file): string => $file->url(),
         );
 
-        // The editor's browse-file dialog hardcodes an image-only `accept`
-        // attribute regardless of the accepted file types above, which all
-        // three upload paths (browse, drop, paste) validate against. Widen
-        // the dialog's filter to match once the editor has rendered.
+        // Two patches applied once the editor has rendered:
+        // - The browse-file dialog hardcodes an image-only `accept` attribute
+        //   regardless of the accepted file types above, which all three
+        //   upload paths (browse, drop, paste) validate against.
+        // - The editor's markdown mode does not know front matter, so its
+        //   closing `---` styles the YAML above as a giant setext heading.
+        //   Front-matter lines get a line class styled as muted metadata.
         $this->extraAlpineAttributes(fn (): array => [
-            'x-init' => '$nextTick(() => {
-                const interval = setInterval(() => {
-                    const input = $el.querySelector(\'.imageInput\')
-                    if (! input) return
-                    input.accept = '.Js::from(implode(',', $this->getFileAttachmentsAcceptedFileTypes() ?? [])).'
-                    clearInterval(interval)
-                }, 100)
-                setTimeout(() => clearInterval(interval), 5000)
-            })',
+            'x-init' => str_replace(
+                '__ACCEPT__',
+                Js::from(implode(',', $this->getFileAttachmentsAcceptedFileTypes() ?? []))->toHtml(),
+                <<<'JS'
+                    $nextTick(() => {
+                        const interval = setInterval(() => {
+                            const editor = $el._editor
+                            const input = $el.querySelector('.imageInput')
+
+                            if (! editor || ! input) return
+
+                            clearInterval(interval)
+
+                            input.accept = __ACCEPT__
+
+                            if (! document.getElementById('page-body-editor-styles')) {
+                                const style = document.createElement('style')
+                                style.id = 'page-body-editor-styles'
+                                style.textContent = `
+                                    .CodeMirror .cm-front-matter {
+                                        font-family: ui-monospace, monospace;
+                                        font-size: 0.8125rem;
+                                        font-weight: 400;
+                                        opacity: 0.75;
+                                    }
+
+                                    /* Neutralize token styling (headings, hr) so every
+                                       line reads uniformly; opacity only at line level
+                                       to avoid compounding. */
+                                    .CodeMirror .cm-front-matter span {
+                                        color: inherit;
+                                        font: inherit;
+                                    }
+                                `
+                                document.head.append(style)
+                            }
+
+                            const cm = editor.codemirror
+
+                            const styleFrontMatter = () => {
+                                let end = -1
+
+                                if (cm.getLine(0) === '---') {
+                                    for (let i = 1; i < Math.min(cm.lineCount(), 50); i++) {
+                                        if (/^---\s*$/.test(cm.getLine(i))) {
+                                            end = i
+                                            break
+                                        }
+                                    }
+                                }
+
+                                cm.eachLine((line) => {
+                                    cm.getLineNumber(line) <= end
+                                        ? cm.addLineClass(line, 'text', 'cm-front-matter')
+                                        : cm.removeLineClass(line, 'text', 'cm-front-matter')
+                                })
+                            }
+
+                            cm.on('change', styleFrontMatter)
+                            styleFrontMatter()
+                        }, 100)
+
+                        setTimeout(() => clearInterval(interval), 5000)
+                    })
+                    JS,
+            ),
         ]);
     }
 }

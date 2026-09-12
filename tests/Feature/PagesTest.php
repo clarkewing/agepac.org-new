@@ -96,6 +96,37 @@ it('serves paths containing slashes', function () {
     $this->get(route('public.pages.show', $page))->assertOk();
 });
 
+it('feeds front matter description into the page head', function () {
+    $page = Page::factory()->unrestricted()->create([
+        'body' => "---\ndescription: Une page de test.\n---\n\nContenu",
+    ]);
+
+    $this->get(route('public.pages.show', $page))
+        ->assertOk()
+        ->assertSee('Une page de test.')
+        ->assertDontSee('---');
+});
+
+it('shows an eyebrow above the title when front matter provides one', function () {
+    $page = Page::factory()->unrestricted()->create([
+        'body' => "---\neyebrow: Juridique\n---\n\nContenu",
+    ]);
+
+    $this->get(route('public.pages.show', $page))
+        ->assertOk()
+        ->assertSeeInOrder(['Juridique', $page->title]);
+
+    $this->actingAs(User::factory()->create());
+
+    $restricted = Page::factory()->create([
+        'body' => "---\neyebrow: Carrière\n---\n\nContenu",
+    ]);
+
+    $this->get(route('pages.show', $restricted))
+        ->assertOk()
+        ->assertSeeInOrder(['Carrière', $restricted->title]);
+});
+
 it('renders html pages through the sanitizing pipeline', function () {
     $page = Page::factory()->html()->unrestricted()->create([
         'body' => '<p>Du contenu</p><script>alert("xss")</script>',

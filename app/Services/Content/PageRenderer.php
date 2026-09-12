@@ -8,6 +8,7 @@ use Illuminate\Support\HtmlString;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
+use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
 use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
@@ -35,6 +36,26 @@ class PageRenderer
         return new HtmlString($this->sanitize($html));
     }
 
+    /**
+     * The front matter of a markdown page's body, following the public terms
+     * pages' convention (e.g. a `description` for the page head). HTML pages
+     * have none.
+     *
+     * @return array<string, mixed>
+     */
+    public function frontMatter(Page $page): array
+    {
+        if ($page->format !== PageFormat::MARKDOWN) {
+            return [];
+        }
+
+        $frontMatter = new FrontMatterExtension()->getFrontMatterParser()
+            ->parse($page->body)
+            ->getFrontMatter();
+
+        return is_array($frontMatter) ? $frontMatter : [];
+    }
+
     protected function renderMarkdown(string $markdown): string
     {
         // Raw HTML in markdown is rendered, GitHub-style: the sanitizer
@@ -46,6 +67,7 @@ class PageRenderer
         ]);
 
         $environment->addExtension(new CommonMarkCoreExtension);
+        $environment->addExtension(new FrontMatterExtension);
         $environment->addExtension(new GithubFlavoredMarkdownExtension);
         $environment->addRenderer(Link::class, new DownloadLinkRenderer, priority: 10);
 
