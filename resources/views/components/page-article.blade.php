@@ -34,7 +34,5 @@
         <h1 @class(['text-3xl tracking-tight [:where(&)]:font-bold', $titleClass])>{{ $page->title }}</h1>
     </hgroup>
 
-    <div @class(['page-body prose max-w-none [:where(&)]:mt-8 dark:[:where(&)]:prose-invert', $bodyClass])>
-        {{ $html }}
-    </div>
+    <div @class(['page-body prose max-w-none dark:prose-invert [:where(&)]:mt-8', $bodyClass])>{{ $html }}</div>
 </article>
