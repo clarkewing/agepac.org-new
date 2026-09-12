@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 
 beforeEach(function () {
+    config()->set('handoff.target_host', 'http://members.agepac.org.test');
+
     config()->set('database.connections.legacy', [
         'driver' => 'sqlite',
         'database' => ':memory:',
@@ -129,7 +131,7 @@ it('writes nothing on a dry run', function () {
 
 it('counts legacy file references in the report', function () {
     seedLegacyPage([
-        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="https://members.agepac.org/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->',
+        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="http://members.agepac.org.test/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->',
     ]);
 
     $this->artisan('pages:import-legacy', ['--dry-run' => true])
@@ -139,10 +141,10 @@ it('counts legacy file references in the report', function () {
 
 it('relocates legacy files into attachments', function () {
     Storage::fake(Attachment::DISK);
-    Http::fake(['members.agepac.org/*' => Http::response($png = fakePng())]);
+    Http::fake(['members.agepac.org.test/*' => Http::response($png = fakePng())]);
 
     seedLegacyPage([
-        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="https://members.agepac.org/laravel-filemanager/photos/3481/Trombinoscopes/EPL 17.PNG" alt=""/></figure><!-- /wp:image -->',
+        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="http://members.agepac.org.test/laravel-filemanager/photos/3481/Trombinoscopes/EPL 17.PNG" alt=""/></figure><!-- /wp:image -->',
     ]);
 
     $this->artisan('pages:import-legacy')
@@ -152,7 +154,7 @@ it('relocates legacy files into attachments', function () {
     $attachment = Attachment::sole();
 
     expect($attachment)
-        ->id->toBe(Uuid::uuid5(Uuid::NAMESPACE_URL, 'https://members.agepac.org/laravel-filemanager/photos/3481/Trombinoscopes/EPL 17.PNG')->toString())
+        ->id->toBe(Uuid::uuid5(Uuid::NAMESPACE_URL, 'http://members.agepac.org.test/laravel-filemanager/photos/3481/Trombinoscopes/EPL 17.PNG')->toString())
         ->name->toBe('EPL 17.PNG')
         ->mime_type->toBe('image/png')
         ->size->toBe(strlen($png))
@@ -168,10 +170,10 @@ it('relocates legacy files into attachments', function () {
 
 it('rewrites file urls inside html bodies', function () {
     Storage::fake(Attachment::DISK);
-    Http::fake(['members.agepac.org/*' => Http::response(fakePng())]);
+    Http::fake(['members.agepac.org.test/*' => Http::response(fakePng())]);
 
     seedLegacyPage([
-        'body' => "<!-- wp:paragraph {\"align\":\"center\"} -->\n<p style=\"text-align:center\">Centré</p>\n<!-- /wp:paragraph -->\n<!-- wp:image -->\n<figure class=\"wp-block-image\"><img src=\"https://members.agepac.org/laravel-filemanager/photos/3481/Trombinoscopes/EPL 17.PNG\" alt=\"\"/></figure>\n<!-- /wp:image -->",
+        'body' => "<!-- wp:paragraph {\"align\":\"center\"} -->\n<p style=\"text-align:center\">Centré</p>\n<!-- /wp:paragraph -->\n<!-- wp:image -->\n<figure class=\"wp-block-image\"><img src=\"http://members.agepac.org.test/laravel-filemanager/photos/3481/Trombinoscopes/EPL 17.PNG\" alt=\"\"/></figure>\n<!-- /wp:image -->",
     ]);
 
     $this->artisan('pages:import-legacy')->assertSuccessful();
@@ -184,9 +186,9 @@ it('rewrites file urls inside html bodies', function () {
 
 it('imports each source url once across pages and reruns', function () {
     Storage::fake(Attachment::DISK);
-    Http::fake(['members.agepac.org/*' => Http::response(fakePng())]);
+    Http::fake(['members.agepac.org.test/*' => Http::response(fakePng())]);
 
-    $body = '<!-- wp:image --><figure class="wp-block-image"><img src="https://members.agepac.org/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->';
+    $body = '<!-- wp:image --><figure class="wp-block-image"><img src="http://members.agepac.org.test/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->';
 
     seedLegacyPage(['body' => $body]);
     seedLegacyPage(['path' => 'epl20', 'title' => 'EPL20', 'body' => $body]);
@@ -204,10 +206,10 @@ it('authenticates downloads with the export token when configured', function () 
     config()->set('services.legacy.export_token', 'secret-token');
 
     Storage::fake(Attachment::DISK);
-    Http::fake(['members.agepac.org/*' => Http::response(fakePng())]);
+    Http::fake(['members.agepac.org.test/*' => Http::response(fakePng())]);
 
     seedLegacyPage([
-        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="https://members.agepac.org/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->',
+        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="http://members.agepac.org.test/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->',
     ]);
 
     $this->artisan('pages:import-legacy')->assertSuccessful();
@@ -217,10 +219,10 @@ it('authenticates downloads with the export token when configured', function () 
 
 it('does not follow redirects to the legacy login page', function () {
     Storage::fake(Attachment::DISK);
-    Http::fake(['members.agepac.org/*' => Http::response('<html>Login</html>', 302, ['Location' => 'https://members.agepac.org/login'])]);
+    Http::fake(['members.agepac.org.test/*' => Http::response('<html>Login</html>', 302, ['Location' => 'http://members.agepac.org.test/login'])]);
 
     seedLegacyPage([
-        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="https://members.agepac.org/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->',
+        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="http://members.agepac.org.test/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->',
     ]);
 
     $this->artisan('pages:import-legacy')->assertFailed();
@@ -230,10 +232,10 @@ it('does not follow redirects to the legacy login page', function () {
 
 it('keeps the legacy url and fails when a download fails', function () {
     Storage::fake(Attachment::DISK);
-    Http::fake(['members.agepac.org/*' => Http::response(status: 404)]);
+    Http::fake(['members.agepac.org.test/*' => Http::response(status: 404)]);
 
     seedLegacyPage([
-        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="https://members.agepac.org/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->',
+        'body' => '<!-- wp:image --><figure class="wp-block-image"><img src="http://members.agepac.org.test/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG" alt=""/></figure><!-- /wp:image -->',
     ]);
 
     $this->artisan('pages:import-legacy')
@@ -241,5 +243,5 @@ it('keeps the legacy url and fails when a download fails', function () {
         ->assertFailed();
 
     expect(Attachment::count())->toBe(0)
-        ->and(Page::sole()->body)->toContain('https://members.agepac.org/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG');
+        ->and(Page::sole()->body)->toContain('http://members.agepac.org.test/laravel-filemanager/photos/3481/Trombinoscopes/20S.PNG');
 });
