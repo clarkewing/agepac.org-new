@@ -53,7 +53,7 @@ return [
             'use_path_style_endpoint' => true,
             'visibility' => 'private',
             'throw' => false,
-            'report' => false,
+            'report' => true,
         ],
 
         'cdn' => [
@@ -70,7 +70,7 @@ return [
             'url' => env('R2_PUBLIC_URL') ?: rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'use_path_style_endpoint' => true,
             'throw' => false,
-            'report' => false,
+            'report' => true,
         ],
 
     ],
