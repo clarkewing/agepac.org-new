@@ -42,6 +42,27 @@ return [
             'restricted' => 'A public page is viewable by anyone, even without an account.',
             'published_at' => 'The date and time at which this page becomes widely viewable. Leave empty to keep the page unpublished.',
         ],
+        'cheatsheet' => [
+            'heading' => 'Writing guide',
+            'syntax' => [
+                'heading' => 'Markdown syntax',
+                'rows' => [
+                    ['label' => 'Heading', 'example' => '## Heading'],
+                    ['label' => 'Bold', 'example' => '**bold**'],
+                    ['label' => 'Italic', 'example' => '*italic*'],
+                    ['label' => 'Link', 'example' => '[text](https://example.com)'],
+                    ['label' => 'Bulleted list', 'example' => '- item'],
+                    ['label' => 'Numbered list', 'example' => '1. item'],
+                    ['label' => 'Quote', 'example' => '> quote'],
+                ],
+            ],
+            'front_matter' => [
+                'heading' => 'Page metadata',
+                'description' => 'An optional block at the very top of the body sets the page’s metadata:',
+                'example' => "---\ndescription: Summary shown by search engines.\neyebrow: Small label displayed above the title.\n---",
+            ],
+            'attachments' => 'Insert images and PDFs with the editor’s attachment button. A PDF link alone on its own line becomes a download button.',
+        ],
     ],
 
     'users' => [

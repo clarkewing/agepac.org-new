@@ -185,6 +185,18 @@ it('edits markdown pages with the markdown editor and html pages with a code edi
         ->assertFormFieldVisible('html_body');
 });
 
+it('offers the writing guide only for markdown pages', function () {
+    $markdown = Page::factory()->create();
+    $html = Page::factory()->html()->create();
+
+    Livewire::test(EditPage::class, ['record' => $markdown->id])
+        ->assertSee(__('admin.pages.cheatsheet.heading'))
+        ->assertSee(__('admin.pages.cheatsheet.front_matter.heading'));
+
+    Livewire::test(EditPage::class, ['record' => $html->id])
+        ->assertDontSee(__('admin.pages.cheatsheet.heading'));
+});
+
 it('converts the body when switching format', function () {
     Livewire::test(CreatePage::class)
         ->fillForm(['body' => '## Titre'])

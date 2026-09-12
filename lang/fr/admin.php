@@ -42,6 +42,27 @@ return [
             'restricted' => 'Une page publique est visible par tout le monde, même sans compte.',
             'published_at' => 'La date et l’heure à partir desquelles la page devient accessible. Laissez ce champ vide pour ne pas publier la page.',
         ],
+        'cheatsheet' => [
+            'heading' => 'Aide à la rédaction',
+            'syntax' => [
+                'heading' => 'Syntaxe Markdown',
+                'rows' => [
+                    ['label' => 'Titre', 'example' => '## Titre'],
+                    ['label' => 'Gras', 'example' => '**gras**'],
+                    ['label' => 'Italique', 'example' => '*italique*'],
+                    ['label' => 'Lien', 'example' => '[texte](https://exemple.com)'],
+                    ['label' => 'Liste à puces', 'example' => '- élément'],
+                    ['label' => 'Liste numérotée', 'example' => '1. élément'],
+                    ['label' => 'Citation', 'example' => '> citation'],
+                ],
+            ],
+            'front_matter' => [
+                'heading' => 'Métadonnées de la page',
+                'description' => 'Un bloc facultatif tout en haut du contenu définit les métadonnées de la page :',
+                'example' => "---\ndescription: Résumé affiché par les moteurs de recherche.\neyebrow: Surtitre affiché au-dessus du titre.\n---",
+            ],
+            'attachments' => 'Insérez images et PDF avec le bouton de pièce jointe de l’éditeur. Un lien vers un PDF placé seul sur sa ligne devient un bouton de téléchargement.',
+        ],
     ],
 
     'users' => [

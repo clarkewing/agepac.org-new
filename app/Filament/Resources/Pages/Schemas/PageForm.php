@@ -17,6 +17,7 @@ use Filament\Schemas\Components\Callout;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
@@ -71,6 +72,12 @@ class PageForm
                             ->visibleJs(<<<'JS'
                                 ! Number($get('restricted')) && ($get('body') ?? '').includes('/attachments/')
                                 JS),
+                        Section::make(__('admin.pages.cheatsheet.heading'))
+                            ->collapsed()
+                            ->visible(fn (Get $get): bool => $format($get) === PageFormat::MARKDOWN)
+                            ->components([
+                                View::make('filament.pages.markdown-cheatsheet'),
+                            ]),
                     ]),
                 Section::make(__('admin.pages.sections.settings'))
                     ->columnSpan(['xl' => 2, '2xl' => 1])
