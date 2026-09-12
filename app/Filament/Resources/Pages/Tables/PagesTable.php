@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Pages\Tables;
 
 use App\Enums\PageFormat;
+use App\Filament\Resources\Pages\Actions\VisitAction;
 use App\Models\Page;
 use Filament\Actions\EditAction;
 use Filament\Support\Enums\IconPosition;
@@ -63,6 +64,7 @@ class PagesTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
+                VisitAction::make(),
                 EditAction::make(),
             ]);
     }

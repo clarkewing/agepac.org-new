@@ -28,6 +28,7 @@ return [
             'settings' => 'Settings',
         ],
         'actions' => [
+            'visit' => 'View page',
             'now' => 'Now (UTC)',
             'clear' => 'Clear',
         ],

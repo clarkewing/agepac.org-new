@@ -28,6 +28,7 @@ return [
             'settings' => 'Réglages',
         ],
         'actions' => [
+            'visit' => 'Voir la page',
             'now' => 'Maintenant (UTC)',
             'clear' => 'Effacer',
         ],
