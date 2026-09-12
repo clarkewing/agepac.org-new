@@ -13,6 +13,37 @@ return [
     |
     */
 
+    'pages' => [
+        'label' => 'page',
+        'create' => [
+            'title' => 'Créer une page',
+            'create_another' => 'Créer puis en ajouter une autre',
+        ],
+        'columns' => [
+            'scheduled' => 'Programmée',
+            'unpublished' => 'Non publiée',
+        ],
+        'sections' => [
+            'content' => 'Contenu',
+            'settings' => 'Réglages',
+        ],
+        'actions' => [
+            'now' => 'Maintenant (UTC)',
+            'clear' => 'Effacer',
+        ],
+        'warnings' => [
+            'public_attachments' => [
+                'title' => 'Pièces jointes sur une page publique',
+                'description' => 'Les pièces jointes ne sont visibles qu’aux membres approuvés. Sur une page publique, les visiteurs verront une erreur. Les pièces jointes concernées sont listées ci-dessous.',
+            ],
+            'converted' => 'Changer de format convertit le contenu et peut amener à la perte de données.',
+        ],
+        'help' => [
+            'restricted' => 'Une page publique est visible par tout le monde, même sans compte.',
+            'published_at' => 'La date et l’heure à partir desquelles la page devient accessible. Laissez ce champ vide pour ne pas publier la page.',
+        ],
+    ],
+
     'users' => [
         'label' => 'utilisateur',
         'sections' => [

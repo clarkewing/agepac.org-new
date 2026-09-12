@@ -17,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected array $adminPanelPermissions = [
         'users:manage',
+        'pages:manage',
     ];
 
     /**
@@ -32,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         Role::define('admin', [
             'users:manage',
+            'pages:manage',
         ]);
     }
 

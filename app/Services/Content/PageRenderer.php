@@ -4,6 +4,7 @@ namespace App\Services\Content;
 
 use App\Enums\PageFormat;
 use App\Models\Page;
+use Illuminate\Support\HtmlString;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
@@ -19,19 +20,19 @@ use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
  */
 class PageRenderer
 {
-    public function render(Page $page): string
+    public function render(Page $page): HtmlString
     {
         return $this->renderBody($page->format, $page->body);
     }
 
-    public function renderBody(PageFormat $format, string $body): string
+    public function renderBody(PageFormat $format, string $body): HtmlString
     {
         $html = match ($format) {
             PageFormat::MARKDOWN => $this->renderMarkdown($body),
             PageFormat::HTML => $body,
         };
 
-        return $this->sanitize($html);
+        return new HtmlString($this->sanitize($html));
     }
 
     protected function renderMarkdown(string $markdown): string

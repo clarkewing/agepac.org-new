@@ -13,6 +13,37 @@ return [
     |
     */
 
+    'pages' => [
+        'label' => 'page',
+        'create' => [
+            'title' => 'Create a page',
+            'create_another' => 'Create & add another',
+        ],
+        'columns' => [
+            'scheduled' => 'Scheduled',
+            'unpublished' => 'Unpublished',
+        ],
+        'sections' => [
+            'content' => 'Content',
+            'settings' => 'Settings',
+        ],
+        'actions' => [
+            'now' => 'Now (UTC)',
+            'clear' => 'Clear',
+        ],
+        'warnings' => [
+            'public_attachments' => [
+                'title' => 'Attachments on a public page',
+                'description' => 'Attachments are only served to approved members. On a public page, they will appear broken to visitors. The affected attachments are listed below.',
+            ],
+            'converted' => 'Switching the format converts the body and can result in data loss.',
+        ],
+        'help' => [
+            'restricted' => 'A public page is viewable by anyone, even without an account.',
+            'published_at' => 'The date and time at which this page becomes widely viewable. Leave empty to keep the page unpublished.',
+        ],
+    ],
+
     'users' => [
         'label' => 'user',
         'sections' => [

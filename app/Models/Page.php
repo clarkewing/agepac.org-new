@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\PageFormat;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +18,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'restricted',
     'published_at',
 ])]
-#[RouteKey('path')]
 class Page extends Model
 {
     use HasFactory;
@@ -37,6 +35,11 @@ class Page extends Model
     public function isPublished(): bool
     {
         return $this->published_at !== null && $this->published_at->isPast();
+    }
+
+    public function isScheduled(): bool
+    {
+        return $this->published_at !== null && $this->published_at->isFuture();
     }
 
     #[Scope]
