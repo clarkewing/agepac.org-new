@@ -60,10 +60,13 @@ class PageRenderer
     {
         // Raw HTML in markdown is rendered, GitHub-style: the sanitizer
         // downstream is the enforcement layer, exactly as for html pages.
+        // Soft breaks become <br> like on GitHub's comment surfaces, so the
+        // line breaks editors type are the line breaks readers see.
         $environment = new Environment([
             'html_input' => 'allow',
             'allow_unsafe_links' => false,
             'max_nesting_level' => 50,
+            'renderer' => ['soft_break' => "<br>\n"],
         ]);
 
         $environment->addExtension(new CommonMarkCoreExtension);

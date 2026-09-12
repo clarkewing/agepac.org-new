@@ -22,6 +22,11 @@ it('renders markdown as github flavored markdown', function () {
         ->toContain('<del>contenu barré</del>');
 });
 
+it('renders soft line breaks as line breaks, comment-style', function () {
+    expect(renderMarkdown("Première ligne\nSeconde ligne"))
+        ->toContain('Première ligne<br');
+});
+
 it('renders safe raw html inside markdown, github-style', function () {
     expect(renderMarkdown('Du texte <u>souligné</u> et un<br>retour à la ligne.'))
         ->toContain('<u>souligné</u>')
