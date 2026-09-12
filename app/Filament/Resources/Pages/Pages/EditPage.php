@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Pages\Pages;
 
+use App\Filament\Resources\Pages\Actions\VisitAction;
 use App\Filament\Resources\Pages\PageResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\RestoreAction;
@@ -14,6 +15,7 @@ class EditPage extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            VisitAction::make(),
             DeleteAction::make(),
             RestoreAction::make(),
         ];

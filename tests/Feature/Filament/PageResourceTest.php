@@ -7,6 +7,7 @@ use App\Filament\Resources\Pages\Pages\EditPage;
 use App\Filament\Resources\Pages\Pages\ListPages;
 use App\Models\Page;
 use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Support\Icons\Heroicon;
@@ -195,6 +196,18 @@ it('offers the writing guide only for markdown pages', function () {
 
     Livewire::test(EditPage::class, ['record' => $html->id])
         ->assertDontSee(__('admin.pages.cheatsheet.heading'));
+});
+
+it('links to the live page in a new tab', function () {
+    $page = Page::factory()->unrestricted()->create();
+
+    Livewire::test(ListPages::class)
+        ->assertTableActionExists('visit', fn (Action $action): bool => $action->getUrl() === $page->url()
+            && $action->shouldOpenUrlInNewTab(), $page);
+
+    Livewire::test(EditPage::class, ['record' => $page->id])
+        ->assertActionExists('visit', fn (Action $action): bool => $action->getUrl() === $page->url()
+            && $action->shouldOpenUrlInNewTab());
 });
 
 it('converts the body when switching format', function () {

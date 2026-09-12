@@ -4,6 +4,24 @@ use App\Models\Page;
 
 /*
 |--------------------------------------------------------------------------
+| URLs
+|--------------------------------------------------------------------------
+*/
+
+it('lives on the public site once published and unrestricted', function () {
+    expect(Page::factory()->unrestricted()->make(['path' => 'about'])->url())
+        ->toBe(route('public.pages.show', 'about'));
+});
+
+it('lives on squawk while restricted or unpublished', function () {
+    expect(Page::factory()->make(['path' => 'epl20'])->url())
+        ->toBe(route('pages.show', 'epl20'))
+        ->and(Page::factory()->unrestricted()->unpublished()->make(['path' => 'draft'])->url())
+        ->toBe(route('pages.show', 'draft'));
+});
+
+/*
+|--------------------------------------------------------------------------
 | Publication
 |--------------------------------------------------------------------------
 */

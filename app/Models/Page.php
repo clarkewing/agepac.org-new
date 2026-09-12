@@ -32,6 +32,17 @@ class Page extends Model
         ];
     }
 
+    /**
+     * The page's canonical URL: published public pages live on the public
+     * site, everything else (restricted pages, drafts) on squawk.
+     */
+    public function url(): string
+    {
+        return ! $this->restricted && $this->isPublished()
+            ? route('public.pages.show', $this)
+            : route('pages.show', $this);
+    }
+
     public function isPublished(): bool
     {
         return $this->published_at !== null && $this->published_at->isPast();

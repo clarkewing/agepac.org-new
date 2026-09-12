@@ -25,6 +25,13 @@ class Attachment extends Model
      */
     const string DISK = 'private';
 
+    protected static function booted(): void
+    {
+        static::deleted(function (Attachment $attachment): void {
+            Storage::disk(static::DISK)->delete($attachment->path);
+        });
+    }
+
     protected function casts(): array
     {
         return [

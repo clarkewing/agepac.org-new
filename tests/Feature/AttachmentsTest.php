@@ -55,3 +55,12 @@ it('returns a 404 for unknown attachments', function () {
     $this->get(route('attachments.show', ['attachment' => Str::uuid7()]))
         ->assertNotFound();
 });
+
+it('deletes the stored file with the attachment', function () {
+    Storage::disk(Attachment::DISK)->put($this->attachment->path, 'contents');
+
+    $this->attachment->delete();
+
+    Storage::disk(Attachment::DISK)->assertMissing($this->attachment->path);
+    expect(Attachment::count())->toBe(0);
+});
