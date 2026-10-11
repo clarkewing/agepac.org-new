@@ -35,3 +35,8 @@ Thumbs.db
 /.ai/mcp/
 /.claude/skills/
 /CLAUDE.md
+
+# Filament assets, published by `filament:upgrade` (composer "post-autoload-dump") on every install.
+/public/css/filament
+/public/fonts/filament
+/public/js/filament
