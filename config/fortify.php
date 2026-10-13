@@ -124,6 +124,7 @@ return [
         'login' => null,
         'two-factor' => 'two-factor',
         'passkeys' => 'passkeys',
+        'verification' => 'verification',
     ],
 
     /*

@@ -1,3 +1,4 @@
+@use('App\Http\Responses\Fortify\EmailVerificationNotificationSentResponse')
 @use('Laravel\Head\Facades\Head')
 
 @php(Head::title(__('auth.verify-email.title')))
@@ -25,13 +26,29 @@
         @endif
 
         <div class="flex flex-col items-center justify-between space-y-3">
-            <form method="POST" action="{{ route('verification.send') }}" class="w-full">
-                @csrf
+            @if ($resendAvailableAt = session(EmailVerificationNotificationSentResponse::RESEND_AVAILABLE_AT_KEY))
+                <x-countdown :until="$resendAvailableAt" class="block w-full text-center">
+                    <flux:text>{{ __('auth.verify-email.resend-wait') }}</flux:text>
 
-                <flux:button type="submit" variant="primary" class="w-full">
-                    {{ __('auth.verify-email.action') }}
-                </flux:button>
-            </form>
+                    <x-slot:done>
+                        <form method="POST" action="{{ route('verification.send') }}" class="w-full">
+                            @csrf
+
+                            <flux:button type="submit" variant="primary" class="w-full">
+                                {{ __('auth.verify-email.action') }}
+                            </flux:button>
+                        </form>
+                    </x-slot:done>
+                </x-countdown>
+            @else
+                <form method="POST" action="{{ route('verification.send') }}" class="w-full">
+                    @csrf
+
+                    <flux:button type="submit" variant="primary" class="w-full">
+                        {{ __('auth.verify-email.action') }}
+                    </flux:button>
+                </form>
+            @endif
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

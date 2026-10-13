@@ -49,6 +49,7 @@ return [
         'change-prompt' => 'Mauvaise adresse ?',
         'change-link' => 'La modifier',
         'action' => 'Renvoyer l’e‑mail de vérification',
+        'resend-wait' => 'Vous pourrez demander un nouveau lien dans :countdown.',
         'logout-link' => 'Se déconnecter',
         'status' => [
             'verification-link-sent' => 'Un nouveau lien de vérification a été envoyé à :email.',

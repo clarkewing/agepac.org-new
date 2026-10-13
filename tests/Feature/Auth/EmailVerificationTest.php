@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 beforeEach(function () {
     Event::fake();
@@ -135,6 +136,34 @@ it('resends the verification email', function () {
         ->assertSee(__('auth.verify-email.status.verification-link-sent', ['email' => $user->email]));
 
     Notification::assertSentTo($user, VerifyEmailNotification::class);
+});
+
+it('allows one resend a minute', function () {
+    Notification::fake();
+    $this->freezeTime();
+    $user = User::factory()->unverified()->create();
+
+    $this->actingAs($user)->post(route('verification.send'))->assertRedirect();
+    $this->actingAs($user)->post(route('verification.send'))->assertTooManyRequests();
+
+    Notification::assertSentToTimes($user, VerifyEmailNotification::class, 1);
+
+    $this->travel(60)->seconds();
+
+    $this->actingAs($user)->post(route('verification.send'))->assertRedirect();
+});
+
+it('counts down to the next resend instead of offering the button', function () {
+    Notification::fake();
+    $this->freezeTime();
+    $user = User::factory()->unverified()->create();
+
+    $this->actingAs($user)
+        ->from(route('verification.notice'))
+        ->followingRedirects()
+        ->post(route('verification.send'))
+        ->assertSee(Str::before(__('auth.verify-email.resend-wait'), ' :countdown'))
+        ->assertSeeHtml('until: '.now()->addSeconds(60)->getTimestamp());
 });
 
 it('does not resend to an already verified user', function () {

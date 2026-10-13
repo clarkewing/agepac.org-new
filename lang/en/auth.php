@@ -49,6 +49,7 @@ return [
         'change-prompt' => 'Wrong address?',
         'change-link' => 'Update it',
         'action' => 'Resend verification email',
+        'resend-wait' => 'You can request a new link in :countdown.',
         'logout-link' => 'Log out',
         'status' => [
             'verification-link-sent' => 'A new verification link has been sent to :email.',
