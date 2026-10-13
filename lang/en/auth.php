@@ -13,6 +13,9 @@ return [
     |
     */
 
+    'failed' => 'These credentials do not match our records.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+
     'login' => [
         'title' => 'Log in',
         'heading' => 'Welcome back',
@@ -21,9 +24,13 @@ return [
         'action' => 'Log in',
         'register-prompt' => 'First time around here?',
         'register-link' => 'Sign up',
-        'status' => [
-            'failed' => 'These credentials do not match our records.',
-            'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+        'callouts' => [
+            'lockout' => [
+                'heading' => 'Too many login attempts.',
+                'text' => 'You can try again in :countdown.',
+                'done' => 'You can try again now.',
+                'action' => 'Try again',
+            ],
         ],
     ],
 
@@ -36,13 +43,54 @@ return [
         'login-link' => 'Log in',
     ],
 
+    'recovery' => [
+        'title' => 'Recover your account',
+        'heading' => [
+            'password-reset' => 'Secure your account',
+            'migration' => 'Migrate your account',
+        ],
+        'callouts' => [
+            'incident' => [
+                'heading' => 'Security incident',
+                'text' => 'Our site was recently the target of a cyberattack. As a precaution, every member’s password was invalidated.',
+                'cta' => 'Choose a new one to log back in.',
+                'questions' => 'Any questions?',
+                'contact' => 'Contact us',
+            ],
+        ],
+        'verify' => [
+            'description' => 'To confirm your identity, we have emailed you a one-time code.',
+            'code-label' => 'Enter the 6-digit code',
+            'action' => 'Verify',
+            'resend-prompt' => 'Didn’t receive a code?',
+            'resend-wait' => 'You can request a new code in :countdown.',
+            'resend-link' => 'Send it again',
+            'resent' => 'A new code has been sent to your email address.',
+        ],
+        'complete' => [
+            'description' => [
+                'password-reset' => 'Choose a new password for your AGEPAC account.',
+                'migration' => 'Welcome back, :name! Let’s take this opportunity to update your details.',
+            ],
+            'action' => 'Save and log in',
+        ],
+        'status' => [
+            'invalid-code' => 'This code is invalid or has expired.',
+            'too-many-attempts' => 'Too many wrong codes. Please try again in :countdown.',
+            'too-many-codes' => 'Too many codes requested. Please try again in :countdown.',
+        ],
+    ],
+
     'verify-email' => [
         'title' => 'Verify email',
-        'heading' => 'Please verify your email address by clicking on the link we just emailed to you.',
+        'heading' => 'Please verify your email address by clicking on the link we emailed to :email.',
+        'change-prompt' => 'Wrong address?',
+        'change-link' => 'Update it',
         'action' => 'Resend verification email',
+        'resend-wait' => 'You can request a new link in :countdown.',
         'logout-link' => 'Log out',
         'status' => [
-            'verification-link-sent' => 'A new verification link has been sent to the email address you provided during registration.',
+            'verification-link-sent' => 'A new verification link has been sent to :email.',
         ],
     ],
 
@@ -53,9 +101,6 @@ return [
         'action' => 'Email password reset link',
         'login-prompt' => 'Or, return to',
         'login-link' => 'log in',
-        'status' => [
-            'link-sent' => 'A reset link will be sent if the account exists.',
-        ],
     ],
 
     'reset-password' => [
@@ -63,22 +108,15 @@ return [
         'heading' => 'Reset password',
         'description' => 'Please enter your new password below.',
         'action' => 'Reset password',
-        'status' => [
-            'sent' => 'A reset link will be sent if the account exists.',
-            'throttled' => 'Please wait before retrying.',
-            'reset' => 'Your password has been reset.',
-            'token' => 'This password reset token is invalid.',
-            'user' => 'We can’t find a user with that email address.',
-        ],
     ],
 
     'confirm-password' => [
         'title' => 'Confirm password',
         'heading' => 'Confirm password',
-        'description' => 'This is a secure area of the application. Please confirm your password before continuing.',
+        'description' => 'This is a secure area of the website. Please confirm your password before continuing.',
         'action' => 'Confirm',
         'status' => [
-            'invalid-password' => 'The provided password is incorrect.',
+            'throttled' => 'Too many attempts. Please try again in :seconds seconds.',
         ],
     ],
 ];

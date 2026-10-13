@@ -1,29 +1,15 @@
 <?php
 
-use App\Actions\Logout;
-use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+// Fortify registers the authentication routes itself (see config/fortify.php
+// for the domain and middleware); only what Fortify does not provide lives here.
+
 Route::middleware('guest')->group(function () {
-    // Route::livewire('login', 'pages::auth.login')->name('login');
-    Route::redirect('login', config('handoff.target_host').'/login')->name('login');
+    // Registration goes through the Livewire page rather than Fortify's
+    // endpoint, so its feature is off, and the route is declared here.
     // Route::livewire('register', 'pages::auth.register')->name('register');
     Route::redirect('register', config('handoff.target_host').'/register')->name('register');
-    Route::livewire('forgot-password', 'pages::auth.forgot-password')->name('password.request');
-    Route::livewire('reset-password/{token}', 'pages::auth.reset-password')->name('password.reset');
+
+    Route::livewire('recover', 'pages::auth.recover')->name('recovery');
 });
-
-Route::middleware('auth')->group(function () {
-    Route::livewire('verify-email', 'pages::auth.verify-email')
-        ->name('verification.notice');
-
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
-
-    Route::livewire('confirm-password', 'pages::auth.confirm-password')
-        ->name('password.confirm');
-});
-
-Route::post('logout', Logout::class)
-    ->name('logout');

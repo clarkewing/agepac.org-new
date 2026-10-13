@@ -74,6 +74,31 @@ class UserFactory extends Factory
         ]);
     }
 
+    public function passwordResetRequired(): static
+    {
+        return $this->withPasswordSentinel(User::PASSWORD_RESET_SENTINEL);
+    }
+
+    public function migrationRequired(): static
+    {
+        return $this->withPasswordSentinel(User::MIGRATION_SENTINEL);
+    }
+
+    /**
+     * The hashed cast would bcrypt a sentinel on save, so write it straight
+     * to the table the way the invalidation migrations do.
+     */
+    protected function withPasswordSentinel(string $sentinel): static
+    {
+        return $this
+            ->state(['remember_token' => null])
+            ->afterCreating(function (User $user) use ($sentinel): void {
+                User::query()->toBase()->where('id', $user->getKey())->update(['password' => $sentinel]);
+
+                $user->refresh();
+            });
+    }
+
     public function asCustomer(): static
     {
         return $this->afterCreating(function (User $user) {

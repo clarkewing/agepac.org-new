@@ -1,14 +1,12 @@
 <?php
 
-use App\Actions\MakeUsername;
 use App\Enums\ClassCourse;
 use App\Enums\Gender;
-use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rules\Password;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Head\Facades\Head;
 use libphonenumber\NumberParseException;
 use Livewire\Attributes\Layout;
@@ -40,30 +38,19 @@ new #[Layout('layouts::auth')] class extends Component
 
     /**
      * Handle an incoming registration request.
+     *
+     * Validation and creation live in Fortify's CreateNewUser action, so this
+     * page and Fortify's POST /register endpoint produce the same account.
      */
-    public function register(MakeUsername $makeUsername): void
+    public function register(CreatesNewUsers $creator): void
     {
-        $validated = $this->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)],
-            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
-            'class_course' => ['required', Rule::enum(ClassCourse::class)],
-            'class_year' => ['required', Rule::date()->format('Y')],
-            'gender' => ['required', Rule::enum(Gender::class)],
-            'birth_date' => ['required', Rule::date()->format('Y-m-d')->after('150 years ago')->beforeOrEqual('15 years ago')],
-            'phone' => ['required', (new Phone)->international()->country('FR')],
-        ]);
-
-        $validated['password'] = Hash::make($validated['password']);
-
-        $validated['username'] = $makeUsername($validated['first_name'], $validated['last_name']);
-
-        event(new Registered(($user = User::create($validated))));
+        event(new Registered($user = $creator->create($this->all())));
 
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        Session::regenerate();
+
+        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 
     public function updatedPhone(): void
@@ -85,7 +72,9 @@ new #[Layout('layouts::auth')] class extends Component
     <x-auth-header :title="__('auth.register.heading')" :description="__('auth.register.description')" />
 
     <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
+    @if (session('status'))
+        <flux:callout variant="success" icon="check-circle" :heading="session('status')" />
+    @endif
 
     <form wire:submit="register" class="flex flex-col gap-6">
         <!-- First Name -->
@@ -184,6 +173,7 @@ new #[Layout('layouts::auth')] class extends Component
             required
             autocomplete="new-password"
             :placeholder="__('fields.password.placeholder')"
+            :passwordrules="Password::defaults()->toPasswordRulesString()"
             viewable
         />
 
@@ -195,6 +185,7 @@ new #[Layout('layouts::auth')] class extends Component
             required
             autocomplete="new-password"
             :placeholder="__('fields.password-confirmation.placeholder')"
+            :passwordrules="Password::defaults()->toPasswordRulesString()"
             viewable
         />
 

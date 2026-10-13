@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Carbon\CarbonInterface;
+use Carbon\CarbonInterval;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -10,6 +13,13 @@ class MacroServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        Number::macro('duration', function (int $seconds): string {
+            return CarbonInterval::seconds($seconds)->cascade()->forHumans([
+                'parts' => 1,
+                'options' => CarbonInterface::CEIL,
+            ]);
+        });
+
         Str::macro('nameCase', function (string $value): string {
             // https://gist.github.com/timvisee/2ad754445ea63262eb3b903864c641cc
 

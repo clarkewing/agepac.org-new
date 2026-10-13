@@ -7,6 +7,7 @@ use App\Observers\SubscriptionObserver as CashierSubscriptionObserver;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 use Laravel\Cashier\Subscription as CashierSubscription;
 use Laravel\Cashier\SubscriptionItem as CashierSubscriptionItem;
 use Laravel\Head\Enums\ImageType;
@@ -29,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureDefaults();
         $this->bootHead();
         $this->bootModelObservers();
 
@@ -36,6 +38,22 @@ class AppServiceProvider extends ServiceProvider
         Number::useCurrency(config('cashier.currency'));
 
         Blade::anonymousComponentPath(resource_path('views/public/components'), 'public');
+    }
+
+    /**
+     * Configure default behaviors for production-ready applications.
+     */
+    protected function configureDefaults(): void
+    {
+        Password::defaults(fn (): ?Password => app()->isProduction()
+            ? Password::min(12)
+                ->mixedCase()
+                ->letters()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+            : null,
+        );
     }
 
     public function bootHead(): void

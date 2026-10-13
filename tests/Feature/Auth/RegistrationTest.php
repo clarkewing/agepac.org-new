@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Enum as EnumRule;
 use Livewire\Livewire;
 
@@ -154,4 +155,8 @@ describe('validation', function () {
             ->call('register')
             ->assertHasErrors(['email' => 'unique']);
     });
+});
+
+it('does not expose a registration endpoint', function () {
+    expect(Route::has('register.store'))->toBeFalse();
 });

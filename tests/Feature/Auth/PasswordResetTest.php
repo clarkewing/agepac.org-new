@@ -1,106 +1,120 @@
 <?php
 
+use App\Actions\StartRecovery;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
-use Livewire\Livewire;
+use Illuminate\Support\Facades\Password;
 
-beforeEach(function () {
+it('renders the forgot password screen', function () {
+    $this->get(route('password.request'))
+        ->assertOk();
+});
+
+it('emails a reset link', function () {
+    Notification::fake();
+    $user = User::factory()->create();
+
+    $this->post(route('password.email'), ['email' => $user->email])
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('status', __('passwords.sent'));
+
+    Notification::assertSentTo($user, ResetPasswordNotification::class);
+});
+
+it('answers an unknown email exactly like a known one', function () {
     Notification::fake();
 
-    $this->user = User::factory()->create();
+    $this->post(route('password.email'), ['email' => 'nobody@example.com'])
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('status', __('passwords.sent'));
+
+    Notification::assertNothingSent();
 });
 
-test('forgot password screen can be rendered', function () {
-    $this->get(route('password.request'))
+it('sends an imported account to the recovery wizard instead of a reset link', function () {
+    Notification::fake();
+    $user = User::factory()->migrationRequired()->create();
+
+    $this->post(route('password.email'), ['email' => $user->email])
+        ->assertRedirect(route('recovery'))
+        ->assertSessionHas(StartRecovery::SESSION_KEY.'.user_id', $user->id);
+
+    Notification::assertNotSentTo($user, ResetPasswordNotification::class);
+});
+
+it('renders the reset password screen from the emailed link', function () {
+    $user = User::factory()->create();
+
+    $this->get(route('password.reset', ['token' => Password::createToken($user), 'email' => $user->email]))
         ->assertOk()
-        ->assertSeeLivewire('pages::auth.forgot-password');
+        ->assertSee($user->email);
 });
 
-test('reset password link can be requested', function () {
-    Livewire::test('pages::auth.forgot-password')
-        ->set('email', $this->user->email)
-        ->call('sendPasswordResetLink');
+it('resets the password with a valid token', function () {
+    $user = User::factory()->create();
 
-    Notification::assertSentTo($this->user, ResetPasswordNotification::class);
+    $this->post(route('password.update'), [
+        'token' => Password::createToken($user),
+        'email' => $user->email,
+        'password' => 'new-password',
+        'password_confirmation' => 'new-password',
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(route('login'))
+        ->assertSessionHas('status', __('passwords.reset'))
+        ->assertSessionHasInput('email', $user->email);
+
+    expect(Auth::validate(['email' => $user->email, 'password' => 'new-password']))->toBeTrue();
 });
 
-test('reset password screen can be rendered', function () {
-    Livewire::test('pages::auth.forgot-password')
-        ->set('email', $this->user->email)
-        ->call('sendPasswordResetLink');
+it('rejects a token issued for another email', function () {
+    $user = User::factory()->create();
 
-    Notification::assertSentTo($this->user, ResetPasswordNotification::class, function ($notification) {
-        $this->get(route('password.reset', ['token' => $notification->token]))
-            ->assertOk()
-            ->assertSeeLivewire('pages::auth.reset-password');
+    $this->post(route('password.update'), [
+        'token' => Password::createToken($user),
+        'email' => 'someone-else@example.com',
+        'password' => 'new-password',
+        'password_confirmation' => 'new-password',
+    ])->assertSessionHasErrors(['email' => __('passwords.user')]);
 
-        return true;
-    });
+    expect(Auth::validate(['email' => $user->email, 'password' => 'new-password']))->toBeFalse();
 });
 
-test('password can be reset with valid token', function () {
-    Livewire::test('pages::auth.forgot-password')
-        ->set('email', $this->user->email)
-        ->call('sendPasswordResetLink');
+it('rejects an invalid token', function () {
+    $user = User::factory()->create();
 
-    Notification::assertSentTo($this->user, ResetPasswordNotification::class, function ($notification) {
-        Livewire::test('pages::auth.reset-password', ['token' => $notification->token])
-            ->set('email', $this->user->email)
-            ->set('password', 'password')
-            ->set('password_confirmation', 'password')
-            ->call('resetPassword')
-            ->assertHasNoErrors()
-            ->assertRedirect(route('login'));
-
-        return true;
-    });
+    $this->post(route('password.update'), [
+        'token' => 'invalid-token',
+        'email' => $user->email,
+        'password' => 'new-password',
+        'password_confirmation' => 'new-password',
+    ])->assertSessionHasErrors(['email' => __('passwords.token')]);
 });
 
-describe('validation', function () {
-    it('rejects an invalid email', function () {
-        Livewire::test('pages::auth.forgot-password')
-            ->set('email', $this->user->email)
-            ->call('sendPasswordResetLink');
+it('rejects an expired token', function () {
+    $this->freezeTime();
+    $user = User::factory()->create();
+    $token = Password::createToken($user);
 
-        Notification::assertSentTo($this->user, ResetPasswordNotification::class, function ($notification) {
-            Livewire::test('pages::auth.reset-password', ['token' => $notification->token])
-                ->set('email', 'invalid@grounded-labs.co')
-                ->set('password', 'password')
-                ->set('password_confirmation', 'password')
-                ->call('resetPassword')
-                ->assertHasErrors(['email' => __('auth.reset-password.status.user')]);
+    $this->travel(61)->minutes();
 
-            return true;
-        });
-    });
+    $this->post(route('password.update'), [
+        'token' => $token,
+        'email' => $user->email,
+        'password' => 'new-password',
+        'password_confirmation' => 'new-password',
+    ])->assertSessionHasErrors(['email' => __('passwords.token')]);
+});
 
-    it('rejects an invalid token', function () {
-        Livewire::test('pages::auth.reset-password', ['token' => 'invalid-token'])
-            ->set('email', $this->user->email)
-            ->set('password', 'password')
-            ->set('password_confirmation', 'password')
-            ->call('resetPassword')
-            ->assertHasErrors(['email' => __('auth.reset-password.status.token')]);
-    });
+it('requires a confirmed password', function () {
+    $user = User::factory()->create();
 
-    it('rejects an expired token', function () {
-        Livewire::test('pages::auth.forgot-password')
-            ->set('email', $this->user->email)
-            ->call('sendPasswordResetLink');
-
-        Notification::assertSentTo($this->user, ResetPasswordNotification::class, function ($notification) {
-            // Travel forward in time beyond token expiration (61 minutes)
-            $this->travel(61)->minutes();
-
-            Livewire::test('pages::auth.reset-password', ['token' => $notification->token])
-                ->set('email', $this->user->email)
-                ->set('password', 'password')
-                ->set('password_confirmation', 'password')
-                ->call('resetPassword')
-                ->assertHasErrors(['email' => __('auth.reset-password.status.token')]);
-
-            return true;
-        });
-    });
+    $this->post(route('password.update'), [
+        'token' => Password::createToken($user),
+        'email' => $user->email,
+        'password' => 'new-password',
+        'password_confirmation' => 'different-password',
+    ])->assertSessionHasErrors(['password' => __('validation.confirmed', ['attribute' => 'password'])]);
 });

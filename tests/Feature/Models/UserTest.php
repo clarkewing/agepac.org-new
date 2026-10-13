@@ -23,6 +23,33 @@ it('can be instantiated in unapproved state', function () {
     expect($user->approved_at)->toBeNull();
 });
 
+it('can be flagged for a password reset', function () {
+    $user = User::factory()->passwordResetRequired()->create();
+
+    expect($user)
+        ->password->toBe(User::PASSWORD_RESET_SENTINEL)
+        ->requiresPasswordReset()->toBeTrue()
+        ->requiresMigration()->toBeFalse()
+        ->requiresRecovery()->toBeTrue();
+});
+
+it('can be flagged for migration', function () {
+    $user = User::factory()->migrationRequired()->create();
+
+    expect($user)
+        ->password->toBe(User::MIGRATION_SENTINEL)
+        ->requiresMigration()->toBeTrue()
+        ->requiresPasswordReset()->toBeFalse()
+        ->requiresRecovery()->toBeTrue();
+});
+
+it('does not require recovery with a hashed password', function () {
+    $user = User::factory()->create();
+
+    expect($user)
+        ->requiresRecovery()->toBeFalse();
+});
+
 /*
 |--------------------------------------------------------------------------
 | Attributes & Casting
