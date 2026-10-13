@@ -5,16 +5,20 @@ namespace App\Providers;
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Http\Responses\Fortify\FailedPasswordResetLinkRequestResponse;
+use App\Http\Responses\Fortify\LockoutResponse;
 use App\Http\Responses\Fortify\LogoutResponse;
 use App\Http\Responses\Fortify\PasswordResetResponse;
+use App\Services\Auth\ProgressiveLoginRateLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Contracts\FailedPasswordResetLinkRequestResponse as FailedPasswordResetLinkRequestResponseContract;
+use Laravel\Fortify\Contracts\LockoutResponse as LockoutResponseContract;
 use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\LoginRateLimiter;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -23,7 +27,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Lockouts grow with each failure past the fifth instead of resetting every minute.
+        $this->app->bind(LoginRateLimiter::class, ProgressiveLoginRateLimiter::class);
+
         $this->app->singleton(LogoutResponseContract::class, LogoutResponse::class);
+        $this->app->singleton(LockoutResponseContract::class, LockoutResponse::class);
         $this->app->bind(FailedPasswordResetLinkRequestResponseContract::class, FailedPasswordResetLinkRequestResponse::class);
         $this->app->bind(PasswordResetResponseContract::class, PasswordResetResponse::class);
     }

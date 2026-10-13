@@ -24,6 +24,14 @@ return [
         'action' => 'Log in',
         'register-prompt' => 'First time around here?',
         'register-link' => 'Sign up',
+        'callouts' => [
+            'lockout' => [
+                'heading' => 'Too many login attempts.',
+                'text' => 'You can try again in :countdown.',
+                'done' => 'You can try again now.',
+                'action' => 'Try again',
+            ],
+        ],
     ],
 
     'register' => [

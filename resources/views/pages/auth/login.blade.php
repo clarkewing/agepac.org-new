@@ -1,3 +1,4 @@
+@use('App\Http\Responses\Fortify\LockoutResponse')
 @use('Laravel\Head\Facades\Head')
 
 @php(Head::title(__('auth.login.title')))
@@ -10,6 +11,28 @@
             <!-- Session Status -->
             @if (session('status'))
                 <flux:callout variant="success" icon="check-circle" :heading="session('status')" />
+            @endif
+
+            <!-- Lockout -->
+            @if ($errors->has('throttle'))
+                @php($lockoutUntil = (int) session(LockoutResponse::LOCKOUT_UNTIL_KEY, now()->getTimestamp()))
+
+                <flux:callout variant="danger" icon="lock-closed" :heading="__('auth.login.callouts.lockout.heading')">
+                    <flux:callout.text>
+                        <x-countdown :until="$lockoutUntil">
+                            {{ __('auth.login.callouts.lockout.text') }}
+
+                            <x-slot:done>
+                                {{ __('auth.login.callouts.lockout.done') }}
+                                <flux:callout.link
+                                    href="#"
+                                    x-on:click.prevent="document.querySelector('input[name=password]').focus()"
+                                >
+                                    {{ __('auth.login.callouts.lockout.action') }}</flux:callout.link>
+                            </x-slot:done>
+                        </x-countdown>
+                    </flux:callout.text>
+                </flux:callout>
             @endif
 
             <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">

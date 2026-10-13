@@ -24,6 +24,14 @@ return [
         'action' => 'Se connecter',
         'register-prompt' => 'Première visite ?',
         'register-link' => 'Nous rejoindre',
+        'callouts' => [
+            'lockout' => [
+                'heading' => 'Trop de tentatives de connexion.',
+                'text' => 'Vous pourrez réessayer dans :countdown.',
+                'done' => 'Vous pouvez réessayer.',
+                'action' => 'Réessayer',
+            ],
+        ],
     ],
 
     'register' => [
