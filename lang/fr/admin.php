@@ -59,7 +59,7 @@ return [
             ],
             'front_matter' => [
                 'heading' => 'Métadonnées de la page',
-                'description' => 'Un bloc facultatif tout en haut du contenu définit les métadonnées de la page :',
+                'description' => 'Un bloc facultatif tout en haut du contenu définit les métadonnées de la page :',
                 'example' => "---\ndescription: Résumé affiché par les moteurs de recherche.\neyebrow: Surtitre affiché au-dessus du titre.\n---",
             ],
             'attachments' => 'Insérez images et PDF avec le bouton de pièce jointe de l’éditeur. Un lien vers un PDF placé seul sur sa ligne devient un bouton de téléchargement.',
