@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Actions\Fortify\ConfirmPassword;
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Http\Responses\Fortify\FailedPasswordResetLinkRequestResponse;
@@ -53,6 +54,7 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        Fortify::confirmPasswordsUsing($this->app->make(ConfirmPassword::class));
     }
 
     /**

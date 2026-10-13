@@ -77,6 +77,7 @@ return [
         'description' => 'Ceci est une zone sécurisée du site web. Veuillez confirmer votre mot de passe avant de continuer.',
         'action' => 'Confirmer',
         'status' => [
+            'throttled' => 'Trop de tentatives. Veuillez réessayer dans :seconds secondes.',
         ],
     ],
 ];

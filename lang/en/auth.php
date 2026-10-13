@@ -77,6 +77,7 @@ return [
         'description' => 'This is a secure area of the website. Please confirm your password before continuing.',
         'action' => 'Confirm',
         'status' => [
+            'throttled' => 'Too many attempts. Please try again in :seconds seconds.',
         ],
     ],
 ];
