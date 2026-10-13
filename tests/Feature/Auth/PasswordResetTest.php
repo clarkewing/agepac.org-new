@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\StartRecovery;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,17 @@ it('answers an unknown email exactly like a known one', function () {
         ->assertSessionHas('status', __('passwords.sent'));
 
     Notification::assertNothingSent();
+});
+
+it('sends an imported account to the recovery wizard instead of a reset link', function () {
+    Notification::fake();
+    $user = User::factory()->migrationRequired()->create();
+
+    $this->post(route('password.email'), ['email' => $user->email])
+        ->assertRedirect(route('recovery'))
+        ->assertSessionHas(StartRecovery::SESSION_KEY.'.user_id', $user->id);
+
+    Notification::assertNotSentTo($user, ResetPasswordNotification::class);
 });
 
 it('renders the reset password screen from the emailed link', function () {

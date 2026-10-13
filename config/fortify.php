@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\RedirectIfRecoveryRequired;
 use App\Http\Middleware\SetLocaleFromSession;
 use Laravel\Fortify\Features;
 
@@ -105,6 +106,7 @@ return [
     'middleware' => [
         'web',
         SetLocaleFromSession::class,
+        RedirectIfRecoveryRequired::migrationOnly(),
     ],
 
     /*

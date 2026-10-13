@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Actions\Fortify\ConfirmPassword;
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
+use App\Http\Middleware\RedirectIfRecoveryRequired;
 use App\Http\Responses\Fortify\EmailVerificationNotificationSentResponse;
 use App\Http\Responses\Fortify\FailedPasswordResetLinkRequestResponse;
 use App\Http\Responses\Fortify\LockoutResponse;
@@ -15,11 +16,17 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Laravel\Fortify\Actions\CanonicalizeUsername;
+use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
+use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
+use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Contracts\EmailVerificationNotificationSentResponse as EmailVerificationNotificationSentResponseContract;
 use Laravel\Fortify\Contracts\FailedPasswordResetLinkRequestResponse as FailedPasswordResetLinkRequestResponseContract;
 use Laravel\Fortify\Contracts\LockoutResponse as LockoutResponseContract;
 use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
+use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\LoginRateLimiter;
 
@@ -47,6 +54,7 @@ class FortifyServiceProvider extends ServiceProvider
     {
         $this->configureActions();
         $this->configureViews();
+        $this->configureAuthenticationPipeline();
         $this->configureRateLimiting();
     }
 
@@ -69,6 +77,23 @@ class FortifyServiceProvider extends ServiceProvider
 
         // Login is still served by the legacy app; drop this line at the flip.
         Fortify::loginView(fn () => redirect()->away(config('handoff.target_host').'/login'));
+    }
+
+    /**
+     * Configure the authentication pipeline.
+     */
+    protected function configureAuthenticationPipeline(): void
+    {
+        // Fortify's default pipeline, plus RedirectIfRecoveryRequired:
+        // a sentinel password must never reach the bcrypt hasher.
+        Fortify::authenticateThrough(fn (Request $request): array => array_filter([
+            config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
+            CanonicalizeUsername::class,
+            RedirectIfRecoveryRequired::class,
+            Features::enabled(Features::twoFactorAuthentication()) ? RedirectIfTwoFactorAuthenticatable::class : null,
+            AttemptToAuthenticate::class,
+            PrepareAuthenticatedSession::class,
+        ]));
     }
 
     /**

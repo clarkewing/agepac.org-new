@@ -43,6 +43,44 @@ return [
         'login-link' => 'Log in',
     ],
 
+    'recovery' => [
+        'title' => 'Recover your account',
+        'heading' => [
+            'password-reset' => 'Secure your account',
+            'migration' => 'Migrate your account',
+        ],
+        'callouts' => [
+            'incident' => [
+                'heading' => 'Security incident',
+                'text' => 'Our site was recently the target of a cyberattack. As a precaution, every member’s password was invalidated.',
+                'cta' => 'Choose a new one to log back in.',
+                'questions' => 'Any questions?',
+                'contact' => 'Contact us',
+            ],
+        ],
+        'verify' => [
+            'description' => 'To confirm your identity, we have emailed you a one-time code.',
+            'code-label' => 'Enter the 6-digit code',
+            'action' => 'Verify',
+            'resend-prompt' => 'Didn’t receive a code?',
+            'resend-wait' => 'You can request a new code in :countdown.',
+            'resend-link' => 'Send it again',
+            'resent' => 'A new code has been sent to your email address.',
+        ],
+        'complete' => [
+            'description' => [
+                'password-reset' => 'Choose a new password for your AGEPAC account.',
+                'migration' => 'Welcome back, :name! Let’s take this opportunity to update your details.',
+            ],
+            'action' => 'Save and log in',
+        ],
+        'status' => [
+            'invalid-code' => 'This code is invalid or has expired.',
+            'too-many-attempts' => 'Too many wrong codes. Please try again in :countdown.',
+            'too-many-codes' => 'Too many codes requested. Please try again in :countdown.',
+        ],
+    ],
+
     'verify-email' => [
         'title' => 'Verify email',
         'heading' => 'Please verify your email address by clicking on the link we emailed to :email.',

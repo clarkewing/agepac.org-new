@@ -43,6 +43,44 @@ return [
         'login-link' => 'Se connecter',
     ],
 
+    'recovery' => [
+        'title' => 'Récupération de votre compte',
+        'heading' => [
+            'password-reset' => 'Sécurisation de votre compte',
+            'migration' => 'Migration de votre compte',
+        ],
+        'callouts' => [
+            'incident' => [
+                'heading' => 'Incident de sécurité',
+                'text' => 'Notre site a récemment été la cible d’une cyberattaque. Par précaution, tous les mots de passe ont été invalidés.',
+                'cta' => 'Choisissez-en un nouveau pour vous reconnecter.',
+                'questions' => 'Des questions ?',
+                'contact' => 'Contactez‑nous',
+            ],
+        ],
+        'verify' => [
+            'description' => 'Afin de confirmer votre identité, nous vous avons envoyé un e‑mail contenant un code à usage unique.',
+            'code-label' => 'Saisissez le code à 6 chiffres',
+            'action' => 'Vérifier',
+            'resend-prompt' => 'Vous n’avez pas reçu de code ?',
+            'resend-wait' => 'Vous pourrez demander un nouveau code dans :countdown.',
+            'resend-link' => 'Le renvoyer',
+            'resent' => 'Un nouveau code a été envoyé à votre adresse e‑mail.',
+        ],
+        'complete' => [
+            'description' => [
+                'password-reset' => 'Choisissez un nouveau mot de passe pour votre compte AGEPAC.',
+                'migration' => 'Bon retour parmi nous, :name ! Profitons de l’occasion pour mettre à jour vos informations.',
+            ],
+            'action' => 'Enregistrer et se connecter',
+        ],
+        'status' => [
+            'invalid-code' => 'Ce code est invalide ou a expiré.',
+            'too-many-attempts' => 'Trop de codes erronés. Veuillez réessayer dans :countdown.',
+            'too-many-codes' => 'Trop de codes demandés. Veuillez réessayer dans :countdown.',
+        ],
+    ],
+
     'verify-email' => [
         'title' => 'Vérification de l’e‑mail',
         'heading' => 'Veuillez confirmer votre adresse e‑mail en cliquant sur le lien que nous avons envoyé à :email.',

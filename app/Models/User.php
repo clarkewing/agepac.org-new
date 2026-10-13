@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ClassCourse;
 use App\Models\Concerns\Approvable;
 use App\Models\Concerns\HasRole;
+use App\Models\Concerns\Recoverable;
 use App\Observers\UserObserver;
 use App\Services\Stripe\Billable;
 use Filament\Models\Contracts\FilamentUser;
@@ -48,6 +49,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     use HasFactory;
     use HasRole;
     use Notifiable;
+    use Recoverable;
 
     protected function casts(): array
     {
