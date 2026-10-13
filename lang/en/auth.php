@@ -13,6 +13,9 @@ return [
     |
     */
 
+    'failed' => 'These credentials do not match our records.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+
     'login' => [
         'title' => 'Log in',
         'heading' => 'Welcome back',
@@ -21,10 +24,6 @@ return [
         'action' => 'Log in',
         'register-prompt' => 'First time around here?',
         'register-link' => 'Sign up',
-        'status' => [
-            'failed' => 'These credentials do not match our records.',
-            'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-        ],
     ],
 
     'register' => [
@@ -38,11 +37,13 @@ return [
 
     'verify-email' => [
         'title' => 'Verify email',
-        'heading' => 'Please verify your email address by clicking on the link we just emailed to you.',
+        'heading' => 'Please verify your email address by clicking on the link we emailed to :email.',
+        'change-prompt' => 'Wrong address?',
+        'change-link' => 'Update it',
         'action' => 'Resend verification email',
         'logout-link' => 'Log out',
         'status' => [
-            'verification-link-sent' => 'A new verification link has been sent to the email address you provided during registration.',
+            'verification-link-sent' => 'A new verification link has been sent to :email.',
         ],
     ],
 
@@ -53,9 +54,6 @@ return [
         'action' => 'Email password reset link',
         'login-prompt' => 'Or, return to',
         'login-link' => 'log in',
-        'status' => [
-            'link-sent' => 'A reset link will be sent if the account exists.',
-        ],
     ],
 
     'reset-password' => [
@@ -63,22 +61,14 @@ return [
         'heading' => 'Reset password',
         'description' => 'Please enter your new password below.',
         'action' => 'Reset password',
-        'status' => [
-            'sent' => 'A reset link will be sent if the account exists.',
-            'throttled' => 'Please wait before retrying.',
-            'reset' => 'Your password has been reset.',
-            'token' => 'This password reset token is invalid.',
-            'user' => 'We can’t find a user with that email address.',
-        ],
     ],
 
     'confirm-password' => [
         'title' => 'Confirm password',
         'heading' => 'Confirm password',
-        'description' => 'This is a secure area of the application. Please confirm your password before continuing.',
+        'description' => 'This is a secure area of the website. Please confirm your password before continuing.',
         'action' => 'Confirm',
         'status' => [
-            'invalid-password' => 'The provided password is incorrect.',
         ],
     ],
 ];

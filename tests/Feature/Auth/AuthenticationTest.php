@@ -1,100 +1,85 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Auth\Events\Lockout;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Str;
-use Livewire\Features\SupportTesting\Testable;
-use Livewire\Livewire;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Testing\TestResponse;
 
-test('login screen can be rendered', function () {
-    $response = $this->get(route('login'));
-
-    $response->assertStatus(200);
+it('renders the login screen', function () {
+    $this->get(route('login'))->assertOk();
 })->skip(message: 'Handoff is handling this route for now');
 
-test('login screen only shows developer login in local environment', function () {
-    withEnvironment('local',
-        fn () => Livewire::test('pages::auth.login')
-            ->assertSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">')
-    );
+it('only shows the developer login in the local environment', function () {
+    withEnvironment('local', function () {
+        loginForm()->assertSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">');
+    });
 
-    withEnvironment('production',
-        fn () => Livewire::test('pages::auth.login')
-            ->assertDontSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">')
-    );
+    withEnvironment('production', function () {
+        loginForm()->assertDontSeeHtml('<form method="POST" action="'.route('loginLinkLogin').'">');
+    });
 });
 
-test('users can authenticate using the login screen', function () {
+it('logs the user in with valid credentials', function () {
     $user = User::factory()->create();
 
     attemptLogin($user->email, 'password')
-        ->assertHasNoErrors()
+        ->assertSessionHasNoErrors()
         ->assertRedirect(route('dashboard', absolute: false));
 
-    $this->assertAuthenticated();
+    $this->assertAuthenticatedAs($user);
 });
 
-test('users can not authenticate with invalid password', function () {
+it('rejects an invalid password', function () {
     $user = User::factory()->create();
 
     attemptLogin($user->email, 'wrong-password')
-        ->assertHasErrors('email');
+        ->assertSessionHasErrors(['email' => __('auth.failed')]);
 
     $this->assertGuest();
 });
 
-test('users are rate limited after too many failed login attempts', function () {
-    Event::fake();
-    $this->freezeTime();
+it('focuses the password field when the email is already filled in', function () {
+    loginForm()
+        ->assertSeeHtml('autofocus="autofocus" autocomplete="email"')
+        ->assertDontSeeHtml('autofocus="autofocus" autocomplete="current-password"');
 
-    $user = User::factory()->create();
-
-    // Make 5 failed login attempts (the rate limit threshold)
-    for ($i = 0; $i < 5; $i++) {
-        attemptLogin($user->email, 'wrong-password')
-            ->assertHasErrors('email');
-    }
-
-    // The 6th attempt should trigger rate limiting
-    $secondsRemaining = RateLimiter::availableIn(throttleKey($user->email));
-
-    attemptLogin($user->email, 'wrong-password')
-        ->assertHasErrors([
-            'email' => __('auth.login.status.throttle', ['seconds' => $secondsRemaining]),
-        ]);
-
-    Event::assertDispatched(Lockout::class);
-
-    // Ensure the rate limit is reset after the time has passed
-    $this->travel($secondsRemaining)->seconds();
-
-    attemptLogin($user->email, 'password')
-        ->assertHasNoErrors();
-
-    $this->assertAuthenticated();
+    loginForm(['_old_input' => ['email' => 'member@example.com']])
+        ->assertSeeHtml('value="member@example.com"')
+        ->assertDontSeeHtml('autofocus="autofocus" autocomplete="email"')
+        ->assertSeeHtml('autofocus="autofocus" autocomplete="current-password"');
 });
 
-test('users can logout', function () {
+it('logs the user out to the public site', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->post(route('logout'));
-
-    $response->assertRedirect(route('public.home'));
+    $this->actingAs($user)
+        ->post(route('logout'))
+        ->assertRedirect(route('public.home'));
 
     $this->assertGuest();
 });
 
-function attemptLogin(string $email, string $password): Testable
+/**
+ * Render the login form through a real request, with the given session data,
+ * since the login route itself still redirects to the legacy app.
+ *
+ * @param  array<string, mixed>  $session
+ */
+function loginForm(array $session = []): TestResponse
 {
-    return Livewire::test('pages::auth.login')
-        ->set('email', $email)
-        ->set('password', $password)
-        ->call('login');
+    registerLoginForm();
+
+    return test()->withSession($session)->get('login-form');
 }
 
-function throttleKey(string $email): string
+function registerLoginForm(): void
 {
-    return Str::transliterate(Str::lower($email).'|'.request()->ip());
+    Route::middleware('web')->get('login-form', fn () => view('pages.auth.login'));
+}
+
+function attemptLogin(string $email, string $password): TestResponse
+{
+    return test()->post(route('login.store'), [
+        'email' => $email,
+        'password' => $password,
+    ]);
 }

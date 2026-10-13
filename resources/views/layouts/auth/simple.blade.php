@@ -15,6 +15,12 @@
             <div class="flex flex-col gap-6">{{ $slot }}</div>
         </div>
     </div>
+    @persist('toast')
+        <flux:toast.group>
+            <flux:toast />
+        </flux:toast.group>
+    @endpersist
+
     @fluxScripts
 </body>
 </html>

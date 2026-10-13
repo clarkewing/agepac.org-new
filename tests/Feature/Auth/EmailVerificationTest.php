@@ -5,8 +5,8 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
-use Livewire\Livewire;
 
 beforeEach(function () {
     Event::fake();
@@ -24,7 +24,29 @@ it('renders the email verification screen', function () {
     $this->actingAs($user)
         ->get(route('verification.notice'))
         ->assertOk()
-        ->assertSeeLivewire('pages::auth.verify-email');
+        ->assertSee($user->email)
+        ->assertSeeHtml(route('settings.profile'))
+        ->assertSeeHtml(route('logout'));
+});
+
+it('sends unverified users to the verification notice from verified-only pages', function () {
+    Route::middleware(['web', 'auth', 'verified'])->get('verified-only', fn () => 'ok');
+
+    $this->actingAs(User::factory()->unverified()->create())
+        ->get('verified-only')
+        ->assertRedirect(route('verification.notice'))
+        ->assertDontSee('ok');
+
+    $this->actingAs(User::factory()->create())
+        ->get('verified-only')
+        ->assertOk()
+        ->assertContent('ok');
+});
+
+it('sends an already verified user past the verification screen', function () {
+    $this->actingAs(User::factory()->create())
+        ->get(route('verification.notice'))
+        ->assertRedirect(route('dashboard', absolute: false));
 });
 
 it('requires the user to be authenticated to proceed', function () {
@@ -100,44 +122,30 @@ it('redirects when the email is already verified', function () {
 |--------------------------------------------------------------------------
 */
 
-it('can resend verification email', function () {
+it('resends the verification email', function () {
     Notification::fake();
-
     $user = User::factory()->unverified()->create();
-    $this->actingAs($user);
 
-    Livewire::test('pages::auth.verify-email')
-        ->call('sendVerification')
-        ->assertHasNoErrors();
+    $this->actingAs($user)
+        ->post(route('verification.send'))
+        ->assertSessionHas('status', 'verification-link-sent');
+
+    $this->actingAs($user)
+        ->get(route('verification.notice'))
+        ->assertSee(__('auth.verify-email.status.verification-link-sent', ['email' => $user->email]));
 
     Notification::assertSentTo($user, VerifyEmailNotification::class);
 });
 
-it('redirects already verified users when trying to resend verification', function () {
-    // Already verified
-    $this->actingAs(User::factory()->create());
+it('does not resend to an already verified user', function () {
+    Notification::fake();
+    $user = User::factory()->create();
 
-    Livewire::test('pages::auth.verify-email')
-        ->call('sendVerification')
+    $this->actingAs($user)
+        ->post(route('verification.send'))
         ->assertRedirect(route('dashboard', absolute: false));
-});
 
-/*
-|--------------------------------------------------------------------------
-| Logging Out from Verification Screen
-|--------------------------------------------------------------------------
-*/
-
-it('can logout from the verification screen', function () {
-    $user = User::factory()->unverified()->create();
-
-    $this->actingAs($user);
-
-    Livewire::test('pages::auth.verify-email')
-        ->call('logout')
-        ->assertRedirect(route('login'));
-
-    $this->assertGuest();
+    Notification::assertNothingSent();
 });
 
 function verificationUrl(User $user): string

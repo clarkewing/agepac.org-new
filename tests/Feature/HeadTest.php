@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use ClarkeWing\Handoff\Http\Middleware\RedirectToHandoff;
+use Database\Factories\UserFactory;
 use Illuminate\Routing\Route as RouteObject;
 use Illuminate\Support\Facades\Route;
 use Tests\Concerns\InteractsWithStripe;
@@ -24,15 +25,15 @@ $publicPages = [
 dataset('public pages', $publicPages);
 
 dataset('app pages', [
-    'dashboard' => ['dashboard', [], 'Dashboard', true],
-    'settings.profile' => ['settings.profile', [], 'Profile - Settings', true],
-    'settings.password' => ['settings.password', [], 'Password - Settings', true],
-    'settings.membership' => ['settings.membership', [], 'Membership - Settings', true],
-    'settings.appearance' => ['settings.appearance', [], 'Appearance - Settings', true],
-    'verification.notice' => ['verification.notice', [], 'Verify email', true],
-    'password.confirm' => ['password.confirm', [], 'Confirm password', true],
-    'password.request' => ['password.request', [], 'Forgot password', false],
-    'password.reset' => ['password.reset', ['token' => 'reset-token'], 'Reset password', false],
+    'dashboard' => ['dashboard', [], 'Dashboard', 'user'],
+    'settings.profile' => ['settings.profile', [], 'Profile - Settings', 'user'],
+    'settings.password' => ['settings.password', [], 'Password - Settings', 'user'],
+    'settings.membership' => ['settings.membership', [], 'Membership - Settings', 'user'],
+    'settings.appearance' => ['settings.appearance', [], 'Appearance - Settings', 'user'],
+    'verification.notice' => ['verification.notice', [], 'Verify email', 'unverified'],
+    'password.confirm' => ['password.confirm', [], 'Confirm password', 'user'],
+    'password.request' => ['password.request', [], 'Forgot password', 'guest'],
+    'password.reset' => ['password.reset', ['token' => 'reset-token'], 'Reset password', 'guest'],
 ]);
 
 it('gives every public page an indexable title', function (string $name, string $title) {
@@ -79,11 +80,13 @@ describe('app pages', function () {
         $this->fakeStripeMembershipProducts();
     });
 
-    it('gives every app page a title and keeps it out of the index', function (string $name, array $parameters, string $title, bool $auth) {
+    it('gives every app page a title and keeps it out of the index', function (string $name, array $parameters, string $title, string $visitor) {
         $this->withoutMiddleware(RedirectToHandoff::class);
 
-        if ($auth) {
-            $this->actingAs(User::factory()->create());
+        if ($visitor !== 'guest') {
+            $this->actingAs(User::factory()
+                ->when($visitor === 'unverified', fn (UserFactory $factory) => $factory->unverified())
+                ->create());
         }
 
         $this->get(route($name, $parameters))
