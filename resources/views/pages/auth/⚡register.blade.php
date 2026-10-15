@@ -1,50 +1,87 @@
 <?php
 
-use App\Enums\ClassCourse;
-use App\Enums\Gender;
+use App\Livewire\Traits\SfcWizard;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Head\Facades\Head;
-use libphonenumber\NumberParseException;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
-use Livewire\Component;
-use Propaganistas\LaravelPhone\PhoneNumber;
-use Propaganistas\LaravelPhone\Rules\Phone;
+use Livewire\Attributes\On;
+use Spatie\LivewireWizard\Components\WizardComponent;
 
-new #[Layout('layouts::auth')] class extends Component
+new #[Layout('layouts::auth')]
+class extends WizardComponent
 {
-    public string $first_name = '';
-
-    public string $last_name = '';
-
-    public string $email = '';
-
-    public string $password = '';
-
-    public string $password_confirmation = '';
-
-    public string $class_course = '';
-
-    public string $class_year = '';
-
-    public string $gender = '';
-
-    public string $birth_date = '';
-
-    public string $phone = '';
+    // TODO: Drop once spatie/laravel-livewire-wizard#159 ships.
+    use SfcWizard;
 
     /**
-     * Handle an incoming registration request.
-     *
-     * Validation and creation live in Fortify's CreateNewUser action, so this
-     * page and Fortify's POST /register endpoint produce the same account.
+     * The step to come back to once the one being shown is saved, set when
+     * the review step sends the member off to change an answer.
      */
-    public function register(CreatesNewUsers $creator): void
+    public ?string $returnTo = null;
+
+    /**
+     * @return array<int, string>
+     */
+    public function steps(): array
     {
-        event(new Registered($user = $creator->create($this->all())));
+        return [
+            'auth.steps.identity',
+            'auth.steps.details',
+            'auth.steps.password',
+            'auth.steps.review',
+        ];
+    }
+
+    #[On('editField')]
+    public function editField(string $field, array $currentStepState = []): void
+    {
+        $this->resetErrorBag();
+
+        $this->returnTo = $this->currentStepName;
+
+        $this->showStep($this->stepFor($field), $currentStepState);
+    }
+
+    #[On('nextStep')]
+    public function nextStep(array $currentStepState): void
+    {
+        if ($this->currentStepName === $this->stepNames()->last()) {
+            // Store the last step's answers: showStep() hydrates the state it is handed.
+            $this->showStep($this->currentStepName, $currentStepState);
+
+            $this->complete();
+
+            return;
+        }
+
+        if (is_null($returnTo = $this->returnTo)) {
+            parent::nextStep($currentStepState);
+
+            return;
+        }
+
+        $this->returnTo = null;
+
+        $this->showStep($returnTo, $currentStepState);
+    }
+
+    #[On('previousStep')]
+    public function previousStep(array $currentStepState): void
+    {
+        $this->returnTo = null;
+
+        parent::previousStep($currentStepState);
+    }
+
+    protected function complete(): void
+    {
+        event(new Registered($user = app(CreatesNewUsers::class)->create($this->answers())));
 
         Auth::login($user);
 
@@ -53,12 +90,34 @@ new #[Layout('layouts::auth')] class extends Component
         $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 
-    public function updatedPhone(): void
+    /**
+     * The current step's short name, which keys its heading and description.
+     */
+    #[Computed]
+    public function step(): string
     {
-        try {
-            $this->phone = new PhoneNumber($this->phone, 'FR')->formatInternational();
-        } catch (NumberParseException) {
-        }
+        return Str::afterLast($this->currentStepName, '.');
+    }
+
+    #[Computed]
+    public function position(): int
+    {
+        return $this->stepNames()->search($this->currentStepName) + 1;
+    }
+
+    protected function stepFor(string $field): string
+    {
+        return $this->stepNames()->first(
+            fn (string $step): bool => array_key_exists($field, Arr::get($this->allStepState, $step) ?? []),
+            $this->stepNames()->first(),
+        );
+    }
+
+    protected function answers(): array
+    {
+        return $this->stepNames()
+            ->flatMap(fn (string $step): array => Arr::get($this->allStepState, $step) ?? [])
+            ->all();
     }
 
     public function rendering(): void
@@ -69,133 +128,32 @@ new #[Layout('layouts::auth')] class extends Component
 ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('auth.register.heading')" :description="__('auth.register.description')" />
+    <x-auth-header
+        :title="__('auth.register.steps.'.$this->step.'.heading')"
+        :description="__('auth.register.steps.'.$this->step.'.description')"
+    />
 
-    <!-- Session Status -->
-    @if (session('status'))
-        <flux:callout variant="success" icon="check-circle" :heading="session('status')" />
+    <flux:text size="sm" class="text-center">
+        {{ __('wizard.progress', ['current' => $this->position, 'total' => $this->stepNames()->count()]) }}
+    </flux:text>
+
+    @if ($errors->any())
+        <flux:callout variant="danger" icon="x-circle">
+            @foreach ($errors->keys() as $field)
+                <flux:callout.text>
+                    {{ $errors->first($field) }}
+                    <flux:link as="button" wire:click="editField('{{ $field }}')">{{ __('wizard.fix') }}</flux:link>
+                </flux:callout.text>
+            @endforeach
+        </flux:callout>
     @endif
 
-    <form wire:submit="register" class="flex flex-col gap-6">
-        <!-- First Name -->
-        <flux:input
-            wire:model="first_name"
-            :label="__('fields.first-name.label')"
-            type="text"
-            required
-            autofocus
-            autocomplete="given-name"
-            :placeholder="__('fields.first-name.placeholder')"
-        />
+    @livewire($currentStepName, $currentStepState, key($currentStepName))
 
-        <!-- Last Name -->
-        <flux:input
-            wire:model="last_name"
-            :label="__('fields.last-name.label')"
-            type="text"
-            required
-            autocomplete="family-name"
-            :placeholder="__('fields.last-name.placeholder')"
-        />
-
-        <!-- Gender -->
-        <flux:select
-            wire:model="gender"
-            :label="__('fields.gender.label')"
-            required
-            :placeholder="__('fields.gender.placeholder')"
-        >
-            @foreach (Gender::cases() as $gender)
-                <flux:select.option :value="$gender->value" :label="$gender->getLabel()" />
-            @endforeach
-        </flux:select>
-
-        <!-- Birth Date -->
-        <flux:date-picker wire:model="birth_date" :label="__('fields.birth-date.label')" required>
-            <x-slot name="trigger">
-                <flux:date-picker.input autocomplete="bday" />
-            </x-slot>
-        </flux:date-picker>
-
-        <!-- Class Course -->
-        <flux:select
-            wire:model="class_course"
-            :label="__('fields.class-course.label')"
-            required
-            :placeholder="__('fields.class-course.placeholder')"
-        >
-            @foreach (ClassCourse::cases() as $course)
-                <flux:select.option :value="$course->value" :label="$course->getLabel()" />
-            @endforeach
-        </flux:select>
-
-        <!-- Class Year -->
-        <flux:input
-            wire:model="class_year"
-            :label="__('fields.class-year.label')"
-            type="text"
-            required
-            placeholder="YYYY"
-        />
-
-        <!-- Email Address -->
-        <flux:input
-            wire:model="email"
-            :label="__('fields.email.label')"
-            type="email"
-            required
-            autocomplete="email"
-            placeholder="email@example.com"
-        />
-
-        <!-- Phone -->
-        <flux:input
-            wire:model.blur="phone"
-            :loading="true"
-            :label="__('fields.phone.label')"
-            type="tel"
-            required
-            autocomplete="tel"
-            :placeholder="__('fields.phone.placeholder')"
-        >
-            <x-slot name="iconTrailing">
-                <flux:input-tooltip>
-                    <p>{{ __('fields.phone.tooltip') }}</p>
-                </flux:input-tooltip>
-            </x-slot>
-        </flux:input>
-
-        <!-- Password -->
-        <flux:input
-            wire:model="password"
-            :label="__('fields.password.label')"
-            type="password"
-            required
-            autocomplete="new-password"
-            :placeholder="__('fields.password.placeholder')"
-            :passwordrules="Password::defaults()->toPasswordRulesString()"
-            viewable
-        />
-
-        <!-- Confirm Password -->
-        <flux:input
-            wire:model="password_confirmation"
-            :label="__('fields.password-confirmation.label')"
-            type="password"
-            required
-            autocomplete="new-password"
-            :placeholder="__('fields.password-confirmation.placeholder')"
-            :passwordrules="Password::defaults()->toPasswordRulesString()"
-            viewable
-        />
-
-        <div class="flex items-center justify-end">
-            <flux:button type="submit" variant="primary" class="w-full">{{ __('auth.register.action') }}</flux:button>
-        </div>
-    </form>
-
-    <flux:subheading class="text-center text-zinc-600 dark:text-zinc-400">
-        <span>{{ __('auth.register.login-prompt') }}</span>
-        <flux:link :href="route('login')" wire:navigate>{{ __('auth.register.login-link') }}</flux:link>
-    </flux:subheading>
+    @if ($this->position === 1)
+        <flux:subheading class="text-center text-zinc-600 dark:text-zinc-400">
+            <span>{{ __('auth.register.login-prompt') }}</span>
+            <flux:link :href="route('login')" wire:navigate>{{ __('auth.register.login-link') }}</flux:link>
+        </flux:subheading>
+    @endif
 </div>

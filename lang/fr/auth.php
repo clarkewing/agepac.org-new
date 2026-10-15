@@ -36,9 +36,29 @@ return [
 
     'register' => [
         'title' => 'Inscription',
-        'heading' => 'Inscription',
-        'description' => 'Saisissez vos informations ci‑dessous pour créer votre compte.',
-        'action' => 'Créer un compte',
+        'steps' => [
+            'identity' => [
+                'label' => 'Identité',
+                'heading' => 'Créez votre compte',
+                'description' => 'Commencez par votre nom et votre adresse e‑mail.',
+            ],
+            'details' => [
+                'label' => 'Informations',
+                'heading' => 'Vos informations',
+                'description' => 'Parlez‑nous de vous.',
+            ],
+            'password' => [
+                'label' => 'Mot de passe',
+                'heading' => 'Choisissez un mot de passe',
+                'description' => 'Il protège votre compte, alors choisissez‑en un solide.',
+            ],
+            'review' => [
+                'label' => 'Vérification',
+                'heading' => 'Vous y êtes presque',
+                'description' => 'Vérifiez vos informations avant de créer votre compte.',
+            ],
+        ],
+        'action' => 'Créer mon compte',
         'login-prompt' => 'Déjà membre ?',
         'login-link' => 'Se connecter',
     ],

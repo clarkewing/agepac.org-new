@@ -36,8 +36,28 @@ return [
 
     'register' => [
         'title' => 'Register',
-        'heading' => 'Register',
-        'description' => 'Enter your details below to create your account.',
+        'steps' => [
+            'identity' => [
+                'label' => 'Identity',
+                'heading' => 'Create your account',
+                'description' => 'Start with your name and email address.',
+            ],
+            'details' => [
+                'label' => 'Details',
+                'heading' => 'Your details',
+                'description' => 'Tell us about yourself.',
+            ],
+            'password' => [
+                'label' => 'Password',
+                'heading' => 'Choose a password',
+                'description' => 'It protects your account, so make it a strong one.',
+            ],
+            'review' => [
+                'label' => 'Review',
+                'heading' => 'Almost there',
+                'description' => 'Check your details before creating your account.',
+            ],
+        ],
         'action' => 'Create account',
         'login-prompt' => 'Already have an account?',
         'login-link' => 'Log in',

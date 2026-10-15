@@ -63,6 +63,10 @@ return [
         'label' => 'Birth Date',
         'placeholder' => 'Birth date',
     ],
+    'class' => [
+        'label' => 'Class',
+        'placeholder' => 'Choose class…',
+    ],
     'class-course' => [
         'label' => 'Class Course',
         'placeholder' => 'Choose course…',
