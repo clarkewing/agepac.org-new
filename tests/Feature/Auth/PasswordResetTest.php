@@ -1,11 +1,12 @@
 <?php
 
-use App\Actions\StartRecovery;
 use App\Models\User;
+use App\Services\Auth\AccountRecovery;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 it('renders the forgot password screen', function () {
     $this->get(route('password.request'))
@@ -39,9 +40,29 @@ it('sends an imported account to the recovery wizard instead of a reset link', f
 
     $this->post(route('password.email'), ['email' => $user->email])
         ->assertRedirect(route('recovery'))
-        ->assertSessionHas(StartRecovery::SESSION_KEY.'.user_id', $user->id);
+        ->assertSessionHas(AccountRecovery::SESSION_KEY.'.user_id', $user->id);
 
     Notification::assertNotSentTo($user, ResetPasswordNotification::class);
+});
+
+it('recognises an imported account whatever the case of the email typed', function () {
+    $user = User::factory()->migrationRequired()->create();
+
+    $this->post(route('password.email'), ['email' => Str::upper($user->email)])
+        ->assertRedirect(route('recovery'))
+        ->assertSessionHas(AccountRecovery::SESSION_KEY.'.user_id', $user->id);
+});
+
+it('emails a post-incident account an ordinary reset link', function () {
+    Notification::fake();
+    $user = User::factory()->passwordResetRequired()->create();
+
+    $this->post(route('password.email'), ['email' => $user->email])
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('status', __('passwords.sent'))
+        ->assertSessionMissing(AccountRecovery::SESSION_KEY);
+
+    Notification::assertSentTo($user, ResetPasswordNotification::class);
 });
 
 it('renders the reset password screen from the emailed link', function () {

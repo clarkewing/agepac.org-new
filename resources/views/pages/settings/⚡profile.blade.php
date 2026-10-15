@@ -108,10 +108,7 @@ new class extends Component
                             <flux:icon name="exclamation-triangle" class="mr-px inline h-5 w-5 text-amber-400" />
                             {{ __('settings.profile.email-verification.prompt') }}
 
-                            <flux:link
-                                class="cursor-pointer text-sm"
-                                wire:click.prevent="resendVerificationNotification"
-                            >
+                            <flux:link as="button" class="text-sm" wire:click.prevent="resendVerificationNotification">
                                 {{ __('settings.profile.email-verification.action') }}
                             </flux:link>
                         </flux:text>

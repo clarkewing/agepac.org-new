@@ -9,7 +9,7 @@ use Illuminate\Testing\TestResponse;
 
 it('renders the login screen', function () {
     $this->get(route('login'))->assertOk();
-})->skip(message: 'Handoff is handling this route for now');
+})->skip(message: 'Pending PR 4: GET /login still redirects to the legacy app');
 
 it('only shows the developer login in the local environment', function () {
     withEnvironment('local', function () {

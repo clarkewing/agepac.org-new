@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Actions\StartRecovery;
 use App\Models\User;
+use App\Services\Auth\AccountRecovery;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -18,8 +18,6 @@ use Laravel\Fortify\Fortify;
  */
 class RedirectIfRecoveryRequired
 {
-    public function __construct(protected StartRecovery $startRecovery) {}
-
     /**
      * Specify that only imported accounts should be diverted, letting a
      * post-incident reset go through the ordinary reset link.
@@ -45,7 +43,7 @@ class RedirectIfRecoveryRequired
         };
 
         if ($requiresRecovery) {
-            ($this->startRecovery)($user);
+            AccountRecovery::start($user);
 
             return redirect()->route('recovery');
         }

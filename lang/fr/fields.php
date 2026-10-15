@@ -63,6 +63,10 @@ return [
         'label' => 'Date de naissance',
         'placeholder' => 'Date de naissance',
     ],
+    'class' => [
+        'label' => 'Promotion',
+        'placeholder' => 'Choisir la promotion…',
+    ],
     'class-course' => [
         'label' => 'Cursus',
         'placeholder' => 'Choisir le cursus…',

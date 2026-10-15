@@ -47,6 +47,10 @@
     ::file-selector-button {
         border-color: var(--color-gray-200, currentColor);
     }
+
+    :where(button[data-flux-link]:not(:disabled)) {
+        @apply cursor-pointer;
+    }
 }
 
 [data-flux-field]:not(ui-radio, ui-checkbox) {

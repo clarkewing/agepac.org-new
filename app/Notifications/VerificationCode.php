@@ -4,30 +4,26 @@ namespace App\Notifications;
 
 use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
+use Spatie\OneTimePasswords\Notifications\OneTimePasswordNotification;
 
-class VerificationCode extends Notification
+/**
+ * The email carrying a one-time code, in the app's own words rather than the
+ * one-time-passwords package's.
+ */
+class VerificationCode extends OneTimePasswordNotification
 {
-    public function __construct(
-        public string $code,
-        public int $lifetimeMinutes,
-    ) {}
-
     /**
-     * @return array<int, string>
+     * @param  User  $notifiable
      */
-    public function via(User $notifiable): array
-    {
-        return ['mail'];
-    }
-
-    public function toMail(User $notifiable): MailMessage
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject(__('notifications.verification-code.subject'))
             ->greeting(__('notifications.verification-code.greeting', ['name' => $notifiable->first_name]))
             ->line(__('notifications.verification-code.intro'))
-            ->line("**{$this->code}**")
-            ->line(__('notifications.verification-code.expiry', ['minutes' => $this->lifetimeMinutes]));
+            ->line("**{$this->oneTimePassword->password}**")
+            ->line(__('notifications.verification-code.expiry', [
+                'time' => $this->oneTimePassword->expires_at->timezone('Europe/Paris')->isoFormat('LT'),
+            ]));
     }
 }

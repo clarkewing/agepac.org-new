@@ -36,8 +36,28 @@ return [
 
     'register' => [
         'title' => 'Register',
-        'heading' => 'Register',
-        'description' => 'Enter your details below to create your account.',
+        'steps' => [
+            'identity' => [
+                'label' => 'Identity',
+                'heading' => 'Create your account',
+                'description' => 'Start with your name and email address.',
+            ],
+            'details' => [
+                'label' => 'Details',
+                'heading' => 'Your details',
+                'description' => 'Tell us about yourself.',
+            ],
+            'password' => [
+                'label' => 'Password',
+                'heading' => 'Choose a password',
+                'description' => 'It protects your account, so make it a strong one.',
+            ],
+            'review' => [
+                'label' => 'Review',
+                'heading' => 'Almost there',
+                'description' => 'Check your details before creating your account.',
+            ],
+        ],
         'action' => 'Create account',
         'login-prompt' => 'Already have an account?',
         'login-link' => 'Log in',
@@ -58,27 +78,27 @@ return [
                 'contact' => 'Contact us',
             ],
         ],
-        'verify' => [
-            'description' => 'To confirm your identity, we have emailed you a one-time code.',
-            'code-label' => 'Enter the 6-digit code',
-            'action' => 'Verify',
-            'resend-prompt' => 'Didn’t receive a code?',
-            'resend-wait' => 'You can request a new code in :countdown.',
-            'resend-link' => 'Send it again',
-            'resent' => 'A new code has been sent to your email address.',
-        ],
-        'complete' => [
-            'description' => [
-                'password-reset' => 'Choose a new password for your AGEPAC account.',
-                'migration' => 'Welcome back, :name! Let’s take this opportunity to update your details.',
+        'steps' => [
+            'verify' => [
+                'description' => 'To confirm your identity, we have emailed you a one-time code.',
             ],
-            'action' => 'Save and log in',
+            'details' => [
+                'description' => 'Welcome back, :name! Let’s take this opportunity to update your details.',
+            ],
+            'password' => [
+                'description' => 'Choose a new password for your AGEPAC account.',
+            ],
         ],
-        'status' => [
-            'invalid-code' => 'This code is invalid or has expired.',
-            'too-many-attempts' => 'Too many wrong codes. Please try again in :countdown.',
-            'too-many-codes' => 'Too many codes requested. Please try again in :countdown.',
-        ],
+        'action' => 'Save and log in',
+    ],
+
+    'verification-code' => [
+        'code-label' => 'Enter the 6-digit code',
+        'action' => 'Verify',
+        'resend-prompt' => 'Didn’t receive a code?',
+        'resend-wait' => 'You can request a new code in :countdown.',
+        'resend-link' => 'Send it again',
+        'resent' => 'A new code has been sent to your email address.',
     ],
 
     'verify-email' => [

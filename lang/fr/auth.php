@@ -36,9 +36,29 @@ return [
 
     'register' => [
         'title' => 'Inscription',
-        'heading' => 'Inscription',
-        'description' => 'Saisissez vos informations ci‑dessous pour créer votre compte.',
-        'action' => 'Créer un compte',
+        'steps' => [
+            'identity' => [
+                'label' => 'Identité',
+                'heading' => 'Créez votre compte',
+                'description' => 'Commencez par votre nom et votre adresse e‑mail.',
+            ],
+            'details' => [
+                'label' => 'Informations',
+                'heading' => 'Vos informations',
+                'description' => 'Parlez‑nous de vous.',
+            ],
+            'password' => [
+                'label' => 'Mot de passe',
+                'heading' => 'Choisissez un mot de passe',
+                'description' => 'Il protège votre compte, alors choisissez‑en un solide.',
+            ],
+            'review' => [
+                'label' => 'Vérification',
+                'heading' => 'Vous y êtes presque',
+                'description' => 'Vérifiez vos informations avant de créer votre compte.',
+            ],
+        ],
+        'action' => 'Créer mon compte',
         'login-prompt' => 'Déjà membre ?',
         'login-link' => 'Se connecter',
     ],
@@ -58,27 +78,27 @@ return [
                 'contact' => 'Contactez‑nous',
             ],
         ],
-        'verify' => [
-            'description' => 'Afin de confirmer votre identité, nous vous avons envoyé un e‑mail contenant un code à usage unique.',
-            'code-label' => 'Saisissez le code à 6 chiffres',
-            'action' => 'Vérifier',
-            'resend-prompt' => 'Vous n’avez pas reçu de code ?',
-            'resend-wait' => 'Vous pourrez demander un nouveau code dans :countdown.',
-            'resend-link' => 'Le renvoyer',
-            'resent' => 'Un nouveau code a été envoyé à votre adresse e‑mail.',
-        ],
-        'complete' => [
-            'description' => [
-                'password-reset' => 'Choisissez un nouveau mot de passe pour votre compte AGEPAC.',
-                'migration' => 'Bon retour parmi nous, :name ! Profitons de l’occasion pour mettre à jour vos informations.',
+        'steps' => [
+            'verify' => [
+                'description' => 'Afin de confirmer votre identité, nous vous avons envoyé un e‑mail contenant un code à usage unique.',
             ],
-            'action' => 'Enregistrer et se connecter',
+            'details' => [
+                'description' => 'Bon retour parmi nous, :name ! Commençons par mettre à jour vos informations.',
+            ],
+            'password' => [
+                'description' => 'Choisissez un nouveau mot de passe pour votre compte AGEPAC.',
+            ],
         ],
-        'status' => [
-            'invalid-code' => 'Ce code est invalide ou a expiré.',
-            'too-many-attempts' => 'Trop de codes erronés. Veuillez réessayer dans :countdown.',
-            'too-many-codes' => 'Trop de codes demandés. Veuillez réessayer dans :countdown.',
-        ],
+        'action' => 'Enregistrer et se connecter',
+    ],
+
+    'verification-code' => [
+        'code-label' => 'Saisissez le code à 6 chiffres',
+        'action' => 'Vérifier',
+        'resend-prompt' => 'Vous n’avez pas reçu de code ?',
+        'resend-wait' => 'Vous pourrez demander un nouveau code dans :countdown.',
+        'resend-link' => 'Le renvoyer',
+        'resent' => 'Un nouveau code a été envoyé à votre adresse e‑mail.',
     ],
 
     'verify-email' => [

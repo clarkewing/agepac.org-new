@@ -12,4 +12,5 @@ Route::middleware('guest')->group(function () {
     Route::redirect('register', config('handoff.target_host').'/register')->name('register');
 
     Route::livewire('recover', 'pages::auth.recover')->name('recovery');
+    Route::livewire('recover/migrate', 'pages::auth.migrate')->name('recovery.migrate');
 });
