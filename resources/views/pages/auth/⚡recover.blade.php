@@ -1,10 +1,8 @@
 <?php
 
-use App\Actions\CompleteRecovery;
 use App\Actions\Fortify\PasswordValidationRules;
-use App\Http\Middleware\RedirectIfRecoveryRequired;
 use App\Models\User;
-use Illuminate\Support\Facades\Session;
+use App\Services\Auth\AccountRecovery;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Head\Facades\Head;
@@ -24,7 +22,7 @@ new #[Layout('layouts::auth')] class extends Component
     public function mount(): void
     {
         if (! $this->user?->requiresRecovery()) {
-            Session::forget(RedirectIfRecoveryRequired::SESSION_KEY);
+            AccountRecovery::cancel();
 
             $this->redirectRoute('login', navigate: true);
 
@@ -50,13 +48,7 @@ new #[Layout('layouts::auth')] class extends Component
             'password' => $this->passwordRules(),
         ]);
 
-        $this->user->forceFill([
-            'password' => $validated['password'],
-            'remember_token' => null,
-            'email_verified_at' => $this->user->email_verified_at ?? now(),
-        ])->save();
-
-        resolve(CompleteRecovery::class)($this->user);
+        AccountRecovery::complete($this->user, $validated);
 
         $this->redirect(
             app(LoginResponse::class)->toResponse(request())->getTargetUrl()
@@ -66,14 +58,13 @@ new #[Layout('layouts::auth')] class extends Component
     #[Computed]
     public function user(): ?User
     {
-        return User::query()->find(Session::get(RedirectIfRecoveryRequired::SESSION_KEY.'.user_id'));
+        return AccountRecovery::user();
     }
 
     #[Computed]
     public function verified(): bool
     {
-        return $this->user !== null
-            && Session::get('email-verified.user_id') === $this->user->getKey();
+        return AccountRecovery::isVerified();
     }
 
     protected function continueIfMigrating(): void

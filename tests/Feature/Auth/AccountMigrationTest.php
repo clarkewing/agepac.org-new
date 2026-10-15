@@ -1,8 +1,8 @@
 <?php
 
 use App\Enums\ClassCourse;
-use App\Http\Middleware\RedirectIfRecoveryRequired;
 use App\Models\User;
+use App\Services\Auth\AccountRecovery;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Livewire;
 
@@ -14,8 +14,9 @@ beforeEach(function () {
         'phone' => null,
     ]);
 
+    AccountRecovery::start($this->user);
+
     $this->withSession([
-        RedirectIfRecoveryRequired::SESSION_KEY => ['user_id' => $this->user->id],
         'email-verified' => ['user_id' => $this->user->id, 'at' => now()->getTimestamp()],
     ]);
 });
@@ -37,8 +38,9 @@ describe('access', function () {
     it('sends an account that needs no migration back to recovery', function () {
         $user = User::factory()->passwordResetRequired()->create();
 
+        AccountRecovery::start($user);
+
         $this->withSession([
-            RedirectIfRecoveryRequired::SESSION_KEY => ['user_id' => $user->id],
             'email-verified' => ['user_id' => $user->id, 'at' => now()->getTimestamp()],
         ]);
 
@@ -132,7 +134,7 @@ describe('wizard', function () {
             ->phone->formatE164()->toBe('+33612345678')
             ->email_verified_at->toEqual(now());
         expect(Auth::validate(['email' => $this->user->email, 'password' => 'new-password']))->toBeTrue();
-        expect(session()->has(RedirectIfRecoveryRequired::SESSION_KEY))->toBeFalse();
+        expect(session()->has(AccountRecovery::SESSION_KEY))->toBeFalse();
         $this->assertAuthenticatedAs($this->user);
     });
 

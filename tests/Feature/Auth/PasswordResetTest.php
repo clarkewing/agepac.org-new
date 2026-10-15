@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Middleware\RedirectIfRecoveryRequired;
 use App\Models\User;
+use App\Services\Auth\AccountRecovery;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -39,7 +39,7 @@ it('sends an imported account to the recovery wizard instead of a reset link', f
 
     $this->post(route('password.email'), ['email' => $user->email])
         ->assertRedirect(route('recovery'))
-        ->assertSessionHas(RedirectIfRecoveryRequired::SESSION_KEY.'.user_id', $user->id);
+        ->assertSessionHas(AccountRecovery::SESSION_KEY.'.user_id', $user->id);
 
     Notification::assertNotSentTo($user, ResetPasswordNotification::class);
 });

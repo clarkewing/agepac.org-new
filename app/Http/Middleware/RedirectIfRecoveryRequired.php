@@ -3,9 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\Models\User;
+use App\Services\Auth\AccountRecovery;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 
@@ -18,11 +18,6 @@ use Laravel\Fortify\Fortify;
  */
 class RedirectIfRecoveryRequired
 {
-    /**
-     * Where the wizard at route('recovery') finds who is recovering.
-     */
-    public const string SESSION_KEY = 'recovery';
-
     /**
      * Specify that only imported accounts should be diverted, letting a
      * post-incident reset go through the ordinary reset link.
@@ -48,7 +43,7 @@ class RedirectIfRecoveryRequired
         };
 
         if ($requiresRecovery) {
-            Session::put(self::SESSION_KEY, ['user_id' => $user->getKey()]);
+            AccountRecovery::start($user);
 
             return redirect()->route('recovery');
         }

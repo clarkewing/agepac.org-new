@@ -1,9 +1,9 @@
 <?php
 
 use App\Enums\ClassCourse;
-use App\Http\Middleware\RedirectIfRecoveryRequired;
 use App\Models\User;
 use App\Notifications\VerificationCode;
+use App\Services\Auth\AccountRecovery;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +18,7 @@ describe('entry points', function () {
             'password' => 'anything',
         ])
             ->assertRedirect(route('recovery'))
-            ->assertSessionHas(RedirectIfRecoveryRequired::SESSION_KEY.'.user_id', $user->id);
+            ->assertSessionHas(AccountRecovery::SESSION_KEY.'.user_id', $user->id);
 
         $this->assertGuest();
     })->with(['passwordResetRequired', 'migrationRequired']);
@@ -29,11 +29,11 @@ describe('entry points', function () {
     });
 
     it('exits recovery for an account that no longer needs one', function () {
-        $this->withSession([RedirectIfRecoveryRequired::SESSION_KEY => ['user_id' => User::factory()->create()->id]]);
+        AccountRecovery::start(User::factory()->create());
 
         $this->get(route('recovery'))
             ->assertRedirect(route('login'))
-            ->assertSessionMissing(RedirectIfRecoveryRequired::SESSION_KEY);
+            ->assertSessionMissing(AccountRecovery::SESSION_KEY);
     });
 });
 
@@ -42,7 +42,7 @@ describe('verification gate', function () {
         Notification::fake();
         $this->user = User::factory()->passwordResetRequired()->create();
 
-        $this->withSession([RedirectIfRecoveryRequired::SESSION_KEY => ['user_id' => $this->user->id]]);
+        AccountRecovery::start($this->user);
     });
 
     it('asks for a one-time code first and emails it', function () {
@@ -101,8 +101,9 @@ describe('password reset', function () {
         Notification::fake();
         $this->user = User::factory()->passwordResetRequired()->create();
 
+        AccountRecovery::start($this->user);
+
         $this->withSession([
-            RedirectIfRecoveryRequired::SESSION_KEY => ['user_id' => $this->user->id],
             'email-verified' => ['user_id' => $this->user->id, 'at' => now()->getTimestamp()],
         ]);
     });
@@ -126,7 +127,7 @@ describe('password reset', function () {
 
         expect($this->user->fresh())->requiresRecovery()->toBeFalse();
         expect(Auth::validate(['email' => $this->user->email, 'password' => 'new-password']))->toBeTrue();
-        expect(session()->has(RedirectIfRecoveryRequired::SESSION_KEY))->toBeFalse();
+        expect(session()->has(AccountRecovery::SESSION_KEY))->toBeFalse();
         $this->assertAuthenticatedAs($this->user);
     });
 
@@ -185,7 +186,7 @@ describe('migration', function () {
         Notification::fake();
         $this->user = User::factory()->migrationRequired()->create();
 
-        $this->withSession([RedirectIfRecoveryRequired::SESSION_KEY => ['user_id' => $this->user->id]]);
+        AccountRecovery::start($this->user);
     });
 
     it('keeps an imported account on the verification step until it is verified', function () {

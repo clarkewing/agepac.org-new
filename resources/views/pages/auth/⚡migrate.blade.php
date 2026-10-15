@@ -1,13 +1,11 @@
 <?php
 
-use App\Actions\CompleteRecovery;
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Actions\Fortify\ProfileValidationRules;
-use App\Http\Middleware\RedirectIfRecoveryRequired;
 use App\Livewire\Traits\SfcWizard;
 use App\Models\User;
+use App\Services\Auth\AccountRecovery;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
@@ -81,14 +79,13 @@ new #[Layout('layouts::auth')] class extends WizardComponent
     #[Computed]
     public function user(): ?User
     {
-        return User::query()->find(Session::get(RedirectIfRecoveryRequired::SESSION_KEY.'.user_id'));
+        return AccountRecovery::user();
     }
 
     #[Computed]
     public function verified(): bool
     {
-        return $this->user !== null
-            && Session::get('email-verified.user_id') === $this->user->getKey();
+        return AccountRecovery::isVerified();
     }
 
     #[Computed]
@@ -120,15 +117,7 @@ new #[Layout('layouts::auth')] class extends WizardComponent
             'password' => $this->passwordRules(),
         ])->validate();
 
-        $this->user
-            ->fill($validated)
-            ->forceFill([
-                'remember_token' => null,
-                'email_verified_at' => $this->user->email_verified_at ?? now(),
-            ])
-            ->save();
-
-        resolve(CompleteRecovery::class)($this->user);
+        AccountRecovery::complete($this->user, $validated);
 
         $this->redirect(app(LoginResponse::class)->toResponse(request())->getTargetUrl());
     }
