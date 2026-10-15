@@ -28,6 +28,7 @@ Thumbs.db
 
 .credentials
 /tests/.pest
+/tests/Browser/Screenshots
 
 # Refreshed by `boost:install` and `boost:update` (composer "post-update-cmd").
 # Committed rules live in .ai/rules; only the machine-specific MCP config is ignored.
