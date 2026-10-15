@@ -21,17 +21,12 @@ const NARROW_NO_BREAK_SPACE = "\u{202F}";
 const NO_BREAK_SPACE = "\u{00A0}";
 
 // Datasets resolve before the app boots, so paths are built from this file's location.
-dataset('language files', fn () => collect(glob(dirname(__DIR__, 3).'/lang/*/*.php'))
-    ->mapWithKeys(fn (string $path) => [basename(dirname($path)).'/'.basename($path) => [$path]])
-    ->all());
+// Package overrides in lang/vendor/{package}/{locale} are held to the same rules.
+dataset('language files', fn () => languageFiles('*'));
 
-dataset('english language files', fn () => collect(glob(dirname(__DIR__, 3).'/lang/en/*.php'))
-    ->mapWithKeys(fn (string $path) => [basename($path) => [$path]])
-    ->all());
+dataset('english language files', fn () => languageFiles('en'));
 
-dataset('french language files', fn () => collect(glob(dirname(__DIR__, 3).'/lang/fr/*.php'))
-    ->mapWithKeys(fn (string $path) => [basename($path) => [$path]])
-    ->all());
+dataset('french language files', fn () => languageFiles('fr'));
 
 it('uses curly apostrophes', function (string $path) {
     expect(offendingStrings($path, "/'/u"))->toBe([]);
@@ -74,5 +69,19 @@ function offendingStrings(string $path, string $pattern): array
         // Multi-line strings are code samples, whose punctuation is syntax.
         ->filter(fn (mixed $value) => is_string($value) && ! str_contains($value, "\n") && preg_match($pattern, $value))
         ->map(fn (string $value) => Str::limit($value, 80))
+        ->all();
+}
+
+/**
+ * The app's language files for a locale, keyed by their path under lang/.
+ *
+ * @return array<string, array{0: string}>
+ */
+function languageFiles(string $locale): array
+{
+    $lang = dirname(__DIR__, 3).'/lang';
+
+    return collect([...glob("{$lang}/{$locale}/*.php"), ...glob("{$lang}/vendor/*/{$locale}/*.php")])
+        ->mapWithKeys(fn (string $path) => [Str::after($path, "{$lang}/") => [$path]])
         ->all();
 }

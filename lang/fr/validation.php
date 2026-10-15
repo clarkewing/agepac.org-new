@@ -211,6 +211,7 @@ return [
         'name' => 'nom',
         'password' => 'mot de passe',
         'password_confirmation' => 'confirmation du mot de passe',
+        'verification_code' => 'code de vérification',
         'phone' => 'numéro de téléphone',
         'selectedMembership' => 'option d’adhésion',
         'token' => 'jeton',

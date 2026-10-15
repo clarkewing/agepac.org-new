@@ -20,6 +20,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
+use Spatie\OneTimePasswords\Models\Concerns\HasOneTimePasswords;
 
 #[Fillable([
     'first_name',
@@ -47,6 +48,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     use Approvable;
     use Billable;
     use HasFactory;
+    use HasOneTimePasswords;
     use HasRole;
     use Notifiable;
     use Recoverable;

@@ -211,6 +211,7 @@ return [
         'name' => 'name',
         'password' => 'password',
         'password_confirmation' => 'password confirmation',
+        'verification_code' => 'verification code',
         'phone' => 'phone number',
         'selectedMembership' => 'membership option',
         'token' => 'token',

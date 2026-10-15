@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Actions\StartRecovery;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 
@@ -18,7 +18,10 @@ use Laravel\Fortify\Fortify;
  */
 class RedirectIfRecoveryRequired
 {
-    public function __construct(protected StartRecovery $startRecovery) {}
+    /**
+     * Where the wizard at route('recovery') finds who is recovering.
+     */
+    public const string SESSION_KEY = 'recovery';
 
     /**
      * Specify that only imported accounts should be diverted, letting a
@@ -45,7 +48,7 @@ class RedirectIfRecoveryRequired
         };
 
         if ($requiresRecovery) {
-            ($this->startRecovery)($user);
+            Session::put(self::SESSION_KEY, ['user_id' => $user->getKey()]);
 
             return redirect()->route('recovery');
         }

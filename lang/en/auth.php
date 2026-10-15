@@ -78,27 +78,27 @@ return [
                 'contact' => 'Contact us',
             ],
         ],
-        'verify' => [
-            'description' => 'To confirm your identity, we have emailed you a one-time code.',
-            'code-label' => 'Enter the 6-digit code',
-            'action' => 'Verify',
-            'resend-prompt' => 'Didn’t receive a code?',
-            'resend-wait' => 'You can request a new code in :countdown.',
-            'resend-link' => 'Send it again',
-            'resent' => 'A new code has been sent to your email address.',
-        ],
-        'complete' => [
-            'description' => [
-                'password-reset' => 'Choose a new password for your AGEPAC account.',
-                'migration' => 'Welcome back, :name! Let’s take this opportunity to update your details.',
+        'steps' => [
+            'verify' => [
+                'description' => 'To confirm your identity, we have emailed you a one-time code.',
             ],
-            'action' => 'Save and log in',
+            'details' => [
+                'description' => 'Welcome back, :name! Let’s take this opportunity to update your details.',
+            ],
+            'password' => [
+                'description' => 'Choose a new password for your AGEPAC account.',
+            ],
         ],
-        'status' => [
-            'invalid-code' => 'This code is invalid or has expired.',
-            'too-many-attempts' => 'Too many wrong codes. Please try again in :countdown.',
-            'too-many-codes' => 'Too many codes requested. Please try again in :countdown.',
-        ],
+        'action' => 'Save and log in',
+    ],
+
+    'verification-code' => [
+        'code-label' => 'Enter the 6-digit code',
+        'action' => 'Verify',
+        'resend-prompt' => 'Didn’t receive a code?',
+        'resend-wait' => 'You can request a new code in :countdown.',
+        'resend-link' => 'Send it again',
+        'resent' => 'A new code has been sent to your email address.',
     ],
 
     'verify-email' => [
