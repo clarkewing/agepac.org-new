@@ -9,14 +9,19 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureUserIsApproved
 {
     /**
-     * Handle an incoming request.
+     * Redirect members whose account is not approved yet.
+     * Refuse JSON requests outright.
      *
      * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        abort_unless($request->user()?->isApproved(), 403);
+        if ($request->user()?->isApproved()) {
+            return $next($request);
+        }
 
-        return $next($request);
+        abort_if($request->expectsJson(), 403);
+
+        return redirect()->route('pending-approval');
     }
 }

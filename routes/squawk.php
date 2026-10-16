@@ -14,8 +14,10 @@ Route::get('pages/{page:path}', [PagesController::class, 'show'])
 
 Route::middleware(['auth'])->group(function () {
     Route::view('dashboard', 'dashboard')
-        ->middleware(['verified', 'handoff:/home'])
+        ->middleware(['verified', 'approved', 'handoff:/home'])
         ->name('dashboard');
+
+    Route::livewire('pending-approval', 'pages::auth.pending-approval')->name('pending-approval');
 
     Route::get('attachments/{attachment}/{name?}', [AttachmentsController::class, 'show'])
         ->where('name', '[a-z0-9._-]+')

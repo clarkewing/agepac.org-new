@@ -101,6 +101,24 @@ return [
         'resent' => 'Un nouveau code a été envoyé à votre adresse e‑mail.',
     ],
 
+    'pending-approval' => [
+        'title' => 'En attente d’approbation',
+        'heading' => 'Votre compte est en attente d’approbation',
+        'greeting' => 'Bienvenue, :name !',
+        'description' => 'Le Bureau vérifie l’éligibilité de chaque nouveau membre avant de lui ouvrir l’espace membres.',
+        'steps' => [
+            'created' => 'Compte créé',
+            'verified' => 'Adresse e‑mail vérifiée',
+            'verify' => 'Adresse e‑mail pas encore vérifiée',
+            'verify-link' => 'La vérifier',
+            'approval' => 'Approbation par le Bureau',
+            'approval-hint' => 'Généralement sous 24 heures. Nous vous écrirons dès que ce sera fait.',
+        ],
+        'help-prompt' => 'Une question en attendant ?',
+        'help-link' => 'Consulter l’aide',
+        'logout-link' => 'Se déconnecter',
+    ],
+
     'verify-email' => [
         'title' => 'Vérification de l’e‑mail',
         'heading' => 'Veuillez confirmer votre adresse e‑mail en cliquant sur le lien que nous avons envoyé à :email.',
