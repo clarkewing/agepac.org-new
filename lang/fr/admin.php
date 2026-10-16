@@ -96,7 +96,7 @@ return [
                 'success' => 'Utilisateur approuvé.',
                 'modal' => [
                     'heading' => 'Approuver cet utilisateur ?',
-                    'description' => 'L’utilisateur aura accès à l’espace membres.',
+                    'description' => 'L’utilisateur aura accès à l’espace membres et en sera informé par e‑mail.',
                 ],
             ],
             'assign-role' => [

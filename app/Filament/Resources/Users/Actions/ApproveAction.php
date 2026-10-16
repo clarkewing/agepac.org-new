@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Actions;
 
+use App\Actions\ApproveUser;
 use App\Models\User;
 use Filament\Actions\Action;
 
@@ -24,7 +25,7 @@ class ApproveAction extends Action
             ->authorize('approve')
             ->successNotificationTitle(__('admin.users.actions.approve.success'))
             ->action(function (User $record): void {
-                $record->approve();
+                resolve(ApproveUser::class)($record);
 
                 $this->success();
             });

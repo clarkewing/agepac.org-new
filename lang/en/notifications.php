@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'account-approved' => [
+        'subject' => 'Your AGEPAC account is approved',
+        'greeting' => 'Hello :name!',
+        'intro' => 'The board has checked your eligibility and approved your account.',
+        'access' => 'Welcome aboard: the members area is now yours to explore.',
+        'action' => 'Visit the members area',
+    ],
     'verification-code' => [
         'subject' => 'Your verification code',
         'greeting' => 'Hello :name!',

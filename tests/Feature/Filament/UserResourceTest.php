@@ -4,6 +4,7 @@ use App\Enums\ClassCourse;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Models\User;
+use App\Notifications\AccountApproved;
 use Filament\Actions\Testing\TestAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -270,6 +271,7 @@ test('the approve action is not available for approved users', function () {
 
 describe('header actions', function () {
     test('a user pending approval can be approved', function () {
+        Notification::fake();
         $user = User::factory()->pendingApproval()->create();
 
         Livewire::test(EditUser::class, ['record' => $user->getRouteKey()])
@@ -278,6 +280,7 @@ describe('header actions', function () {
             ->assertNotified(__('admin.users.actions.approve.success'));
 
         expect($user->refresh()->approved_at)->not->toBeNull();
+        Notification::assertSentTo($user, AccountApproved::class);
     });
 
     test('the approve action is hidden for approved users', function () {

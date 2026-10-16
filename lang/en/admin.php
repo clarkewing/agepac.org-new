@@ -96,7 +96,7 @@ return [
                 'success' => 'User approved.',
                 'modal' => [
                     'heading' => 'Approve this user?',
-                    'description' => 'The user will gain access to the members area.',
+                    'description' => 'The user will gain access to the members area and be notified by email.',
                 ],
             ],
             'assign-role' => [
