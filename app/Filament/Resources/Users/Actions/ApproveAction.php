@@ -21,7 +21,7 @@ class ApproveAction extends Action
             ->requiresConfirmation()
             ->modalHeading(__('admin.users.actions.approve.modal.heading'))
             ->modalDescription(__('admin.users.actions.approve.modal.description'))
-            ->visible(fn (User $record): bool => ! $record->isApproved())
+            ->authorize('approve')
             ->successNotificationTitle(__('admin.users.actions.approve.success'))
             ->action(function (User $record): void {
                 $record->approve();
