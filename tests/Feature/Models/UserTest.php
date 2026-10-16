@@ -131,8 +131,13 @@ it('can mass assign all fillable attributes', function () {
 */
 
 it('reports its approval state', function () {
-    expect(User::factory()->make()->isApproved())->toBeTrue()
-        ->and(User::factory()->pendingApproval()->make()->isApproved())->toBeFalse();
+    expect(User::factory()->make())
+        ->isApproved()->toBeTrue()
+        ->isPendingApproval()->toBeFalse();
+
+    expect(User::factory()->pendingApproval()->make())
+        ->isApproved()->toBeFalse()
+        ->isPendingApproval()->toBeTrue();
 });
 
 it('can be approved', function () {

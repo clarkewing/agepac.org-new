@@ -19,6 +19,11 @@ trait Approvable
         return $this->approved_at !== null;
     }
 
+    public function isPendingApproval(): bool
+    {
+        return ! $this->isApproved();
+    }
+
     public function approve(): bool
     {
         return $this->forceFill([

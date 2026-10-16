@@ -36,10 +36,10 @@ class AssignRoleAction extends Action
             ->fillForm(fn (User $record): array => [
                 'role' => $record->role,
             ])
-            ->disabled(fn (User $record): bool => ! $record->isApproved() || $record->is(auth()->user()))
-            ->tooltip(fn (User $record): ?string => $record->isApproved()
-                ? null
-                : __('admin.users.actions.assign-role.pending-approval'))
+            ->disabled(fn (User $record): bool => $record->isPendingApproval() || $record->is(auth()->user()))
+            ->tooltip(fn (User $record): ?string => $record->isPendingApproval()
+                ? __('admin.users.actions.assign-role.pending-approval')
+                : null)
             ->successNotificationTitle(__('admin.users.actions.assign-role.success'))
             ->action(function (array $data, User $record): void {
                 $record->assignRole($data['role'] ?: null);
