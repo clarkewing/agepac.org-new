@@ -4,6 +4,7 @@ use App\Enums\ClassCourse;
 use App\Models\User;
 use App\Notifications\VerificationCode;
 use App\Services\Auth\AccountRecovery;
+use ClarkeWing\Handoff\HandoffIntended;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
@@ -76,6 +77,7 @@ describe('verification gate', function () {
     it('resets the password of a post-incident account from the login form in the browser', function () {
         config()->set('app.locale', 'fr');
         app()->setLocale('fr');
+
         pest()->browser()->withHost(Route::getRoutes()->getByName('recovery')->getDomain());
 
         visit(route('login', absolute: false))
@@ -93,7 +95,7 @@ describe('verification gate', function () {
 
         expect($this->user->fresh())->requiresRecovery()->toBeFalse();
         expect(Auth::validate(['email' => $this->user->email, 'password' => 'top-secret-password']))->toBeTrue();
-    })->skip(message: 'Pending PR 4: GET /login still redirects to the legacy app');
+    });
 });
 
 describe('password reset', function () {
@@ -129,6 +131,17 @@ describe('password reset', function () {
         expect(Auth::validate(['email' => $this->user->email, 'password' => 'new-password']))->toBeTrue();
         expect(session()->has(AccountRecovery::SESSION_KEY))->toBeFalse();
         $this->assertAuthenticatedAs($this->user);
+    });
+
+    it('hands the member back to the legacy page they wanted', function () {
+        config(['handoff.target_host' => 'http://members.agepac.org.test']);
+        resolve(HandoffIntended::class)->remember('/forum/threads');
+
+        Livewire::test('pages::auth.recover')
+            ->set('password', 'new-password')
+            ->set('password_confirmation', 'new-password')
+            ->call('resetPassword')
+            ->assertRedirectContains('members.agepac.org.test/handoff?');
     });
 
     it('verifies the email of an account that had not verified it', function () {
@@ -217,7 +230,6 @@ describe('migration', function () {
     it('migrates an imported account from the login form in the browser', function () {
         config()->set('app.locale', 'fr');
         app()->setLocale('fr');
-        pest()->browser()->withHost(Route::getRoutes()->getByName('recovery')->getDomain());
 
         $this->user->forceFill([
             'class_course' => null,
@@ -226,6 +238,8 @@ describe('migration', function () {
             'birth_date' => '1994-09-22',
             'phone' => '+33612345678',
         ])->save();
+
+        pest()->browser()->withHost(Route::getRoutes()->getByName('recovery')->getDomain());
 
         visit(route('login', absolute: false))
             ->fill('email', $this->user->email)
@@ -250,5 +264,5 @@ describe('migration', function () {
             ->class_course->toBe(ClassCourse::from('EPL/S'))
             ->class_year->toEqual(2015)
             ->phone->formatE164()->toBe('+33612345678');
-    })->skip(message: 'Pending PR 4: GET /login still redirects to the legacy app');
+    });
 });
