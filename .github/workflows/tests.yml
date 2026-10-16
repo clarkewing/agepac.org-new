@@ -68,10 +68,6 @@ jobs:
       - name: Build assets
         run: npm run build
 
-      # Redirects in browser tests use the app's domains, which Herd resolves locally.
-      - name: Resolve the test domains
-        run: echo "127.0.0.1 agepac.org.test squawk.agepac.org.test" | sudo tee -a /etc/hosts
-
       - name: Unit tests
         run: composer test:unit
         env:
