@@ -38,31 +38,31 @@ test('users can be searched by name', function () {
 
 test('users can be filtered to approved only', function () {
     $approved = User::factory()->create();
-    $unapproved = User::factory()->unapproved()->create();
+    $pending = User::factory()->pendingApproval()->create();
 
     Livewire::test(ListUsers::class)
         ->filterTable('approved', true)
         ->assertCanSeeTableRecords([$approved])
-        ->assertCanNotSeeTableRecords([$unapproved]);
+        ->assertCanNotSeeTableRecords([$pending]);
 });
 
-test('users can be filtered to unapproved only', function () {
+test('users can be filtered to those pending approval', function () {
     $approved = User::factory()->create();
-    $unapproved = User::factory()->unapproved()->create();
+    $pending = User::factory()->pendingApproval()->create();
 
     Livewire::test(ListUsers::class)
         ->filterTable('approved', false)
-        ->assertCanSeeTableRecords([$unapproved])
+        ->assertCanSeeTableRecords([$pending])
         ->assertCanNotSeeTableRecords([$approved]);
 });
 
 test('a blank approved filter leaves the query untouched', function () {
     $approved = User::factory()->create();
-    $unapproved = User::factory()->unapproved()->create();
+    $pending = User::factory()->pendingApproval()->create();
 
     Livewire::test(ListUsers::class)
         ->filterTable('approved', null)
-        ->assertCanSeeTableRecords([$approved, $unapproved]);
+        ->assertCanSeeTableRecords([$approved, $pending]);
 });
 
 test('users with a role are flagged in the table', function () {
@@ -251,8 +251,8 @@ test('the resend verification action is not available for verified users', funct
         ->assertActionDoesNotExist(TestAction::make('resendVerification')->schemaComponent('email_verified_at'));
 });
 
-test('an unapproved user can be approved', function () {
-    $user = User::factory()->unapproved()->create();
+test('a user pending approval can be approved', function () {
+    $user = User::factory()->pendingApproval()->create();
 
     Livewire::test(EditUser::class, ['record' => $user->getRouteKey()])
         ->callAction(TestAction::make('approve')->schemaComponent('approved_at'))
@@ -269,8 +269,8 @@ test('the approve action is not available for approved users', function () {
 });
 
 describe('header actions', function () {
-    test('an unapproved user can be approved', function () {
-        $user = User::factory()->unapproved()->create();
+    test('a user pending approval can be approved', function () {
+        $user = User::factory()->pendingApproval()->create();
 
         Livewire::test(EditUser::class, ['record' => $user->getRouteKey()])
             ->callAction('approve')
@@ -308,8 +308,8 @@ describe('header actions', function () {
         expect($user->refresh()->role)->toBeNull();
     });
 
-    test('a role cannot be assigned to an unapproved user', function () {
-        $user = User::factory()->unapproved()->create();
+    test('a role cannot be assigned to a user pending approval', function () {
+        $user = User::factory()->pendingApproval()->create();
 
         Livewire::test(EditUser::class, ['record' => $user->getRouteKey()])
             ->assertActionDisabled('assignRole');

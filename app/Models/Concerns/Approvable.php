@@ -33,7 +33,7 @@ trait Approvable
     }
 
     #[Scope]
-    protected function unapproved(Builder $query): void
+    protected function pendingApproval(Builder $query): void
     {
         $query->whereNull('approved_at');
     }

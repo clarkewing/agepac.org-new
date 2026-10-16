@@ -78,7 +78,11 @@ return [
             'class' => 'Promotion',
         ],
         'filters' => [
-            'approved' => 'Approuvé',
+            'approved' => [
+                'label' => 'Approbation',
+                'true' => 'Approuvé',
+                'false' => 'En attente',
+            ],
         ],
         'timestamps' => [
             'created_at' => 'Inscrit le',
@@ -99,7 +103,7 @@ return [
                 'label' => 'Attribuer un rôle',
                 'placeholder' => 'Aucun',
                 'success' => 'Rôle mis à jour.',
-                'unapproved' => 'L’utilisateur doit être approuvé avant de pouvoir recevoir un rôle.',
+                'pending-approval' => 'L’utilisateur doit être approuvé avant de pouvoir recevoir un rôle.',
             ],
             'send-password-reset' => [
                 'label' => 'Réinitialiser',

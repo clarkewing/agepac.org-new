@@ -78,7 +78,11 @@ return [
             'class' => 'Class',
         ],
         'filters' => [
-            'approved' => 'Approved',
+            'approved' => [
+                'label' => 'Approval',
+                'true' => 'Approved',
+                'false' => 'Pending',
+            ],
         ],
         'timestamps' => [
             'created_at' => 'Registered',
@@ -99,7 +103,7 @@ return [
                 'label' => 'Assign role',
                 'placeholder' => 'None',
                 'success' => 'Role updated.',
-                'unapproved' => 'The user must be approved before they can be given a role.',
+                'pending-approval' => 'The user must be approved before they can be given a role.',
             ],
             'send-password-reset' => [
                 'label' => 'Reset password',

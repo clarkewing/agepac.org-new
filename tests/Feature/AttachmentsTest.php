@@ -17,7 +17,7 @@ it('redirects guests to login', function () {
 });
 
 it('forbids unapproved users from accessing attachments', function () {
-    $this->actingAs(User::factory()->unapproved()->create());
+    $this->actingAs(User::factory()->pendingApproval()->create());
 
     $this->get(route('attachments.show', $this->attachment))
         ->assertForbidden();

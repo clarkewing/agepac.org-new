@@ -17,8 +17,8 @@ it('can be instantiated in unverified state', function () {
     expect($user->email_verified_at)->toBeNull();
 });
 
-it('can be instantiated in unapproved state', function () {
-    $user = User::factory()->unapproved()->make();
+it('can be instantiated pending approval', function () {
+    $user = User::factory()->pendingApproval()->make();
 
     expect($user->approved_at)->toBeNull();
 });
@@ -132,11 +132,11 @@ it('can mass assign all fillable attributes', function () {
 
 it('reports its approval state', function () {
     expect(User::factory()->make()->isApproved())->toBeTrue()
-        ->and(User::factory()->unapproved()->make()->isApproved())->toBeFalse();
+        ->and(User::factory()->pendingApproval()->make()->isApproved())->toBeFalse();
 });
 
 it('can be approved', function () {
-    $user = User::factory()->unapproved()->create();
+    $user = User::factory()->pendingApproval()->create();
 
     $user->approve();
 
@@ -145,10 +145,10 @@ it('can be approved', function () {
 
 it('scopes queries by approval state', function () {
     $approved = User::factory()->create();
-    $unapproved = User::factory()->unapproved()->create();
+    $pending = User::factory()->pendingApproval()->create();
 
     expect(User::approved()->pluck('id')->all())->toBe([$approved->id])
-        ->and(User::unapproved()->pluck('id')->all())->toBe([$unapproved->id]);
+        ->and(User::pendingApproval()->pluck('id')->all())->toBe([$pending->id]);
 });
 
 /*
