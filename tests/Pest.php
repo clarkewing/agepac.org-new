@@ -102,8 +102,10 @@ function withEnvironment(string $env, callable $callback): void
     $_ENV['APP_ENV'] = $_SERVER['APP_ENV'] = $env;
     invade(test())->refreshApplication();
 
-    $callback();
-
-    $_ENV['APP_ENV'] = $_SERVER['APP_ENV'] = $originalEnv;
-    invade(test())->refreshApplication();
+    try {
+        $callback();
+    } finally {
+        $_ENV['APP_ENV'] = $_SERVER['APP_ENV'] = $originalEnv;
+        invade(test())->refreshApplication();
+    }
 }
