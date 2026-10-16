@@ -199,6 +199,14 @@ it('exposes role permissions through the gate', function () {
         ->and($user->can('users:manage'))->toBeFalse();
 });
 
+it('capitalizes its names', function () {
+    $user = User::factory()->create(['first_name' => 'élodie', 'last_name' => 'DE LA FONTAINE']);
+
+    expect($user)
+        ->first_name->toBe('Élodie')
+        ->last_name->toBe('de La Fontaine');
+});
+
 it('finds the users whose role grants a permission', function () {
     $admin = User::factory()->admin()->create();
     User::factory()->create();

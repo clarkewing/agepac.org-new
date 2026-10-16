@@ -25,8 +25,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('attachments.show');
 
     Route::prefix('settings')->group(function () {
-        Route::livewire('profile', 'pages::settings.profile')->name('settings.profile')->middleware('handoff:/account/info');
-        Route::livewire('password', 'pages::settings.password')->name('settings.password')->middleware('handoff:/account/info');
+        Route::livewire('profile', 'pages::settings.profile')->name('settings.profile');
+        Route::livewire('password', 'pages::settings.password')->name('settings.password');
         Route::livewire('membership', 'pages::settings.membership')->name('settings.membership')->middleware('approved');
         Route::livewire('appearance', 'pages::settings.appearance')->name('settings.appearance');
 

@@ -4,36 +4,37 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 
-test('password can be updated', function () {
-    $user = User::factory()->create([
-        'password' => Hash::make('password'),
-    ]);
+beforeEach(function () {
+    $this->user = User::factory()->create(['password' => 'password']);
 
-    $this->actingAs($user);
+    $this->actingAs($this->user);
+});
 
-    $response = Livewire::test('pages::settings.password')
+it('renders the password page', function () {
+    $this->get(route('settings.password'))
+        ->assertSuccessful()
+        ->assertSeeLivewire('pages::settings.password');
+});
+
+it('updates the password', function () {
+    Livewire::test('pages::settings.password')
         ->set('current_password', 'password')
         ->set('password', 'new-password')
         ->set('password_confirmation', 'new-password')
-        ->call('updatePassword');
+        ->call('updatePassword')
+        ->assertHasNoErrors()
+        ->assertDispatched('toast-show', fn (string $name, array $params): bool => $params['slots']['text'] === __('settings.password.status.updated'));
 
-    $response->assertHasNoErrors();
-
-    expect(Hash::check('new-password', $user->refresh()->password))->toBeTrue();
+    expect(Hash::check('new-password', $this->user->refresh()->password))->toBeTrue();
 });
 
-test('correct password must be provided to update password', function () {
-    $user = User::factory()->create([
-        'password' => Hash::make('password'),
-    ]);
-
-    $this->actingAs($user);
-
-    $response = Livewire::test('pages::settings.password')
+it('requires the current password to update the password', function () {
+    Livewire::test('pages::settings.password')
         ->set('current_password', 'wrong-password')
         ->set('password', 'new-password')
         ->set('password_confirmation', 'new-password')
-        ->call('updatePassword');
+        ->call('updatePassword')
+        ->assertHasErrors(['current_password']);
 
-    $response->assertHasErrors(['current_password']);
+    expect(Hash::check('password', $this->user->refresh()->password))->toBeTrue();
 });

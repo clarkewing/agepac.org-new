@@ -9,8 +9,7 @@ use Illuminate\Validation\Rule;
 use Propaganistas\LaravelPhone\Rules\Phone;
 
 /**
- * Validation rules for the fields a member fills in when registering or
- * recovering an account, shared by the Fortify action and the wizard steps.
+ * Validation rules for a user's profile fields.
  */
 trait ProfileValidationRules
 {
