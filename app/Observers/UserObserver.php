@@ -2,9 +2,9 @@
 
 namespace App\Observers;
 
-use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
-use App\Actions\Mailcoach\UpdateSubscriberEmailAction;
 use App\Enums\MailcoachTag;
+use App\Jobs\Mailcoach\UnsubscribeFromList;
+use App\Jobs\Mailcoach\UpdateSubscriberEmail;
 use App\Models\User;
 use ClarkeWing\LegacySync\Enums\SyncDirection;
 use ClarkeWing\LegacySync\Facades\LegacySync;
@@ -19,7 +19,7 @@ class UserObserver
     public function updated(User $user): void
     {
         if ($user->wasChanged('email')) {
-            app(UpdateSubscriberEmailAction::class)($user);
+            UpdateSubscriberEmail::dispatch($user->getOriginal('email'), $user->email);
         }
     }
 
@@ -27,6 +27,6 @@ class UserObserver
     {
         LegacySync::deleteRecord($user->getTable(), $user->getKey(), SyncDirection::NewToLegacy);
 
-        app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::NEWSLETTER);
+        UnsubscribeFromList::dispatch($user->email, MailcoachTag::NEWSLETTER);
     }
 }

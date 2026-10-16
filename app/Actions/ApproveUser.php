@@ -2,7 +2,8 @@
 
 namespace App\Actions;
 
-use App\Jobs\SubscribeUserToNewsletter;
+use App\Enums\MailcoachTag;
+use App\Jobs\Mailcoach\SubscribeToList;
 use App\Models\User;
 use App\Notifications\AccountApproved;
 
@@ -18,6 +19,6 @@ class ApproveUser
 
         $user->notify(new AccountApproved);
 
-        SubscribeUserToNewsletter::dispatch($user);
+        SubscribeToList::dispatch($user, MailcoachTag::NEWSLETTER);
     }
 }

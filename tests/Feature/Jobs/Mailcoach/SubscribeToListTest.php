@@ -1,13 +1,9 @@
 <?php
 
-use App\Actions\Mailcoach\SubscribeUserToListAction;
 use App\Enums\MailcoachTag;
+use App\Jobs\Mailcoach\SubscribeToList;
 use App\Models\User;
 use App\Services\Mailcoach\Facades\Mailcoach;
-
-beforeEach(function () {
-    Mailcoach::fake();
-});
 
 it('creates a new subscriber and adds the provided tag when not found', function () {
     $user = User::factory()->make([
@@ -18,9 +14,7 @@ it('creates a new subscriber and adds the provided tag when not found', function
         'class_year' => '1843',
     ]);
 
-    expect(Mailcoach::getSubscriber('ada@example.com'))->toBeNull();
-
-    app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
+    app()->call([new SubscribeToList($user, MailcoachTag::NEWSLETTER), 'handle']);
 
     expect(Mailcoach::getSubscriber('ada@example.com'))
         ->not->toBeNull()
@@ -35,16 +29,10 @@ it('creates a new subscriber and adds the provided tag when not found', function
 });
 
 it('adds the tag to an existing subscriber', function () {
-    $user = User::factory()->make([
-        'email' => 'alan@example.com',
-    ]);
+    Mailcoach::subscribe('alan@example.com');
 
-    expect(Mailcoach::subscribe('alan@example.com'))
-        ->tags->toBeArray()->toBeEmpty();
-
-    app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
+    app()->call([new SubscribeToList(User::factory()->make(['email' => 'alan@example.com']), MailcoachTag::NEWSLETTER), 'handle']);
 
     expect(Mailcoach::getSubscriber('alan@example.com'))
-        ->not->toBeNull()
         ->tags->toContain('newsletter');
 });

@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Observers;
 
-use App\Actions\Mailcoach\SubscribeUserToListAction;
 use App\Enums\MailcoachTag;
+use App\Jobs\Mailcoach\SubscribeToList;
+use App\Jobs\Mailcoach\UpdateMembersNewsletterSubscription;
 use App\Models\User;
 use App\Services\Mailcoach\Facades\Mailcoach;
+use Illuminate\Support\Facades\Queue;
 use Laravel\Cashier\Subscription;
 use Stripe\Subscription as StripeSubscription;
 
@@ -18,7 +20,7 @@ function createSubscriptionForUser(User $user, array $overrides = []): Subscript
 }
 
 it('adds members_newsletter tag when a subscription is saved and active', function () {
-    resolve(SubscribeUserToListAction::class)($user = User::factory()->create(), MailcoachTag::NEWSLETTER);
+    SubscribeToList::dispatchSync($user = User::factory()->create(), MailcoachTag::NEWSLETTER);
 
     createSubscriptionForUser($user);
 
@@ -28,7 +30,7 @@ it('adds members_newsletter tag when a subscription is saved and active', functi
 });
 
 it('removes members_newsletter tag when the last subscription is deleted', function () {
-    resolve(SubscribeUserToListAction::class)($user = User::factory()->create(), MailcoachTag::NEWSLETTER);
+    SubscribeToList::dispatchSync($user = User::factory()->create(), MailcoachTag::NEWSLETTER);
     $subscription = createSubscriptionForUser($user);
 
     expect(Mailcoach::getSubscriber($user->email)->tags)
@@ -67,4 +69,14 @@ it('removes members_newsletter when membership is no longer active', function ()
 
     expect(Mailcoach::getSubscriber($user->email)->tags)
         ->not->toContain('members_newsletter');
+});
+
+it('syncs the members newsletter on the queue', function () {
+    Queue::fake();
+
+    createSubscriptionForUser($user = User::factory()->create());
+
+    Queue::assertPushed(UpdateMembersNewsletterSubscription::class,
+        fn (UpdateMembersNewsletterSubscription $job): bool => $job->user->is($user)
+    );
 });

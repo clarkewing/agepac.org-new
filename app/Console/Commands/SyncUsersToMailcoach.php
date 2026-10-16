@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Actions\Mailcoach\SubscribeUserToListAction;
-use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
 use App\Enums\MailcoachTag;
+use App\Jobs\Mailcoach\SubscribeToList;
+use App\Jobs\Mailcoach\UpdateMembersNewsletterSubscription;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -35,13 +35,8 @@ class SyncUsersToMailcoach extends Command
             ->orderBy('id')
             ->chunkById($chunk, function (Collection $users) use (&$processed) {
                 foreach ($users as $user) {
-                    app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
-
-                    if ($this->hasActiveSubscription($user)) {
-                        app(SubscribeUserToListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
-                    } else {
-                        app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
-                    }
+                    SubscribeToList::dispatchSync($user, MailcoachTag::NEWSLETTER);
+                    UpdateMembersNewsletterSubscription::dispatchSync($user);
 
                     $processed++;
                 }
@@ -50,13 +45,5 @@ class SyncUsersToMailcoach extends Command
         $this->info("Processed {$processed} users.");
 
         return self::SUCCESS;
-    }
-
-    protected function hasActiveSubscription(User $user): bool
-    {
-        return $user->subscriptions()
-            ->where('type', 'membership')
-            ->active()
-            ->exists();
     }
 }

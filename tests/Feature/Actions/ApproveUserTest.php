@@ -1,7 +1,8 @@
 <?php
 
 use App\Actions\ApproveUser;
-use App\Jobs\SubscribeUserToNewsletter;
+use App\Enums\MailcoachTag;
+use App\Jobs\Mailcoach\SubscribeToList;
 use App\Models\User;
 use App\Notifications\AccountApproved;
 use App\Services\Mailcoach\Facades\Mailcoach;
@@ -39,7 +40,7 @@ it('signs the member up to the newsletter on the queue', function () {
 
     ($this->action)($user);
 
-    Queue::assertPushed(SubscribeUserToNewsletter::class,
-        fn (SubscribeUserToNewsletter $job): bool => $job->user->is($user)
+    Queue::assertPushed(SubscribeToList::class,
+        fn (SubscribeToList $job): bool => $job->user->is($user) && $job->tag === MailcoachTag::NEWSLETTER
     );
 });
