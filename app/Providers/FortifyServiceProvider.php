@@ -9,10 +9,13 @@ use App\Http\Middleware\RedirectIfRecoveryRequired;
 use App\Http\Responses\Fortify\EmailVerificationNotificationSentResponse;
 use App\Http\Responses\Fortify\FailedPasswordResetLinkRequestResponse;
 use App\Http\Responses\Fortify\LockoutResponse;
+use App\Http\Responses\Fortify\LoginResponse;
 use App\Http\Responses\Fortify\LogoutResponse;
 use App\Http\Responses\Fortify\PasswordResetResponse;
 use App\Services\Auth\ProgressiveLoginRateLimiter;
+use ClarkeWing\Handoff\HandoffIntended;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +27,7 @@ use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Contracts\EmailVerificationNotificationSentResponse as EmailVerificationNotificationSentResponseContract;
 use Laravel\Fortify\Contracts\FailedPasswordResetLinkRequestResponse as FailedPasswordResetLinkRequestResponseContract;
 use Laravel\Fortify\Contracts\LockoutResponse as LockoutResponseContract;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
 use Laravel\Fortify\Features;
@@ -40,6 +44,7 @@ class FortifyServiceProvider extends ServiceProvider
         // Lockouts grow with each failure past the fifth instead of resetting every minute.
         $this->app->bind(LoginRateLimiter::class, ProgressiveLoginRateLimiter::class);
 
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
         $this->app->singleton(LogoutResponseContract::class, LogoutResponse::class);
         $this->app->singleton(EmailVerificationNotificationSentResponseContract::class, EmailVerificationNotificationSentResponse::class);
         $this->app->singleton(LockoutResponseContract::class, LockoutResponse::class);
@@ -75,8 +80,13 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::viewPrefix('pages.auth.');
 
-        // Login is still served by the legacy app; drop this line at the flip.
-        Fortify::loginView(fn () => redirect()->away(config('handoff.target_host').'/login'));
+        // A guest the legacy app sends here to log in carries the page they
+        // wanted there, handed back by LoginResponse once they have.
+        Fortify::loginView(function (Request $request): View {
+            resolve(HandoffIntended::class)->remember($request->query('intended'));
+
+            return view('pages.auth.login');
+        });
     }
 
     /**

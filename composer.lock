@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6163a338f1e7ddf58811097de651783",
+    "content-hash": "83b52933b90d0e4f4a83af70b53b885a",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -867,16 +867,16 @@
         },
         {
             "name": "clarkewing/handoff",
-            "version": "v0.1.5",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clarkewing/handoff.git",
-                "reference": "0c853b6a456ec9d7a550c9b5b02120c1a1e905aa"
+                "reference": "4d40157ea83030a2d4a22e2a58eebb4426115d3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clarkewing/handoff/zipball/0c853b6a456ec9d7a550c9b5b02120c1a1e905aa",
-                "reference": "0c853b6a456ec9d7a550c9b5b02120c1a1e905aa",
+                "url": "https://api.github.com/repos/clarkewing/handoff/zipball/4d40157ea83030a2d4a22e2a58eebb4426115d3c",
+                "reference": "4d40157ea83030a2d4a22e2a58eebb4426115d3c",
                 "shasum": ""
             },
             "require": {
@@ -927,9 +927,9 @@
             ],
             "support": {
                 "issues": "https://github.com/clarkewing/handoff/issues",
-                "source": "https://github.com/clarkewing/handoff/tree/v0.1.5"
+                "source": "https://github.com/clarkewing/handoff/tree/v0.2.0"
             },
-            "time": "2026-08-08T14:08:48+00:00"
+            "time": "2026-10-16T12:33:28+00:00"
         },
         {
             "name": "clarkewing/legacy-sync",

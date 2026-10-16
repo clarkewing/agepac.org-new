@@ -4,12 +4,11 @@ use App\Http\Responses\Fortify\LockoutResponse;
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Testing\TestResponse;
 
 it('renders the login screen', function () {
     $this->get(route('login'))->assertOk();
-})->skip(message: 'Pending PR 4: GET /login still redirects to the legacy app');
+});
 
 it('only shows the developer login in the local environment', function () {
     withEnvironment('local', function () {
@@ -119,13 +118,12 @@ it('focuses the password field when the email is already filled in', function ()
 it('shows the lockout counting down above the login form', function () {
     $this->freezeTime();
     $user = User::factory()->create();
-    registerLoginForm();
 
     foreach (range(1, 5) as $attempt) {
         attemptLogin($user->email, 'wrong-password');
     }
 
-    $this->from('login-form')
+    $this->from(route('login'))
         ->followingRedirects()
         ->post(route('login.store'), ['email' => $user->email, 'password' => 'password'])
         ->assertSee(__('auth.login.callouts.lockout.heading'))
@@ -144,22 +142,55 @@ it('logs the user out to the public site', function () {
     $this->assertGuest();
 });
 
+describe('coming from the legacy app', function () {
+    beforeEach(function () {
+        config(['handoff.target_host' => 'http://members.agepac.org.test']);
+    });
+
+    it('hands the member back to the legacy page they wanted after logging in', function () {
+        $user = User::factory()->create();
+        $this->get(route('login', ['intended' => '/forum/threads']));
+
+        $location = attemptLogin($user->email, 'password')->headers->get('Location');
+
+        expect($location)
+            ->toStartWith('http://members.agepac.org.test/handoff?')
+            ->toContain('target='.urlencode('/forum/threads'));
+    });
+
+    it('ignores an intended page outside the legacy app', function () {
+        $user = User::factory()->create();
+        $this->get(route('login', ['intended' => 'https://evil.example/']));
+
+        attemptLogin($user->email, 'password')
+            ->assertRedirect(route('dashboard', absolute: false));
+    });
+
+    it('sends a member already logged in straight back to the legacy page they wanted', function () {
+        $location = $this->actingAs(User::factory()->create())
+            ->get(route('login', ['intended' => '/forum/threads']))
+            ->headers->get('Location');
+
+        expect($location)
+            ->toStartWith('http://members.agepac.org.test/handoff?')
+            ->toContain('target='.urlencode('/forum/threads'));
+    });
+
+    it('sends a member already logged in to the dashboard when no page was intended', function () {
+        $this->actingAs(User::factory()->create())
+            ->get(route('login'))
+            ->assertRedirect(route('dashboard'));
+    });
+});
+
 /**
- * Render the login form through a real request, with the given session data,
- * since the login route itself still redirects to the legacy app.
+ * Render the login form with the given session data.
  *
  * @param  array<string, mixed>  $session
  */
 function loginForm(array $session = []): TestResponse
 {
-    registerLoginForm();
-
-    return test()->withSession($session)->get('login-form');
-}
-
-function registerLoginForm(): void
-{
-    Route::middleware('web')->get('login-form', fn () => view('pages.auth.login'));
+    return test()->withSession($session)->get(route('login'));
 }
 
 function attemptLogin(string $email, string $password): TestResponse
