@@ -199,6 +199,14 @@ it('exposes role permissions through the gate', function () {
         ->and($user->can('users:manage'))->toBeFalse();
 });
 
+it('finds the users whose role grants a permission', function () {
+    $admin = User::factory()->admin()->create();
+    User::factory()->create();
+
+    expect(User::withPermission('users:approve')->pluck('id')->all())
+        ->toBe([$admin->id]);
+});
+
 /*
 |--------------------------------------------------------------------------
 | Accessors & Computed Attributes

@@ -8,6 +8,13 @@ return [
         'access' => 'Welcome aboard: the members area is now yours to explore.',
         'action' => 'Visit the members area',
     ],
+    'user-pending-approval' => [
+        'subject' => 'New member awaiting approval',
+        'greeting' => 'Hello :name!',
+        'intro' => ':name (:class) has just created an AGEPAC account.',
+        'cta' => 'Their account must be approved before they can access the members area.',
+        'action' => 'Review the account',
+    ],
     'verification-code' => [
         'subject' => 'Your verification code',
         'greeting' => 'Hello :name!',
