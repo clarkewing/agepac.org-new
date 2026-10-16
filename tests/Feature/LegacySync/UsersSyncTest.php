@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\User;
+use ClarkeWing\LegacySync\Enums\SyncDirection;
 use ClarkeWing\LegacySync\Facades\LegacySync;
 use ClarkeWing\LegacySync\LegacySyncManager;
+use Illuminate\Support\Facades\DB;
 use Tests\Helpers\LegacySyncHelpers as Helpers;
 
 beforeEach(function () {
@@ -74,4 +76,18 @@ test('user deletions are synced to legacy database', function () {
     $user->delete();
 
     $this->assertDatabaseMissing('users', ['id' => $user->id], 'legacy');
+});
+
+test('password and remember token are not synced from legacy database', function () {
+    $user = User::factory()->migrationRequired()->create();
+    DB::connection('legacy')->table('users')->where('id', $user->id)->update([
+        'password' => null,
+        'remember_token' => 'legacy-token',
+    ]);
+
+    LegacySync::syncRecord('users', $user->id, SyncDirection::LegacyToNew);
+
+    expect($user->fresh())
+        ->requiresMigration()->toBeTrue()
+        ->remember_token->not->toBe('legacy-token');
 });

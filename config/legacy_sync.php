@@ -55,10 +55,13 @@ return [
             // managed columns. Exclude them in the LegacyToNew direction so a
             // save on the legacy app can never push a stale Cashier value over a
             // fresh one squawk just wrote.
+            // Login lives on this app too, so it owns password and remember_token:
+            // a legacy save (a reputation increment, say) would otherwise push the
+            // legacy null over the MIGRATION_REQUIRED sentinel.
             // Mirrors the same exclude on the legacy app's config/legacy_sync.php.
             'exclude' => [
                 'legacy' => ['role'],
-                'new' => ['stripe_id', 'pm_type', 'pm_last_four', 'trial_ends_at'],
+                'new' => ['stripe_id', 'pm_type', 'pm_last_four', 'trial_ends_at', 'password', 'remember_token'],
             ],
         ],
 
