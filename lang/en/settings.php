@@ -53,6 +53,9 @@ return [
         'heading' => 'Update password',
         'subheading' => 'Ensure your account is using a long, random password to stay secure',
         'action' => 'Save',
+        'status' => [
+            'updated' => 'Your password has been updated.',
+        ],
     ],
 
     'membership' => [

@@ -53,6 +53,9 @@ return [
         'heading' => 'Mettre à jour le mot de passe',
         'subheading' => 'Assurez‑vous que votre compte utilise un mot de passe long et aléatoire pour rester sécurisé',
         'action' => 'Enregistrer',
+        'status' => [
+            'updated' => 'Votre mot de passe a été modifié.',
+        ],
     ],
 
     'membership' => [
