@@ -78,7 +78,11 @@ return [
             'class' => 'Promotion',
         ],
         'filters' => [
-            'approved' => 'Approuvé',
+            'approved' => [
+                'label' => 'Approbation',
+                'true' => 'Approuvé',
+                'false' => 'En attente',
+            ],
         ],
         'timestamps' => [
             'created_at' => 'Inscrit le',
@@ -92,14 +96,22 @@ return [
                 'success' => 'Utilisateur approuvé.',
                 'modal' => [
                     'heading' => 'Approuver cet utilisateur ?',
-                    'description' => 'L’utilisateur aura accès à l’espace membres.',
+                    'description' => 'L’utilisateur aura accès à l’espace membres et en sera informé par e‑mail.',
+                ],
+            ],
+            'reject' => [
+                'label' => 'Refuser',
+                'success' => 'Compte refusé et supprimé.',
+                'modal' => [
+                    'heading' => 'Refuser ce compte ?',
+                    'description' => 'Le compte sera supprimé définitivement. La personne n’en sera pas informée.',
                 ],
             ],
             'assign-role' => [
                 'label' => 'Attribuer un rôle',
                 'placeholder' => 'Aucun',
                 'success' => 'Rôle mis à jour.',
-                'unapproved' => 'L’utilisateur doit être approuvé avant de pouvoir recevoir un rôle.',
+                'pending-approval' => 'L’utilisateur doit être approuvé avant de pouvoir recevoir un rôle.',
             ],
             'send-password-reset' => [
                 'label' => 'Réinitialiser',

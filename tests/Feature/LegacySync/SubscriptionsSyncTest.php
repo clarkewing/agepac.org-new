@@ -74,3 +74,20 @@ test('subscription items are synced to legacy database', function () {
 
     expect($legacyItem)->not->toHaveKey('stripe_product');
 });
+
+test('subscription deletions are synced to legacy database', function () {
+    $subscription = Subscription::factory()->create();
+
+    $subscription->delete();
+
+    $this->assertDatabaseMissing('subscriptions', ['id' => $subscription->id], 'legacy');
+});
+
+test('subscription item deletions are synced to legacy database', function () {
+    $subscription = Subscription::factory()->has(SubscriptionItem::factory(), 'items')->create();
+    $subscriptionItem = $subscription->items->first();
+
+    $subscriptionItem->delete();
+
+    $this->assertDatabaseMissing('subscription_items', ['id' => $subscriptionItem->id], 'legacy');
+});

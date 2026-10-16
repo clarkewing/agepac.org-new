@@ -67,7 +67,7 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function unapproved(): static
+    public function pendingApproval(): static
     {
         return $this->state(fn (array $attributes) => [
             'approved_at' => null,

@@ -49,6 +49,12 @@ it('renders the livewire component', function () {
         ->assertSeeLivewire('pages::settings.membership');
 });
 
+it('sends members pending approval to the page explaining why', function () {
+    $this->actingAs(User::factory()->pendingApproval()->create())
+        ->get(route('settings.membership'))
+        ->assertRedirect(route('pending-approval'));
+});
+
 it('computes the current user’s membership subscription', function () {
     $component = Livewire::test('pages::settings.membership');
 

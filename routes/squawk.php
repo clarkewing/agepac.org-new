@@ -14,8 +14,10 @@ Route::get('pages/{page:path}', [PagesController::class, 'show'])
 
 Route::middleware(['auth'])->group(function () {
     Route::view('dashboard', 'dashboard')
-        ->middleware(['verified', 'handoff:/home'])
+        ->middleware(['verified', 'approved', 'handoff:/home'])
         ->name('dashboard');
+
+    Route::livewire('pending-approval', 'pages::auth.pending-approval')->name('pending-approval');
 
     Route::get('attachments/{attachment}/{name?}', [AttachmentsController::class, 'show'])
         ->where('name', '[a-z0-9._-]+')
@@ -25,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('settings')->group(function () {
         Route::livewire('profile', 'pages::settings.profile')->name('settings.profile')->middleware('handoff:/account/info');
         Route::livewire('password', 'pages::settings.password')->name('settings.password')->middleware('handoff:/account/info');
-        Route::livewire('membership', 'pages::settings.membership')->name('settings.membership');
+        Route::livewire('membership', 'pages::settings.membership')->name('settings.membership')->middleware('approved');
         Route::livewire('appearance', 'pages::settings.appearance')->name('settings.appearance');
 
         Route::redirect('/', 'settings/profile');

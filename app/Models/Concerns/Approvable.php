@@ -19,6 +19,11 @@ trait Approvable
         return $this->approved_at !== null;
     }
 
+    public function isPendingApproval(): bool
+    {
+        return ! $this->isApproved();
+    }
+
     public function approve(): bool
     {
         return $this->forceFill([
@@ -33,7 +38,7 @@ trait Approvable
     }
 
     #[Scope]
-    protected function unapproved(Builder $query): void
+    protected function pendingApproval(Builder $query): void
     {
         $query->whereNull('approved_at');
     }

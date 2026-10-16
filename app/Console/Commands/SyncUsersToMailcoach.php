@@ -2,18 +2,15 @@
 
 namespace App\Console\Commands;
 
-use App\Actions\Mailcoach\SubscribeUserToListAction;
-use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
+use App\Enums\MailcoachTag;
+use App\Jobs\Mailcoach\SubscribeToList;
+use App\Jobs\Mailcoach\UpdateMembersNewsletterSubscription;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
 class SyncUsersToMailcoach extends Command
 {
-    const string NEWSLETTER_TAG = 'newsletter';
-
-    const string MEMBERS_TAG = 'members_newsletter';
-
     /**
      * The name and signature of the console command.
      *
@@ -26,37 +23,27 @@ class SyncUsersToMailcoach extends Command
      *
      * @var string
      */
-    protected $description = 'Sync all application users to Mailcoach with the proper tags based on membership status.';
+    protected $description = 'Sync all approved users to Mailcoach with the proper tags based on membership status.';
 
     public function handle(): int
     {
         $processed = 0;
         $chunk = (int) $this->option('chunk');
 
-        User::query()->orderBy('id')->chunkById($chunk, function (Collection $users) use (&$processed) {
-            foreach ($users as $user) {
-                app(SubscribeUserToListAction::class)($user, self::NEWSLETTER_TAG);
+        User::query()
+            ->approved()
+            ->orderBy('id')
+            ->chunkById($chunk, function (Collection $users) use (&$processed) {
+                foreach ($users as $user) {
+                    SubscribeToList::dispatchSync($user, MailcoachTag::NEWSLETTER);
+                    UpdateMembersNewsletterSubscription::dispatchSync($user);
 
-                if ($this->hasActiveSubscription($user)) {
-                    app(SubscribeUserToListAction::class)($user, self::MEMBERS_TAG);
-                } else {
-                    app(UnsubscribeUserFromListAction::class)($user, self::MEMBERS_TAG);
+                    $processed++;
                 }
-
-                $processed++;
-            }
-        });
+            });
 
         $this->info("Processed {$processed} users.");
 
         return self::SUCCESS;
-    }
-
-    protected function hasActiveSubscription(User $user): bool
-    {
-        return $user->subscriptions()
-            ->where('type', 'membership')
-            ->active()
-            ->exists();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Users\Pages;
 
 use App\Filament\Resources\Users\Actions\ApproveAction;
 use App\Filament\Resources\Users\Actions\AssignRoleAction;
+use App\Filament\Resources\Users\Actions\RejectAction;
 use App\Filament\Resources\Users\UserResource;
 use Filament\Resources\Pages\EditRecord;
 
@@ -15,6 +16,7 @@ class EditUser extends EditRecord
     {
         return [
             ApproveAction::make(),
+            RejectAction::make(),
             AssignRoleAction::make(),
         ];
     }

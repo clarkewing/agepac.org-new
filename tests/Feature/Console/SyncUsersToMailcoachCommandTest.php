@@ -2,7 +2,8 @@
 
 namespace Tests\Feature\Console;
 
-use App\Actions\Mailcoach\SubscribeUserToListAction;
+use App\Enums\MailcoachTag;
+use App\Jobs\Mailcoach\SubscribeToList;
 use App\Models\User;
 use App\Services\Mailcoach\Facades\Mailcoach;
 use Laravel\Cashier\Subscription;
@@ -23,7 +24,7 @@ it('subscribes all users to newsletter and syncs members tag based on active sub
     );
 
     $staleUser = User::factory()->create();
-    app(SubscribeUserToListAction::class)($staleUser, 'members_newsletter');
+    SubscribeToList::dispatchSync($staleUser, MailcoachTag::MEMBERS_NEWSLETTER);
 
     $this->artisan('mailcoach:sync-users')
         ->assertSuccessful();
@@ -55,4 +56,12 @@ it('is idempotent and does not duplicate tags when run multiple times', function
     expect(collect(Mailcoach::getSubscriber($user->email)->tags))
         ->filter(fn ($t) => $t === 'newsletter')->toHaveCount(1)
         ->filter(fn ($t) => $t === 'members_newsletter')->toHaveCount(1);
+});
+
+it('leaves members pending approval off the newsletter', function () {
+    $user = User::factory()->pendingApproval()->create();
+
+    $this->artisan('mailcoach:sync-users')->assertSuccessful();
+
+    expect(Mailcoach::getSubscriber($user->email))->toBeNull();
 });

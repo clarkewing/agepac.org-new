@@ -101,6 +101,24 @@ return [
         'resent' => 'A new code has been sent to your email address.',
     ],
 
+    'pending-approval' => [
+        'title' => 'Awaiting approval',
+        'heading' => 'Your account is awaiting approval',
+        'greeting' => 'Welcome, :name!',
+        'description' => 'The board checks every new member’s eligibility before opening the members area.',
+        'steps' => [
+            'created' => 'Account created',
+            'verified' => 'Email address verified',
+            'verify' => 'Email address not verified yet',
+            'verify-link' => 'Verify it',
+            'approval' => 'Approval by the board',
+            'approval-hint' => 'Usually within 24 hours. We’ll email you as soon as it’s done.',
+        ],
+        'help-prompt' => 'A question in the meantime?',
+        'help-link' => 'Visit the help page',
+        'logout-link' => 'Log out',
+    ],
+
     'verify-email' => [
         'title' => 'Verify email',
         'heading' => 'Please verify your email address by clicking on the link we emailed to :email.',

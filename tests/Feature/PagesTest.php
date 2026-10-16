@@ -33,8 +33,8 @@ it('redirects guests to login for restricted pages', function () {
         ->assertRedirect(route('login'));
 });
 
-it('forbids unapproved members on restricted pages', function () {
-    $this->actingAs(User::factory()->unapproved()->create());
+it('forbids members pending approval on restricted pages', function () {
+    $this->actingAs(User::factory()->pendingApproval()->create());
 
     $this->get(route('pages.show', Page::factory()->create()))
         ->assertForbidden();

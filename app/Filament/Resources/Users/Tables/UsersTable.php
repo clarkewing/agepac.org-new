@@ -59,12 +59,14 @@ class UsersTable
                         ->all()
                     ),
                 TernaryFilter::make('approved')
-                    ->label(__('admin.users.filters.approved'))
+                    ->label(__('admin.users.filters.approved.label'))
+                    ->trueLabel(__('admin.users.filters.approved.true'))
+                    ->falseLabel(__('admin.users.filters.approved.false'))
                     ->nullable()
                     ->attribute('approved_at')
                     ->queries(
                         true: fn (Builder $query) => $query->approved(),
-                        false: fn (Builder $query) => $query->unapproved(),
+                        false: fn (Builder $query) => $query->pendingApproval(),
                         blank: fn (Builder $query) => $query,
                     ),
             ])

@@ -78,7 +78,11 @@ return [
             'class' => 'Class',
         ],
         'filters' => [
-            'approved' => 'Approved',
+            'approved' => [
+                'label' => 'Approval',
+                'true' => 'Approved',
+                'false' => 'Pending',
+            ],
         ],
         'timestamps' => [
             'created_at' => 'Registered',
@@ -92,14 +96,22 @@ return [
                 'success' => 'User approved.',
                 'modal' => [
                     'heading' => 'Approve this user?',
-                    'description' => 'The user will gain access to the members area.',
+                    'description' => 'The user will gain access to the members area and be notified by email.',
+                ],
+            ],
+            'reject' => [
+                'label' => 'Reject',
+                'success' => 'Account rejected and deleted.',
+                'modal' => [
+                    'heading' => 'Reject this account?',
+                    'description' => 'The account will be deleted permanently. The person will not be notified.',
                 ],
             ],
             'assign-role' => [
                 'label' => 'Assign role',
                 'placeholder' => 'None',
                 'success' => 'Role updated.',
-                'unapproved' => 'The user must be approved before they can be given a role.',
+                'pending-approval' => 'The user must be approved before they can be given a role.',
             ],
             'send-password-reset' => [
                 'label' => 'Reset password',

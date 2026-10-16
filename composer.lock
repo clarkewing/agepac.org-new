@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "71573c3c10a97707b0994120be68e637",
+    "content-hash": "e6163a338f1e7ddf58811097de651783",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -933,16 +933,16 @@
         },
         {
             "name": "clarkewing/legacy-sync",
-            "version": "v0.2.2",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clarkewing/legacy-sync.git",
-                "reference": "dced44efc1c2ed952ec919b04f7a5ee426d1661d"
+                "reference": "1b0a491543f58c120fe6c01673245d6e10c5e7ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clarkewing/legacy-sync/zipball/dced44efc1c2ed952ec919b04f7a5ee426d1661d",
-                "reference": "dced44efc1c2ed952ec919b04f7a5ee426d1661d",
+                "url": "https://api.github.com/repos/clarkewing/legacy-sync/zipball/1b0a491543f58c120fe6c01673245d6e10c5e7ce",
+                "reference": "1b0a491543f58c120fe6c01673245d6e10c5e7ce",
                 "shasum": ""
             },
             "require": {
@@ -995,9 +995,9 @@
             ],
             "support": {
                 "issues": "https://github.com/clarkewing/legacy-sync/issues",
-                "source": "https://github.com/clarkewing/legacy-sync/tree/v0.2.2"
+                "source": "https://github.com/clarkewing/legacy-sync/tree/v0.3.0"
             },
-            "time": "2026-08-08T14:08:50+00:00"
+            "time": "2026-10-16T07:44:11+00:00"
         },
         {
             "name": "composer/class-map-generator",

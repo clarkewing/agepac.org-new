@@ -33,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         Role::define('admin', [
             'users:manage',
+            'users:approve',
             'pages:manage',
         ]);
     }

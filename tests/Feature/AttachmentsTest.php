@@ -16,19 +16,23 @@ it('redirects guests to login', function () {
         ->assertRedirect(route('login'));
 });
 
-it('forbids unapproved users from accessing attachments', function () {
-    $this->actingAs(User::factory()->unapproved()->create());
+it('sends members pending approval to the page explaining why', function () {
+    $this->actingAs(User::factory()->pendingApproval()->create())
+        ->get(route('attachments.show', $this->attachment))
+        ->assertRedirect(route('pending-approval'));
+});
 
-    $this->get(route('attachments.show', $this->attachment))
+it('forbids members pending approval from fetching attachments as JSON', function () {
+    $this->actingAs(User::factory()->pendingApproval()->create())
+        ->getJson(route('attachments.show', $this->attachment))
         ->assertForbidden();
 });
 
 it('redirects approved users to a temporary file url', function () {
     $this->freezeTime();
 
-    $this->actingAs(User::factory()->create());
-
-    $this->get(route('attachments.show', $this->attachment))
+    $this->actingAs(User::factory()->create())
+        ->get(route('attachments.show', $this->attachment))
         ->assertRedirect($this->attachment->temporaryUrl());
 });
 
@@ -50,9 +54,8 @@ it('ignores the optional decorative filename in the url', function () {
 });
 
 it('returns a 404 for unknown attachments', function () {
-    $this->actingAs(User::factory()->create());
-
-    $this->get(route('attachments.show', ['attachment' => Str::uuid7()]))
+    $this->actingAs(User::factory()->create())
+        ->get(route('attachments.show', ['attachment' => Str::uuid7()]))
         ->assertNotFound();
 });
 

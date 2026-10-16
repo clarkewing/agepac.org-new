@@ -12,4 +12,9 @@ class SubscriptionItemObserver
     {
         LegacySync::syncRecord($item->getTable(), $item->getKey(), SyncDirection::NewToLegacy);
     }
+
+    public function deleted(SubscriptionItem $item): void
+    {
+        LegacySync::deleteRecord($item->getTable(), $item->getKey(), SyncDirection::NewToLegacy);
+    }
 }
