@@ -32,6 +32,8 @@ class UserObserver
 
     public function deleted(User $user): void
     {
+        LegacySync::deleteRecord($user->getTable(), $user->getKey(), SyncDirection::NewToLegacy);
+
         app(UnsubscribeUserFromListAction::class)($user, self::MAILCOACH_LIST_TAG);
     }
 }

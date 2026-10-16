@@ -22,6 +22,8 @@ class SubscriptionObserver
 
     public function deleted(Subscription $subscription): void
     {
+        LegacySync::deleteRecord($subscription->getTable(), $subscription->getKey(), SyncDirection::NewToLegacy);
+
         $this->syncMailcoach($subscription->user);
     }
 

@@ -67,3 +67,11 @@ test('user payment method details are synced to legacy database', function () {
         'card_last_four' => '4242', // Mapped from pm_last_four
     ]);
 });
+
+test('user deletions are synced to legacy database', function () {
+    $user = User::factory()->pendingApproval()->create();
+
+    $user->delete();
+
+    $this->assertDatabaseMissing('users', ['id' => $user->id], 'legacy');
+});
