@@ -99,6 +99,14 @@ return [
                     'description' => 'The user will gain access to the members area and be notified by email.',
                 ],
             ],
+            'reject' => [
+                'label' => 'Reject',
+                'success' => 'Account rejected and deleted.',
+                'modal' => [
+                    'heading' => 'Reject this account?',
+                    'description' => 'The account will be deleted permanently. The person will not be notified.',
+                ],
+            ],
             'assign-role' => [
                 'label' => 'Assign role',
                 'placeholder' => 'None',

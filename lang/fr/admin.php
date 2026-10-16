@@ -99,6 +99,14 @@ return [
                     'description' => 'L’utilisateur aura accès à l’espace membres et en sera informé par e‑mail.',
                 ],
             ],
+            'reject' => [
+                'label' => 'Refuser',
+                'success' => 'Compte refusé et supprimé.',
+                'modal' => [
+                    'heading' => 'Refuser ce compte ?',
+                    'description' => 'Le compte sera supprimé définitivement. La personne n’en sera pas informée.',
+                ],
+            ],
             'assign-role' => [
                 'label' => 'Attribuer un rôle',
                 'placeholder' => 'Aucun',

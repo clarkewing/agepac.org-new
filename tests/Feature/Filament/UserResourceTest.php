@@ -3,6 +3,7 @@
 use App\Enums\ClassCourse;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Filament\Resources\Users\UserResource;
 use App\Models\User;
 use App\Notifications\AccountApproved;
 use Filament\Actions\Testing\TestAction;
@@ -288,6 +289,24 @@ describe('header actions', function () {
 
         Livewire::test(EditUser::class, ['record' => $user->getRouteKey()])
             ->assertActionHidden('approve');
+    });
+
+    test('a user pending approval can be rejected', function () {
+        $user = User::factory()->pendingApproval()->create();
+
+        Livewire::test(EditUser::class, ['record' => $user->getRouteKey()])
+            ->callAction('reject')
+            ->assertNotified(__('admin.users.actions.reject.success'))
+            ->assertRedirect(UserResource::getUrl('index'));
+
+        $this->assertModelMissing($user);
+    });
+
+    test('the reject action is hidden for approved users', function () {
+        $user = User::factory()->create();
+
+        Livewire::test(EditUser::class, ['record' => $user->getRouteKey()])
+            ->assertActionHidden('reject');
     });
 
     test('a role can be assigned to a user', function () {
