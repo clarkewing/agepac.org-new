@@ -3,6 +3,7 @@
 namespace Tests\Feature\Console;
 
 use App\Actions\Mailcoach\SubscribeUserToListAction;
+use App\Enums\MailcoachTag;
 use App\Models\User;
 use App\Services\Mailcoach\Facades\Mailcoach;
 use Laravel\Cashier\Subscription;
@@ -23,7 +24,7 @@ it('subscribes all users to newsletter and syncs members tag based on active sub
     );
 
     $staleUser = User::factory()->create();
-    app(SubscribeUserToListAction::class)($staleUser, 'members_newsletter');
+    app(SubscribeUserToListAction::class)($staleUser, MailcoachTag::MEMBERS_NEWSLETTER);
 
     $this->artisan('mailcoach:sync-users')
         ->assertSuccessful();

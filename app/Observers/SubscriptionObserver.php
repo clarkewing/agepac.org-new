@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Actions\Mailcoach\SubscribeUserToListAction;
 use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
+use App\Enums\MailcoachTag;
 use App\Models\User;
 use ClarkeWing\LegacySync\Enums\SyncDirection;
 use ClarkeWing\LegacySync\Facades\LegacySync;
@@ -11,8 +12,6 @@ use Laravel\Cashier\Subscription;
 
 class SubscriptionObserver
 {
-    protected const string MAILCOACH_LIST_TAG = 'members_newsletter';
-
     public function saved(Subscription $subscription): void
     {
         LegacySync::syncRecord($subscription->getTable(), $subscription->getKey(), SyncDirection::NewToLegacy);
@@ -32,9 +31,9 @@ class SubscriptionObserver
         $hasActiveSubscription = $user->subscriptions()->where('type', 'membership')->active()->exists();
 
         if ($hasActiveSubscription) {
-            app(SubscribeUserToListAction::class)($user, self::MAILCOACH_LIST_TAG);
+            app(SubscribeUserToListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
         } else {
-            app(UnsubscribeUserFromListAction::class)($user, self::MAILCOACH_LIST_TAG);
+            app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
         }
     }
 }

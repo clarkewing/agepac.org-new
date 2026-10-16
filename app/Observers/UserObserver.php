@@ -5,14 +5,13 @@ namespace App\Observers;
 use App\Actions\Mailcoach\SubscribeUserToListAction;
 use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
 use App\Actions\Mailcoach\UpdateSubscriberEmailAction;
+use App\Enums\MailcoachTag;
 use App\Models\User;
 use ClarkeWing\LegacySync\Enums\SyncDirection;
 use ClarkeWing\LegacySync\Facades\LegacySync;
 
 class UserObserver
 {
-    protected const string MAILCOACH_LIST_TAG = 'newsletter';
-
     public function saved(User $user): void
     {
         LegacySync::syncRecord($user->getTable(), $user->getKey(), SyncDirection::NewToLegacy);
@@ -20,7 +19,7 @@ class UserObserver
 
     public function created(User $user): void
     {
-        app(SubscribeUserToListAction::class)($user, self::MAILCOACH_LIST_TAG);
+        app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
     }
 
     public function updated(User $user): void
@@ -34,6 +33,6 @@ class UserObserver
     {
         LegacySync::deleteRecord($user->getTable(), $user->getKey(), SyncDirection::NewToLegacy);
 
-        app(UnsubscribeUserFromListAction::class)($user, self::MAILCOACH_LIST_TAG);
+        app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::NEWSLETTER);
     }
 }

@@ -4,16 +4,13 @@ namespace App\Console\Commands;
 
 use App\Actions\Mailcoach\SubscribeUserToListAction;
 use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
+use App\Enums\MailcoachTag;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
 class SyncUsersToMailcoach extends Command
 {
-    const string NEWSLETTER_TAG = 'newsletter';
-
-    const string MEMBERS_TAG = 'members_newsletter';
-
     /**
      * The name and signature of the console command.
      *
@@ -35,12 +32,12 @@ class SyncUsersToMailcoach extends Command
 
         User::query()->orderBy('id')->chunkById($chunk, function (Collection $users) use (&$processed) {
             foreach ($users as $user) {
-                app(SubscribeUserToListAction::class)($user, self::NEWSLETTER_TAG);
+                app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
 
                 if ($this->hasActiveSubscription($user)) {
-                    app(SubscribeUserToListAction::class)($user, self::MEMBERS_TAG);
+                    app(SubscribeUserToListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
                 } else {
-                    app(UnsubscribeUserFromListAction::class)($user, self::MEMBERS_TAG);
+                    app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
                 }
 
                 $processed++;

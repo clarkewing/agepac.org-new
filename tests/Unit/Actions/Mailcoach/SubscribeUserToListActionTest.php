@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Mailcoach\SubscribeUserToListAction;
+use App\Enums\MailcoachTag;
 use App\Models\User;
 use App\Services\Mailcoach\Facades\Mailcoach;
 
@@ -19,7 +20,7 @@ it('creates a new subscriber and adds the provided tag when not found', function
 
     expect(Mailcoach::getSubscriber('ada@example.com'))->toBeNull();
 
-    app(SubscribeUserToListAction::class)($user, 'newsletter');
+    app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
 
     expect(Mailcoach::getSubscriber('ada@example.com'))
         ->not->toBeNull()
@@ -41,7 +42,7 @@ it('adds the tag to an existing subscriber', function () {
     expect(Mailcoach::subscribe('alan@example.com'))
         ->tags->toBeArray()->toBeEmpty();
 
-    app(SubscribeUserToListAction::class)($user, 'newsletter');
+    app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
 
     expect(Mailcoach::getSubscriber('alan@example.com'))
         ->not->toBeNull()

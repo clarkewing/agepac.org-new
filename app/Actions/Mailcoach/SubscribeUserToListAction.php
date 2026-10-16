@@ -2,17 +2,18 @@
 
 namespace App\Actions\Mailcoach;
 
+use App\Enums\MailcoachTag;
 use App\Models\User;
 use App\Services\Mailcoach\Subscriber;
 
 readonly class SubscribeUserToListAction extends MailcoachAction
 {
-    public function __invoke(User $user, string $tag): void
+    public function __invoke(User $user, MailcoachTag $tag): void
     {
         $subscriber = $this->mailcoach->getSubscriber($user->email) ?? $this->createSubscriber($user);
 
         if ($subscriber) {
-            $this->mailcoach->addTags($subscriber, [$tag]);
+            $this->mailcoach->addTags($subscriber, [$tag->value]);
         }
     }
 

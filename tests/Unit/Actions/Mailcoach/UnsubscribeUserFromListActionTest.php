@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
+use App\Enums\MailcoachTag;
 use App\Models\User;
 use App\Services\Mailcoach\Facades\Mailcoach;
 
@@ -11,7 +12,7 @@ beforeEach(function () {
 it('does nothing when no subscriber exists', function () {
     $user = User::factory()->make(['email' => 'ghost@example.com']);
 
-    app(UnsubscribeUserFromListAction::class)($user, 'newsletter');
+    app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::NEWSLETTER);
 
     expect(Mailcoach::getSubscriber('ghost@example.com'))->toBeNull();
 });
@@ -26,7 +27,7 @@ it('unsubscribes when the only tag matches', function () {
         ->tags->toBe(['newsletter'])
         ->unsubscribedAt->toBeNull();
 
-    app(UnsubscribeUserFromListAction::class)($user, 'newsletter');
+    app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::NEWSLETTER);
 
     expect(Mailcoach::getSubscriber('solo@example.com'))
         ->tags->toBeArray()->toBeEmpty()
@@ -43,7 +44,7 @@ it('removes only the provided tag when multiple tags exist', function () {
         ->tags->toBe(['newsletter', 'members_newsletter'])
         ->unsubscribedAt->toBeNull();
 
-    app(UnsubscribeUserFromListAction::class)($user, 'members_newsletter');
+    app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
 
     expect(Mailcoach::getSubscriber('multi@example.com'))
         ->tags->toEqualCanonicalizing(['newsletter'])
