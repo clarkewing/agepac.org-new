@@ -24,7 +24,7 @@ describe('wizard', function () {
         $this->get(route('register'))
             ->assertSuccessful()
             ->assertSeeLivewire('pages::auth.register');
-    })->skip(message: 'Pending PR 3: registration still redirects to the legacy app');
+    });
 
     it('walks through steps in order', function () {
         $steps = [
@@ -150,7 +150,7 @@ describe('wizard', function () {
             ->class_year->toEqual(2015)
             ->birth_date->toDateString()->toBe('1994-09-22')
             ->phone->formatE164()->toBe('+33612345678');
-    })->skip(message: 'Pending PR 3: registration still redirects to the legacy app');
+    });
 
     it('does not expose a registration endpoint', function () {
         expect(Route::has('register.store'))->toBeFalse();
