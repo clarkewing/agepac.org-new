@@ -31,10 +31,10 @@ class MacroServiceProvider extends ServiceProvider
             ]);
 
             // Trim whitespace sequences to one space, append space to properly chunk
-            $value = preg_replace('/\s+/', ' ', $value).' ';
+            $value = preg_replace('/\s+/u', ' ', $value).' ';
 
             // Break value up into parts split by value separators
-            $parts = preg_split('/( |-|O\'|l\'|d\'|St\\.|Mc)/i', $value, -1, PREG_SPLIT_DELIM_CAPTURE);
+            $parts = preg_split('/( |-|O\'|l\'|d\'|St\\.|Mc)/iu', $value, -1, PREG_SPLIT_DELIM_CAPTURE);
 
             // Chunk parts, use $casedParts or uppercase first, remove unfinished chunks
             $value = collect($parts)
@@ -48,7 +48,7 @@ class MacroServiceProvider extends ServiceProvider
                     // Choose a specified part case, or uppercase first as default
                     $cased = $casedParts->first(fn (string $i): bool => strcasecmp($i, $name) === 0);
 
-                    return [$cased ?? ucfirst(strtolower($name)), $separator];
+                    return [$cased ?? Str::ucfirst(Str::lower($name)), $separator];
                 })
                 ->map(fn (array $part): string => implode($part))
                 ->join('');
