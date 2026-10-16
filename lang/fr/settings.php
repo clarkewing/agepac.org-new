@@ -18,8 +18,15 @@ return [
 
     'profile' => [
         'heading' => 'Profil',
-        'subheading' => 'Mettez à jour votre nom et votre adresse e‑mail',
+        'subheading' => 'Mettez à jour vos informations et votre adresse e‑mail',
         'action' => 'Enregistrer',
+        'status' => [
+            'saved' => 'Votre profil a été mis à jour.',
+        ],
+        'locked' => [
+            'text' => 'Vos nom et promotion ont été vérifiés lors de l’approbation de votre compte.',
+            'contact' => 'Contactez‑nous pour les modifier.',
+        ],
         'email-verification' => [
             'prompt' => 'Votre adresse e‑mail n’est pas vérifiée.',
             'action' => 'Cliquez ici pour renvoyer l’e‑mail de vérification.',

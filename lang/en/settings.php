@@ -18,8 +18,15 @@ return [
 
     'profile' => [
         'heading' => 'Profile',
-        'subheading' => 'Update your name and email address',
+        'subheading' => 'Update your details and email address',
         'action' => 'Save',
+        'status' => [
+            'saved' => 'Your profile has been updated.',
+        ],
+        'locked' => [
+            'text' => 'Your name and class were checked when your account was approved.',
+            'contact' => 'Contact us to change them.',
+        ],
         'email-verification' => [
             'prompt' => 'Your email address is unverified.',
             'action' => 'Click here to re-send the verification email.',
