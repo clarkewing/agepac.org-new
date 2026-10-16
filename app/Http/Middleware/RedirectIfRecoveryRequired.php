@@ -33,8 +33,12 @@ class RedirectIfRecoveryRequired
      */
     public function handle(Request $request, Closure $next, ?string $only = null): mixed
     {
+        if (blank($email = $request->input(Fortify::email()))) {
+            return $next($request);
+        }
+
         $user = User::query()
-            ->where('email', Str::lower((string) $request->input(Fortify::email())))
+            ->where('email', Str::lower((string) $email))
             ->first();
 
         $requiresRecovery = match ($only) {
