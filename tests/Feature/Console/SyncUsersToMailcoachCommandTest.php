@@ -57,3 +57,11 @@ it('is idempotent and does not duplicate tags when run multiple times', function
         ->filter(fn ($t) => $t === 'newsletter')->toHaveCount(1)
         ->filter(fn ($t) => $t === 'members_newsletter')->toHaveCount(1);
 });
+
+it('leaves members pending approval off the newsletter', function () {
+    $user = User::factory()->pendingApproval()->create();
+
+    $this->artisan('mailcoach:sync-users')->assertSuccessful();
+
+    expect(Mailcoach::getSubscriber($user->email))->toBeNull();
+});

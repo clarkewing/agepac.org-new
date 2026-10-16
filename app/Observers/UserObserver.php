@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Actions\Mailcoach\SubscribeUserToListAction;
 use App\Actions\Mailcoach\UnsubscribeUserFromListAction;
 use App\Actions\Mailcoach\UpdateSubscriberEmailAction;
 use App\Enums\MailcoachTag;
@@ -15,11 +14,6 @@ class UserObserver
     public function saved(User $user): void
     {
         LegacySync::syncRecord($user->getTable(), $user->getKey(), SyncDirection::NewToLegacy);
-    }
-
-    public function created(User $user): void
-    {
-        app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
     }
 
     public function updated(User $user): void

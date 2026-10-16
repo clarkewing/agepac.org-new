@@ -23,26 +23,29 @@ class SyncUsersToMailcoach extends Command
      *
      * @var string
      */
-    protected $description = 'Sync all application users to Mailcoach with the proper tags based on membership status.';
+    protected $description = 'Sync all approved users to Mailcoach with the proper tags based on membership status.';
 
     public function handle(): int
     {
         $processed = 0;
         $chunk = (int) $this->option('chunk');
 
-        User::query()->orderBy('id')->chunkById($chunk, function (Collection $users) use (&$processed) {
-            foreach ($users as $user) {
-                app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
+        User::query()
+            ->approved()
+            ->orderBy('id')
+            ->chunkById($chunk, function (Collection $users) use (&$processed) {
+                foreach ($users as $user) {
+                    app(SubscribeUserToListAction::class)($user, MailcoachTag::NEWSLETTER);
 
-                if ($this->hasActiveSubscription($user)) {
-                    app(SubscribeUserToListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
-                } else {
-                    app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
+                    if ($this->hasActiveSubscription($user)) {
+                        app(SubscribeUserToListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
+                    } else {
+                        app(UnsubscribeUserFromListAction::class)($user, MailcoachTag::MEMBERS_NEWSLETTER);
+                    }
+
+                    $processed++;
                 }
-
-                $processed++;
-            }
-        });
+            });
 
         $this->info("Processed {$processed} users.");
 

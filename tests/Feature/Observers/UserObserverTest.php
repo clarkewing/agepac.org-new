@@ -1,20 +1,18 @@
 <?php
 
+use App\Actions\Mailcoach\SubscribeUserToListAction;
+use App\Enums\MailcoachTag;
 use App\Models\User;
 use App\Services\Mailcoach\Facades\Mailcoach;
 
-it('subscribes a newly created user to the newsletter list', function () {
-    $user = User::factory()->create();
+it('leaves a newly created user off the newsletter until approved', function () {
+    $user = User::factory()->pendingApproval()->create();
 
-    expect(Mailcoach::getSubscriber($user->email))
-        ->not->toBeNull()
-        ->tags->toContain('newsletter');
+    expect(Mailcoach::getSubscriber($user->email))->toBeNull();
 });
 
 it('updates the subscriber email when the user email changes', function () {
-    $user = User::factory()->create(['email' => 'old@example.com']);
-
-    expect(Mailcoach::getSubscriber('old@example.com'))->not->toBeNull();
+    resolve(SubscribeUserToListAction::class)($user = User::factory()->create(['email' => 'old@example.com']), MailcoachTag::NEWSLETTER);
 
     $user->update(['email' => 'new@example.com']);
 
@@ -23,13 +21,7 @@ it('updates the subscriber email when the user email changes', function () {
 });
 
 it('unsubscribes the user from the newsletter list on delete', function () {
-    $user = User::factory()->create();
-
-    // Sanity: subscribed and has newsletter tag from create observer
-    expect(Mailcoach::getSubscriber($user->email))
-        ->not->toBeNull()
-        ->tags->toContain('newsletter')
-        ->unsubscribedAt->toBeNull();
+    resolve(SubscribeUserToListAction::class)($user = User::factory()->create(), MailcoachTag::NEWSLETTER);
 
     $user->delete();
 

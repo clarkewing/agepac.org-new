@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Observers;
 
+use App\Actions\Mailcoach\SubscribeUserToListAction;
+use App\Enums\MailcoachTag;
 use App\Models\User;
 use App\Services\Mailcoach\Facades\Mailcoach;
 use Laravel\Cashier\Subscription;
@@ -16,25 +18,20 @@ function createSubscriptionForUser(User $user, array $overrides = []): Subscript
 }
 
 it('adds members_newsletter tag when a subscription is saved and active', function () {
-    $user = User::factory()->create();
-
-    expect(Mailcoach::getSubscriber($user->email)->tags)
-        ->toContain('newsletter')
-        ->not->toContain('members_newsletter');
+    resolve(SubscribeUserToListAction::class)($user = User::factory()->create(), MailcoachTag::NEWSLETTER);
 
     createSubscriptionForUser($user);
 
     expect(Mailcoach::getSubscriber($user->email)->tags)
+        ->toContain('newsletter')
         ->toContain('members_newsletter');
 });
 
 it('removes members_newsletter tag when the last subscription is deleted', function () {
-    $subscription = createSubscriptionForUser(
-        $user = User::factory()->create()
-    );
+    resolve(SubscribeUserToListAction::class)($user = User::factory()->create(), MailcoachTag::NEWSLETTER);
+    $subscription = createSubscriptionForUser($user);
 
     expect(Mailcoach::getSubscriber($user->email)->tags)
-        ->toContain('newsletter')
         ->toContain('members_newsletter');
 
     $subscription->delete();
