@@ -148,6 +148,34 @@ return [
         'action' => 'Reset password',
     ],
 
+    'authorize' => [
+        'title' => 'Sign in to an app',
+        'heading' => 'Continue to :app',
+        'description' => ':app would like to know your name and your role.',
+        'approve' => 'Continue',
+        'deny' => 'Cancel',
+        'signed-in-as' => 'Signed in as :name.',
+        'switch-account' => 'Not you?',
+        'ineligible' => [
+            'heading' => ':app is for members',
+            'back' => 'Back to :app',
+            'reasons' => [
+                'unverified' => [
+                    'text' => 'Verify your email address to continue.',
+                    'action' => 'Verify my email address',
+                ],
+                'pending-approval' => [
+                    'text' => 'Your account is pending approval by the board.',
+                    'action' => 'See where it stands',
+                ],
+                'membership' => [
+                    'text' => 'An active membership is required.',
+                    'action' => 'Become a member',
+                ],
+            ],
+        ],
+    ],
+
     'confirm-password' => [
         'title' => 'Confirm password',
         'heading' => 'Confirm password',

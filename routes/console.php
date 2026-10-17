@@ -10,3 +10,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('model:prune', ['--model' => [OneTimePassword::class]])->daily();
+
+Schedule::command('passport:purge')->daily();

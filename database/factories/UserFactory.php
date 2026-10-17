@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Laravel\Cashier\Subscription;
 
 /**
  * @extends Factory<User>
@@ -72,6 +73,11 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'approved_at' => null,
         ]);
+    }
+
+    public function withMembership(): static
+    {
+        return $this->has(Subscription::factory()->state(['type' => 'membership']), 'subscriptions');
     }
 
     public function passwordResetRequired(): static
