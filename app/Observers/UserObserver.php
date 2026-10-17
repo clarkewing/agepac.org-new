@@ -21,6 +21,10 @@ class UserObserver
         if ($user->wasChanged('email')) {
             UpdateSubscriberEmail::dispatch($user->getOriginal('email'), $user->email);
         }
+
+        if ($user->wasChanged(['email_verified_at', 'approved_at'])) {
+            $user->revokeAppTokensIfIneligible();
+        }
     }
 
     public function deleted(User $user): void

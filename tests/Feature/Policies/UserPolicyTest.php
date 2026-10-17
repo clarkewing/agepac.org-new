@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use Laravel\Cashier\Subscription;
 
 it('lets users who can approve accounts approve one pending approval', function () {
     $admin = User::factory()->admin()->create();
@@ -22,8 +21,7 @@ it('lets users who can approve accounts reject one pending approval', function (
 });
 
 it('keeps an account with a membership on record from being rejected', function () {
-    $user = User::factory()->pendingApproval()->create();
-    Subscription::factory()->create(['user_id' => $user->id, 'type' => 'membership']);
+    $user = User::factory()->pendingApproval()->withMembership()->create();
 
     expect(User::factory()->admin()->create()->can('delete', $user))->toBeFalse();
 });

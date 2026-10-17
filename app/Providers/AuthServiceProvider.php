@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Passport\Client;
 use App\Models\User;
 use App\Services\Authorization\Role;
+use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,12 +24,21 @@ class AuthServiceProvider extends ServiceProvider
     ];
 
     /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        Passport::ignoreRoutes();
+    }
+
+    /**
      * Bootstrap services.
      */
     public function boot(): void
     {
         $this->configureRoles();
         $this->configurePermissions();
+        $this->configurePassport();
     }
 
     protected function configureRoles(): void
@@ -35,6 +47,8 @@ class AuthServiceProvider extends ServiceProvider
             'users:manage',
             'users:approve',
             'pages:manage',
+            'perfos:admin',
+            'escales:admin',
         ]);
     }
 
@@ -45,5 +59,17 @@ class AuthServiceProvider extends ServiceProvider
         Gate::before(fn (User $user, string $ability): ?bool => $user->hasPermission($ability) ? true : null);
 
         Gate::define('access-admin-panel', fn (User $user): bool => $user->hasAnyPermission($this->adminPanelPermissions));
+    }
+
+    protected function configurePassport(): void
+    {
+        Passport::useClientModel(Client::class);
+
+        Passport::$deviceCodeGrantEnabled = false;
+
+        Passport::tokensExpireIn(CarbonInterval::hour());
+        Passport::refreshTokensExpireIn(CarbonInterval::days(30));
+
+        Passport::authorizationView('pages.auth.authorize');
     }
 }

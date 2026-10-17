@@ -148,6 +148,34 @@ return [
         'action' => 'Réinitialiser',
     ],
 
+    'authorize' => [
+        'title' => 'Connexion à une application',
+        'heading' => 'Continuer vers :app',
+        'description' => ':app souhaite connaître votre nom et votre rôle.',
+        'approve' => 'Continuer',
+        'deny' => 'Annuler',
+        'signed-in-as' => 'Vous êtes connecté·e en tant que :name.',
+        'switch-account' => 'Ce n’est pas vous ?',
+        'ineligible' => [
+            'heading' => ':app est réservé aux adhérents',
+            'back' => 'Retour à :app',
+            'reasons' => [
+                'unverified' => [
+                    'text' => 'Vérifiez votre adresse e‑mail pour continuer.',
+                    'action' => 'Vérifier mon adresse e‑mail',
+                ],
+                'pending-approval' => [
+                    'text' => 'Votre compte est en attente d’approbation par le Bureau.',
+                    'action' => 'Voir où il en est',
+                ],
+                'membership' => [
+                    'text' => 'Une cotisation active est nécessaire.',
+                    'action' => 'Adhérer',
+                ],
+            ],
+        ],
+    ],
+
     'confirm-password' => [
         'title' => 'Confirmer le mot de passe',
         'heading' => 'Confirmer le mot de passe',
