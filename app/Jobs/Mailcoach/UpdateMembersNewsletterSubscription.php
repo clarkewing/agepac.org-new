@@ -22,9 +22,7 @@ class UpdateMembersNewsletterSubscription implements ShouldQueueAfterCommit
 
     public function handle(): void
     {
-        $hasActiveMembership = $this->user->subscriptions()->where('type', 'membership')->active()->exists();
-
-        if ($hasActiveMembership) {
+        if ($this->user->subscribed('membership')) {
             SubscribeToList::dispatchSync($this->user, MailcoachTag::MEMBERS_NEWSLETTER);
         } else {
             UnsubscribeFromList::dispatchSync($this->user->email, MailcoachTag::MEMBERS_NEWSLETTER);

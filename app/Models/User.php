@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ClassCourse;
 use App\Models\Concerns\Approvable;
+use App\Models\Concerns\HasAppAccess;
 use App\Models\Concerns\HasRole;
 use App\Models\Concerns\Recoverable;
 use App\Observers\UserObserver;
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use Spatie\OneTimePasswords\Models\Concerns\HasOneTimePasswords;
 
@@ -43,10 +45,11 @@ use Spatie\OneTimePasswords\Models\Concerns\HasOneTimePasswords;
 ])]
 #[ObservedBy(UserObserver::class)]
 #[RouteKey('username')]
-class User extends Authenticatable implements FilamentUser, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail, OAuthenticatable
 {
     use Approvable;
     use Billable;
+    use HasAppAccess;
     use HasFactory;
     use HasOneTimePasswords;
     use HasRole;

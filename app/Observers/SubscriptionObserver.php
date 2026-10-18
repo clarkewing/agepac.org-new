@@ -14,6 +14,8 @@ class SubscriptionObserver
         LegacySync::syncRecord($subscription->getTable(), $subscription->getKey(), SyncDirection::NewToLegacy);
 
         UpdateMembersNewsletterSubscription::dispatch($subscription->user);
+
+        $subscription->user->revokeAppTokensIfIneligible();
     }
 
     public function deleted(Subscription $subscription): void
@@ -21,5 +23,7 @@ class SubscriptionObserver
         LegacySync::deleteRecord($subscription->getTable(), $subscription->getKey(), SyncDirection::NewToLegacy);
 
         UpdateMembersNewsletterSubscription::dispatch($subscription->user);
+
+        $subscription->user->revokeAppTokensIfIneligible();
     }
 }
