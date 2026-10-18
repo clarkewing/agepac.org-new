@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
 
+Route::redirect('/', 'dashboard');
+
 // Outside the auth group: unrestricted pages are viewable by anyone, and
 // the policy handles restricted and unpublished pages per request.
 Route::get('pages/{page:path}', [PagesController::class, 'show'])
