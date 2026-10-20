@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "34d8cbaeb86b68a635affe2a11f207b2",
+    "content-hash": "9fcd6ed9cf83c4a55553eb2453bff1cd",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -8131,34 +8131,34 @@
         },
         {
             "name": "spatie/laravel-livewire-wizard",
-            "version": "3.1.4",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-livewire-wizard.git",
-                "reference": "bf3e259f842937a69f35a388b1a55c2d7ade882c"
+                "reference": "e462f26d75dfa73c6fc39d943ace1f78b1ab09cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-livewire-wizard/zipball/bf3e259f842937a69f35a388b1a55c2d7ade882c",
-                "reference": "bf3e259f842937a69f35a388b1a55c2d7ade882c",
+                "url": "https://api.github.com/repos/spatie/laravel-livewire-wizard/zipball/e462f26d75dfa73c6fc39d943ace1f78b1ab09cb",
+                "reference": "e462f26d75dfa73c6fc39d943ace1f78b1ab09cb",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^11.0|^12.0|^13.0",
-                "illuminate/support": "^11.0|^12.0|^13.0",
+                "illuminate/contracts": "^12.0|^13.0",
+                "illuminate/support": "^12.0|^13.0",
                 "livewire/livewire": "^4.3.4",
-                "php": "^8.2",
+                "php": "^8.4",
                 "spatie/laravel-collection-macros": "^7.13|^8.0",
                 "spatie/laravel-package-tools": "^1.16.1"
             },
             "require-dev": {
                 "ext-dom": "*",
                 "nunomaduro/collision": "^8.0",
-                "orchestra/testbench": "^9.0|^10.0|^11.0",
-                "pestphp/pest": "^3.7",
-                "pestphp/pest-plugin-laravel": "^3.1",
+                "orchestra/testbench": "^10.0|^11.0",
+                "pestphp/pest": "^4.7|^5.3",
+                "pestphp/pest-plugin-laravel": "^4.0|^5.0",
                 "spatie/laravel-ray": "^1.32.6",
-                "spatie/pest-plugin-snapshots": "^2.0.1"
+                "spatie/pest-plugin-snapshots": "^2.4"
             },
             "type": "library",
             "extra": {
@@ -8197,9 +8197,9 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-livewire-wizard/tree/3.1.4"
+                "source": "https://github.com/spatie/laravel-livewire-wizard/tree/3.2.0"
             },
-            "time": "2026-08-07T07:44:53+00:00"
+            "time": "2026-10-19T12:01:28+00:00"
         },
         {
             "name": "spatie/laravel-login-link",

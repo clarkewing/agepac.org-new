@@ -2,7 +2,6 @@
 
 use App\Enums\ClassCourse;
 use App\Enums\Gender;
-use App\Livewire\Traits\SfcStep;
 use Illuminate\Support\Facades\Date;
 use Livewire\Attributes\Computed;
 use Propaganistas\LaravelPhone\PhoneNumber;
@@ -10,9 +9,6 @@ use Spatie\LivewireWizard\Components\StepComponent;
 
 new class extends StepComponent
 {
-    // TODO: Drop once spatie/laravel-livewire-wizard#159 ships.
-    use SfcStep;
-
     /**
      * Send the member to the step that collects a field, to come back here
      * once it is saved.

@@ -2,7 +2,6 @@
 
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Actions\Fortify\ProfileValidationRules;
-use App\Livewire\Traits\SfcWizard;
 use App\Models\User;
 use App\Services\Auth\AccountRecovery;
 use Illuminate\Support\Arr;
@@ -19,9 +18,6 @@ new #[Layout('layouts::auth')] class extends WizardComponent
 {
     use PasswordValidationRules;
     use ProfileValidationRules;
-
-    // TODO: Drop once spatie/laravel-livewire-wizard#159 ships.
-    use SfcWizard;
 
     public function mount(): void
     {

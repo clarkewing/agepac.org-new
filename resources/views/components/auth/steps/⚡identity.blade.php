@@ -1,16 +1,12 @@
 <?php
 
 use App\Actions\Fortify\ProfileValidationRules;
-use App\Livewire\Traits\SfcStep;
 use Illuminate\Support\Str;
 use Spatie\LivewireWizard\Components\StepComponent;
 
 new class extends StepComponent
 {
     use ProfileValidationRules;
-
-    // TODO: Drop once spatie/laravel-livewire-wizard#159 ships.
-    use SfcStep;
 
     public string $first_name = '';
 
