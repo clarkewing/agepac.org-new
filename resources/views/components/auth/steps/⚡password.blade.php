@@ -1,7 +1,6 @@
 <?php
 
 use App\Actions\Fortify\PasswordValidationRules;
-use App\Livewire\Traits\SfcStep;
 use Illuminate\Validation\Rules\Password;
 use Spatie\LivewireWizard\Components\StepComponent;
 
@@ -12,9 +11,6 @@ use Spatie\LivewireWizard\Components\StepComponent;
 new class extends StepComponent
 {
     use PasswordValidationRules;
-
-    // TODO: Drop once spatie/laravel-livewire-wizard#159 ships.
-    use SfcStep;
 
     public string $password = '';
 

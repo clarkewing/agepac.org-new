@@ -3,7 +3,6 @@
 use App\Actions\Fortify\ProfileValidationRules;
 use App\Enums\ClassCourse;
 use App\Enums\Gender;
-use App\Livewire\Traits\SfcStep;
 use Livewire\Attributes\Computed;
 use Spatie\LivewireWizard\Components\StepComponent;
 
@@ -14,9 +13,6 @@ use Spatie\LivewireWizard\Components\StepComponent;
 new class extends StepComponent
 {
     use ProfileValidationRules;
-
-    // TODO: Drop once spatie/laravel-livewire-wizard#159 ships.
-    use SfcStep;
 
     public bool $requiresClass = true;
 

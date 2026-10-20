@@ -1,6 +1,5 @@
 <?php
 
-use App\Livewire\Traits\SfcWizard;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +15,6 @@ use Spatie\LivewireWizard\Components\WizardComponent;
 new #[Layout('layouts::auth')]
 class extends WizardComponent
 {
-    // TODO: Drop once spatie/laravel-livewire-wizard#159 ships.
-    use SfcWizard;
-
     /**
      * The step to come back to once the one being shown is saved, set when
      * the review step sends the member off to change an answer.

@@ -4,8 +4,6 @@ use App\Services\Mailcoach\Facades\Mailcoach;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use Livewire\Features\SupportTesting\Testable;
-use Livewire\Livewire;
 use Tests\TestCase;
 
 /*
@@ -63,24 +61,6 @@ expect()->intercept('toBe', Model::class, function (Model $expected) {
 expect()->intercept('toEqual', Carbon::class, function (Carbon $expected) {
     expect($this->value->equalTo($expected))
         ->toBeTrue("Failed to assert [{$this->value->toDateTimeString('microsecond')}] is equal to [{$expected->toDateTimeString('microsecond')}].");
-});
-
-/*
-|--------------------------------------------------------------------------
-| Macros
-|--------------------------------------------------------------------------
-*/
-
-// Tests a wizard's step from the wizard's test instance, as the package's
-// static testStep() does for class-based wizards.
-// TODO: Drop once spatie/laravel-livewire-wizard#159 ships.
-Testable::macro('testStep', function (string $step, array $state = []): Testable {
-    $wizard = $this->invade();
-    $wizard->allStepState = [];
-    $wizard->mountMountsWizard($step, $state);
-
-    return Livewire::test($step, $wizard->getCurrentStepState($step))
-        ->emitEvents()->in($this);
 });
 
 /*
