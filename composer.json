@@ -40,10 +40,10 @@
         "propaganistas/laravel-phone": "^6.0",
         "spatie/laravel-livewire-wizard": "^3.2",
         "spatie/laravel-login-link": "^1.6",
+        "spatie/laravel-mailcoach-mailer": "^1.7",
         "spatie/laravel-one-time-passwords": "^1.1",
         "symfony/html-sanitizer": "^8.1",
         "symfony/http-client": "^8.1",
-        "symfony/mailgun-mailer": "^8.1",
         "symfony/yaml": "^8.1"
     },
     "require-dev": {

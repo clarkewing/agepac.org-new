@@ -29,7 +29,7 @@ return [
     | when delivering an email. You may specify which one you're using for
     | your mailers below. You may also add additional mailers if needed.
     |
-    | Supported: "smtp", "sendmail", "mailgun", "ses", "ses-v2",
+    | Supported: "smtp", "sendmail", "mailcoach", "ses", "ses-v2",
     |            "postmark", "resend", "log", "array",
     |            "failover", "roundrobin"
     |
@@ -49,11 +49,12 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 
-        'mailgun' => [
-            'transport' => 'mailgun',
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
+        'mailcoach' => [
+            'transport' => 'mailcoach',
+            // Transactional mails go through the same Mailcoach instance as our
+            // mailing lists, so its host and token are reused here.
+            'domain' => parse_url((string) env('MAILCOACH_URL'), PHP_URL_HOST),
+            'token' => env('MAILCOACH_TOKEN'),
         ],
 
         'postmark' => [
