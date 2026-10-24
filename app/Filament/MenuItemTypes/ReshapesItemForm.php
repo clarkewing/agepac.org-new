@@ -33,7 +33,7 @@ trait ReshapesItemForm
             if ($advanced === null && $component instanceof Section) {
                 $advanced = $component;
 
-                if ($this->hoistedIconField !== null) {
+                if ($this->hoistedIconField !== null && $this->showsIconField()) {
                     $fields[] = $this->hoistedIconField;
                 }
 
@@ -58,6 +58,15 @@ trait ReshapesItemForm
         array_splice($fields, $visibleIndex, 0, [$advanced]);
 
         return $fields;
+    }
+
+    /**
+     * Whether the hoisted icon joins the main fields; types whose entries
+     * never render an icon drop the field entirely.
+     */
+    protected function showsIconField(): bool
+    {
+        return true;
     }
 
     /**
