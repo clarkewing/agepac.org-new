@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\MenuBuilder;
 use App\Http\Middleware\SetLocaleFromSession;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -33,6 +34,9 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Indigo,
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
+            ->plugins([
+                MenuBuilder::make(),
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([

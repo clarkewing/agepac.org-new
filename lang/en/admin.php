@@ -66,6 +66,24 @@ return [
         ],
     ],
 
+    'nav' => [
+        'title' => 'Navigation',
+        'not_live' => [
+            'title' => 'Hidden entry',
+            'description' => 'The selected page is unpublished or deleted, so this entry stays hidden until the page is live.',
+        ],
+        'empty_group' => [
+            'title' => 'Empty group',
+            'description' => 'A group with no entries stays hidden until something is placed inside it.',
+        ],
+        'types' => [
+            'page' => 'Page',
+        ],
+        'locations' => [
+            'sidebar' => 'Sidebar',
+        ],
+    ],
+
     'users' => [
         'label' => 'user',
         'sections' => [

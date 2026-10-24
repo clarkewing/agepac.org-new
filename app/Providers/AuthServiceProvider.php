@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Passport\Client;
 use App\Models\User;
+use App\Policies\MenuPolicy;
 use App\Services\Authorization\Role;
 use Carbon\CarbonInterval;
+use Datlechin\FilamentMenuBuilder\Models\Menu;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
@@ -21,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
     protected array $adminPanelPermissions = [
         'users:manage',
         'pages:manage',
+        'navigation:manage',
     ];
 
     /**
@@ -36,6 +39,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(Menu::class, MenuPolicy::class);
+
         $this->configureRoles();
         $this->configurePermissions();
         $this->configurePassport();
@@ -47,6 +52,7 @@ class AuthServiceProvider extends ServiceProvider
             'users:manage',
             'users:approve',
             'pages:manage',
+            'navigation:manage',
             'perfos:admin',
             'escales:admin',
         ]);
