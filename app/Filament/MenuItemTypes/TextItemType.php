@@ -26,4 +26,12 @@ class TextItemType extends BaseTextItemType
             ...$this->reshapeFormSchema(),
         ];
     }
+
+    /**
+     * Groups render as navlist headings, which carry no icon.
+     */
+    protected function showsIconField(): bool
+    {
+        return false;
+    }
 }

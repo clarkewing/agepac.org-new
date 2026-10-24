@@ -1,5 +1,6 @@
 <?php
 
+use App\Filament\MenuItemTypes\LinkItemType;
 use App\Filament\MenuItemTypes\PageItemType;
 use App\Filament\MenuItemTypes\TextItemType;
 use App\Models\MenuItem;
@@ -64,7 +65,7 @@ it('is off limits without the navigation permission', function () {
 });
 
 it('reshapes the item form for editors', function () {
-    $type = TextItemType::make();
+    $type = LinkItemType::make();
     $schema = collect($type->getFormSchema());
     $names = $schema->map(fn ($component): ?string => $component instanceof Field ? $component->getName() : null);
 
@@ -123,6 +124,14 @@ it('leads the group form with an empty-group warning', function () {
     $schema = TextItemType::make()->getFormSchema();
 
     expect($schema[0])->toBeInstanceOf(Callout::class);
+});
+
+it('offers no icon on the group form', function () {
+    $hasIconField = fn (array $schema): bool => collect($schema)
+        ->contains(fn ($component): bool => $component instanceof Field && $component->getName() === 'icon');
+
+    expect($hasIconField(TextItemType::make()->getFormSchema()))->toBeFalse()
+        ->and($hasIconField(LinkItemType::make()->getFormSchema()))->toBeTrue();
 });
 
 it('only lets group headings hold items', function () {
