@@ -23,9 +23,9 @@ it('translates its name and description for the current locale', function () {
 
     app()->setLocale('en');
     expect($role->name)->toBe('Administrator')
-        ->and($role->description)->toBe('Full access to manage members and pages in the admin area.');
+        ->and($role->description)->toBe('Full access to manage members, pages, and navigation in the admin area.');
 
     app()->setLocale('fr');
     expect($role->name)->toBe('Administrateur')
-        ->and($role->description)->toBe('Gestion complète des membres et des pages dans l’espace d’administration.');
+        ->and($role->description)->toBe('Gestion complète des membres, des pages et de la navigation dans l’espace d’administration.');
 });

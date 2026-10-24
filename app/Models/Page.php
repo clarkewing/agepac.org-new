@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\PageFormat;
+use Datlechin\FilamentMenuBuilder\Concerns\HasMenuItems;
+use Datlechin\FilamentMenuBuilder\Contracts\MenuLinkable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,9 +20,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'restricted',
     'published_at',
 ])]
-class Page extends Model
+class Page extends Model implements MenuLinkable
 {
     use HasFactory;
+    use HasMenuItems;
     use SoftDeletes;
 
     protected function casts(): array
@@ -30,6 +33,16 @@ class Page extends Model
             'restricted' => 'boolean',
             'published_at' => 'datetime',
         ];
+    }
+
+    public function getMenuTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getMenuUrl(): string
+    {
+        return $this->url();
     }
 
     /**

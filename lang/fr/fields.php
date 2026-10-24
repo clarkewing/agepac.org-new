@@ -126,4 +126,24 @@ return [
         ],
     ],
 
+    'badge' => [
+        'label' => 'Badge',
+    ],
+    'badge-color' => [
+        'label' => 'Couleur du badge',
+        'options' => [
+            'zinc' => 'Gris',
+            'red' => 'Rouge',
+            'amber' => 'Ambre',
+            'green' => 'Vert',
+            'blue' => 'Bleu',
+        ],
+    ],
+    'expandable' => [
+        'label' => 'Repliable',
+    ],
+    'expanded' => [
+        'label' => 'Déplié par défaut',
+    ],
+
 ];

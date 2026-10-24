@@ -1,0 +1,80 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\ColumnDefinition;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        $menus = config('filament-menu-builder.tables.menus', 'menus');
+        $menuItems = config('filament-menu-builder.tables.menu_items', 'menu_items');
+        $menuLocations = config('filament-menu-builder.tables.menu_locations', 'menu_locations');
+        $tenantModel = config('filament-menu-builder.tenant_model');
+
+        Schema::create($menus, function (Blueprint $table) use ($tenantModel) {
+            $table->id();
+
+            if ($tenantModel) {
+                $table->foreignIdFor($tenantModel)->constrained((new $tenantModel)->getTable())->cascadeOnDelete();
+            }
+
+            $this->translatableColumn($table, 'menu', 'name');
+            $table->boolean('is_visible')->default(true);
+            $table->timestamps();
+        });
+
+        Schema::create($menuItems, function (Blueprint $table) use ($menus, $menuItems) {
+            $table->id();
+            $table->foreignId('menu_id')->constrained($menus)->cascadeOnDelete();
+            $table->foreignId('parent_id')->nullable()->constrained($menuItems)->cascadeOnDelete();
+            $table->string('type')->default('link');
+            $this->translatableColumn($table, 'menu_item', 'title');
+            $this->translatableColumn($table, 'menu_item', 'url', length: 2048)->nullable();
+            $table->string('route')->nullable();
+            $table->json('route_parameters')->nullable();
+            $table->nullableMorphs('linkable');
+            $table->string('target', 10)->nullable();
+            $table->string('rel')->nullable();
+            $table->string('icon')->nullable();
+            $table->string('classes')->nullable();
+            $table->json('data')->nullable();
+            $table->boolean('is_visible')->default(true);
+            $table->unsignedInteger('order')->default(0);
+            $table->timestamps();
+
+            $table->index(['menu_id', 'parent_id', 'order']);
+        });
+
+        Schema::create($menuLocations, function (Blueprint $table) use ($menus, $tenantModel) {
+            $table->id();
+
+            if ($tenantModel) {
+                $table->foreignIdFor($tenantModel)->constrained((new $tenantModel)->getTable())->cascadeOnDelete();
+            }
+
+            $table->foreignId('menu_id')->constrained($menus)->cascadeOnDelete();
+            $table->string('location');
+            $table->timestamps();
+
+            $table->unique($tenantModel ? [(new $tenantModel)->getForeignKey(), 'location'] : ['location']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists(config('filament-menu-builder.tables.menu_locations', 'menu_locations'));
+        Schema::dropIfExists(config('filament-menu-builder.tables.menu_items', 'menu_items'));
+        Schema::dropIfExists(config('filament-menu-builder.tables.menus', 'menus'));
+    }
+
+    private function translatableColumn(Blueprint $table, string $model, string $column, int $length = 255): ColumnDefinition
+    {
+        $isTranslatable = filled(config('filament-menu-builder.translations.locales'))
+            && in_array($column, config("filament-menu-builder.translations.attributes.{$model}", []), true);
+
+        return $isTranslatable ? $table->json($column) : $table->string($column, $length);
+    }
+};

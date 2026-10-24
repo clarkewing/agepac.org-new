@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ece483ea88e48e30b97602eb5bef815",
+    "content-hash": "b5cf93bef672c173ed9d9420dd6d535b",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1298,6 +1298,77 @@
                 "source": "https://github.com/DASPRiD/Enum/tree/1.0.7"
             },
             "time": "2025-09-16T12:23:56+00:00"
+        },
+        {
+            "name": "datlechin/filament-menu-builder",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/datlechin/filament-menu-builder.git",
+                "reference": "423ef6267f9c031844587ad0b2d09334838d7e8a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/datlechin/filament-menu-builder/zipball/423ef6267f9c031844587ad0b2d09334838d7e8a",
+                "reference": "423ef6267f9c031844587ad0b2d09334838d7e8a",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^4.0|^5.0",
+                "php": "^8.3",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "pestphp/pest-plugin-livewire": "^4.0"
+            },
+            "suggest": {
+                "spatie/laravel-translatable": "For enhanced translatable model support with HasTranslations trait"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Datlechin\\FilamentMenuBuilder\\FilamentMenuBuilderServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Datlechin\\FilamentMenuBuilder\\": "src/",
+                    "Datlechin\\FilamentMenuBuilder\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ngo Quoc Dat",
+                    "email": "datlechin@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Build nested menus in Filament and render them anywhere in your Laravel app.",
+            "homepage": "https://github.com/datlechin/filament-menu-builder",
+            "keywords": [
+                "filament",
+                "filament-plugin",
+                "laravel",
+                "menu",
+                "menu-builder",
+                "navigation"
+            ],
+            "support": {
+                "issues": "https://github.com/datlechin/filament-menu-builder/issues",
+                "source": "https://github.com/datlechin/filament-menu-builder"
+            },
+            "time": "2026-10-24T11:36:41+00:00"
         },
         {
             "name": "defuse/php-encryption",

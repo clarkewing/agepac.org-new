@@ -66,6 +66,24 @@ return [
         ],
     ],
 
+    'nav' => [
+        'title' => 'Navigation',
+        'not_live' => [
+            'title' => 'Entrée masquée',
+            'description' => 'La page sélectionnée n’est pas publiée ou a été supprimée, donc cette entrée restera masquée tant qu’elle n’est pas en ligne.',
+        ],
+        'empty_group' => [
+            'title' => 'Groupe vide',
+            'description' => 'Un groupe sans éléments reste masqué tant que rien n’y est placé.',
+        ],
+        'types' => [
+            'page' => 'Page',
+        ],
+        'locations' => [
+            'sidebar' => 'Barre latérale',
+        ],
+    ],
+
     'users' => [
         'label' => 'utilisateur',
         'sections' => [
