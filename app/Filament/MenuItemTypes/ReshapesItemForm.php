@@ -3,13 +3,19 @@
 namespace App\Filament\MenuItemTypes;
 
 use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Section;
+use Filament\Support\Icons\Heroicon;
+
+use function Filament\Support\generate_icon_html;
 
 /**
  * Reshapes the upstream item form for less technical editors: the icon moves
- * out of the Advanced section into its place among the main fields, and
- * Advanced drops below the custom fields, just above the visibility toggle.
+ * out of the Advanced section into its place among the main fields, as a
+ * searchable select of outline Heroicons rather than a free-text icon name,
+ * and Advanced drops below the custom fields, just above the visibility
+ * toggle.
  *
  * Only three upstream facts are relied on, and each degrades gracefully when
  * it stops holding: the first Section is the Advanced section (none found —
@@ -70,8 +76,10 @@ trait ReshapesItemForm
     }
 
     /**
-     * The upstream advanced fields minus the icon, which is captured as-is
-     * for the main form — label, placeholder, and validation included.
+     * The upstream advanced fields minus the icon, which is swapped for a
+     * select under the upstream label. The select stores the same Blade Icons
+     * names (e.g. `heroicon-o-home`) the free-text field accepted, so stored
+     * icons load straight into it.
      *
      * @return array<Component>
      */
@@ -82,7 +90,11 @@ trait ReshapesItemForm
 
         foreach (parent::getAdvancedSchema() as $component) {
             if ($component instanceof Field && $component->getName() === 'icon') {
-                $this->hoistedIconField = $component;
+                $this->hoistedIconField = Select::make('icon')
+                    ->label($component->getLabel())
+                    ->options(fn (): array => static::heroiconOptions())
+                    ->searchable()
+                    ->allowHtml();
 
                 continue;
             }
@@ -91,5 +103,24 @@ trait ReshapesItemForm
         }
 
         return $advanced;
+    }
+
+    /**
+     * Filament's outline Heroicons, keyed by Blade Icons name, each labelled
+     * with the icon beside its name (e.g. "Arrow right start on rectangle").
+     *
+     * @return array<string, string>
+     */
+    protected static function heroiconOptions(): array
+    {
+        return once(fn (): array => collect(Heroicon::cases())
+            ->filter(fn (Heroicon $icon): bool => str_starts_with($icon->value, 'o-'))
+            ->mapWithKeys(fn (Heroicon $icon): array => [
+                "heroicon-{$icon->value}" => '<span class="flex items-center gap-2">'
+                    .generate_icon_html($icon)->toHtml()
+                    .e(str($icon->name)->after('Outlined')->headline()->lower()->ucfirst())
+                    .'</span>',
+            ])
+            ->all());
     }
 }
