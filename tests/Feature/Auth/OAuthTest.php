@@ -114,9 +114,11 @@ describe('authorization', function () {
 });
 
 describe('userinfo', function () {
-    it('tells our app who the member is', function () {
+    it('tells our app who the member is', function (string $app) {
         $user = User::factory()->withMembership()->create();
-        Passport::actingAs($user, client: Client::factory()->create());
+        $client = Client::factory()->create();
+        config()->set("passport.first_party_apps.{$app}", $client->getKey());
+        Passport::actingAs($user, client: $client);
 
         $this->getJson(route('oauth.userinfo'))
             ->assertOk()
@@ -124,9 +126,11 @@ describe('userinfo', function () {
                 'sub' => (string) $user->id,
                 'given_name' => $user->first_name,
                 'family_name' => $user->last_name,
+                'email' => $user->email,
+                'email_verified' => true,
                 'role' => 'member',
             ]);
-    });
+    })->with(['escales', 'perfos']);
 
     it('makes a member holding the app’s permission an admin there', function () {
         $client = Client::factory()->create();

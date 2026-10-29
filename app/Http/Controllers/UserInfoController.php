@@ -21,6 +21,8 @@ class UserInfoController extends Controller
             'sub' => (string) $user->getKey(),
             'given_name' => $user->first_name,
             'family_name' => $user->last_name,
+            'email' => $user->email,
+            'email_verified' => $user->hasVerifiedEmail(),
             'role' => $app !== false && $user->hasPermission("{$app}:admin") ? 'admin' : 'member',
         ]);
     }

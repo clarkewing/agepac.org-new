@@ -151,7 +151,7 @@ return [
     'authorize' => [
         'title' => 'Sign in to an app',
         'heading' => 'Continue to :app',
-        'description' => ':app would like to know your name and your role.',
+        'description' => ':app would like to know your name, your email address and your role.',
         'approve' => 'Continue',
         'deny' => 'Cancel',
         'signed-in-as' => 'Signed in as :name.',
