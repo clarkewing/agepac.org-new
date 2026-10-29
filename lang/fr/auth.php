@@ -151,7 +151,7 @@ return [
     'authorize' => [
         'title' => 'Connexion à une application',
         'heading' => 'Continuer vers :app',
-        'description' => ':app souhaite connaître votre nom et votre rôle.',
+        'description' => ':app souhaite connaître votre nom, votre adresse e‑mail et votre rôle.',
         'approve' => 'Continuer',
         'deny' => 'Annuler',
         'signed-in-as' => 'Vous êtes connecté·e en tant que :name.',

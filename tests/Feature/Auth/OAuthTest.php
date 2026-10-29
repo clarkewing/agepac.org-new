@@ -62,6 +62,29 @@ describe('authorization', function () {
         'no membership' => [fn () => User::factory()->create(), 'membership', 'settings.membership'],
     ]);
 
+    it('signs an eligible member in to our app once they approve', function () {
+        $this->actingAs(User::factory()->withMembership()->create())
+            ->get(authorizeUrl($this->client, ['prompt' => 'consent']));
+
+        $this->post(route('passport.authorizations.approve'), ['auth_token' => session('authToken')])
+            ->assertRedirectContains('https://perfos.agepac.test/auth/callback?code=');
+    });
+
+    it('refuses an ineligible member who approves anyway', function (Closure $member) {
+        $this->actingAs($member())
+            ->get(authorizeUrl($this->client));
+
+        $this->post(route('passport.authorizations.approve'), ['auth_token' => session('authToken')])
+            ->assertRedirectContains('https://perfos.agepac.test/auth/callback?')
+            ->assertRedirectContains('error=access_denied');
+
+        $this->assertDatabaseEmpty(Passport::authCode());
+    })->with([
+        'unverified email' => [fn () => User::factory()->unverified()->withMembership()->create()],
+        'pending approval' => [fn () => User::factory()->pendingApproval()->withMembership()->create()],
+        'no membership' => [fn () => User::factory()->create()],
+    ]);
+
     it('asks an eligible member for consent when the app requests it', function () {
         $this->actingAs(User::factory()->withMembership()->create())
             ->get(authorizeUrl($this->client, ['prompt' => 'consent']))
@@ -91,9 +114,11 @@ describe('authorization', function () {
 });
 
 describe('userinfo', function () {
-    it('tells our app who the member is', function () {
+    it('tells our app who the member is', function (string $app) {
         $user = User::factory()->withMembership()->create();
-        Passport::actingAs($user, client: Client::factory()->create());
+        $client = Client::factory()->create();
+        config()->set("passport.first_party_apps.{$app}", $client->getKey());
+        Passport::actingAs($user, client: $client);
 
         $this->getJson(route('oauth.userinfo'))
             ->assertOk()
@@ -101,9 +126,11 @@ describe('userinfo', function () {
                 'sub' => (string) $user->id,
                 'given_name' => $user->first_name,
                 'family_name' => $user->last_name,
+                'email' => $user->email,
+                'email_verified' => true,
                 'role' => 'member',
             ]);
-    });
+    })->with(['escales', 'perfos']);
 
     it('makes a member holding the app’s permission an admin there', function () {
         $client = Client::factory()->create();
