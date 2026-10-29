@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Passport\ApproveAuthorizationController;
 use App\Models\Passport\Client;
 use App\Models\User;
 use App\Policies\MenuPolicy;
@@ -10,6 +11,7 @@ use Carbon\CarbonInterval;
 use Datlechin\FilamentMenuBuilder\Models\Menu;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Http\Controllers\ApproveAuthorizationController as PassportApproveAuthorizationController;
 use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
@@ -32,6 +34,8 @@ class AuthServiceProvider extends ServiceProvider
     public function register(): void
     {
         Passport::ignoreRoutes();
+
+        $this->app->bind(PassportApproveAuthorizationController::class, ApproveAuthorizationController::class);
     }
 
     /**

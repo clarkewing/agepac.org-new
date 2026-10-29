@@ -62,6 +62,29 @@ describe('authorization', function () {
         'no membership' => [fn () => User::factory()->create(), 'membership', 'settings.membership'],
     ]);
 
+    it('signs an eligible member in to our app once they approve', function () {
+        $this->actingAs(User::factory()->withMembership()->create())
+            ->get(authorizeUrl($this->client, ['prompt' => 'consent']));
+
+        $this->post(route('passport.authorizations.approve'), ['auth_token' => session('authToken')])
+            ->assertRedirectContains('https://perfos.agepac.test/auth/callback?code=');
+    });
+
+    it('refuses an ineligible member who approves anyway', function (Closure $member) {
+        $this->actingAs($member())
+            ->get(authorizeUrl($this->client));
+
+        $this->post(route('passport.authorizations.approve'), ['auth_token' => session('authToken')])
+            ->assertRedirectContains('https://perfos.agepac.test/auth/callback?')
+            ->assertRedirectContains('error=access_denied');
+
+        $this->assertDatabaseEmpty(Passport::authCode());
+    })->with([
+        'unverified email' => [fn () => User::factory()->unverified()->withMembership()->create()],
+        'pending approval' => [fn () => User::factory()->pendingApproval()->withMembership()->create()],
+        'no membership' => [fn () => User::factory()->create()],
+    ]);
+
     it('asks an eligible member for consent when the app requests it', function () {
         $this->actingAs(User::factory()->withMembership()->create())
             ->get(authorizeUrl($this->client, ['prompt' => 'consent']))
