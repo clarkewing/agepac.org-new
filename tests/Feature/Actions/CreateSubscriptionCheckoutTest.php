@@ -42,7 +42,7 @@ describe('checkout creation', function () {
             ->status->toBe('open')
             ->locale->toBe(app()->getLocale())
             ->allow_promotion_codes->toBeTrue()
-            ->url->toStartWith('https://checkout.stripe.com/c/pay')
+            ->url->toMatch('~^https://checkout\.stripe\.com/[cg]/pay/cs_test_~')
             ->customer->toBe($this->user->stripe_id)
             ->success_url->toBe('https://example.com/success?session_id={CHECKOUT_SESSION_ID}')
             ->cancel_url->toBe('https://example.com/cancel?checkout_canceled=1&session_id={CHECKOUT_SESSION_ID}')
