@@ -8,7 +8,7 @@
         <div class="flex w-full max-w-sm flex-col gap-2">
             <a href="{{ route('public.home') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
                 <span class="mb-1 flex size-16 items-center justify-center rounded-md">
-                    <x-app-logo-icon class="size-16 fill-current text-universe dark:text-white" />
+                    <x-app-logo-icon class="text-universe size-16 fill-current dark:text-white" />
                 </span>
                 <span class="sr-only">{{ config('app.name') }}</span>
             </a>

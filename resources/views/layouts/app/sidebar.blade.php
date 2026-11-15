@@ -4,7 +4,7 @@
     @include('partials.head')
 </head>
 <body class="min-h-screen bg-white dark:bg-zinc-800">
-    <flux:sidebar sticky stashable class="border-e border-zinc-700 bg-universe">
+    <flux:sidebar sticky stashable class="bg-universe border-e border-zinc-700">
         {{-- Dark styles on the navy background; the user menu stays out so it follows the page theme. --}}
         <div class="dark contents">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
@@ -17,7 +17,11 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group class="grid">
                     {{-- TODO: Add wire:navigate --}}
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')">
+                    <flux:navlist.item
+                        icon="home"
+                        :href="route('dashboard')"
+                        :current="request()->routeIs('dashboard')"
+                    >
                         {{ __('navigation.sidebar.dashboard') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
@@ -83,7 +87,7 @@
     </flux:sidebar>
 
     <!-- Mobile User Menu -->
-    <flux:header sticky class="relative bg-universe lg:hidden">
+    <flux:header sticky class="bg-universe relative lg:hidden">
         <flux:sidebar.toggle class="dark lg:hidden" icon="bars-2" inset="left" />
 
         {{-- TODO: Add wire:navigate --}}

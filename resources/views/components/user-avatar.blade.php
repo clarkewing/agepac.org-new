@@ -8,10 +8,4 @@
     'size' => null,
 ])
 
-<flux:avatar
-    :$size
-    :initials="$user->initials()"
-    color="auto"
-    :color:seed="$user->id"
-    {{ $attributes }}
-/>
+<flux:avatar :$size :initials="$user->initials()" color="auto" :color:seed="$user->id" {{ $attributes }} />
