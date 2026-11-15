@@ -4,7 +4,7 @@
     @include('partials.head')
 </head>
 <body class="min-h-screen bg-white dark:bg-zinc-800">
-    <flux:sidebar sticky stashable class="bg-universe border-e border-zinc-700">
+    <flux:sidebar sticky stashable class="bg-universe border-e border-zinc-700 dark:bg-zinc-900">
         {{-- Dark styles on the navy background; the user menu stays out so it follows the page theme. --}}
         <div class="dark contents">
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
@@ -87,7 +87,7 @@
     </flux:sidebar>
 
     <!-- Mobile User Menu -->
-    <flux:header sticky class="bg-universe relative lg:hidden">
+    <flux:header sticky class="bg-universe relative lg:hidden dark:bg-zinc-900">
         <flux:sidebar.toggle class="dark lg:hidden" icon="bars-2" inset="left" />
 
         {{-- TODO: Add wire:navigate --}}
