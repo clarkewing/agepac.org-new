@@ -27,11 +27,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('attachments.show');
 
     Route::prefix('settings')->group(function () {
+        Route::get('/', fn () => to_route('settings.profile'));
+
         Route::livewire('profile', 'pages::settings.profile')->name('settings.profile');
         Route::livewire('password', 'pages::settings.password')->name('settings.password');
         Route::livewire('membership', 'pages::settings.membership')->name('settings.membership')->middleware('approved');
         Route::livewire('appearance', 'pages::settings.appearance')->name('settings.appearance');
-
-        Route::redirect('/', 'settings/profile');
     });
 });
