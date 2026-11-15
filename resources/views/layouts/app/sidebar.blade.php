@@ -10,7 +10,7 @@
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             {{-- TODO: Add wire:navigate --}}
-            <a href="{{ route('dashboard') }}" class="me-5 mb-2 flex items-center space-x-2 rtl:space-x-reverse">
+            <a href="{{ route('dashboard') }}" class="mb-2 flex justify-center max-lg:hidden">
                 <x-app-logo />
             </a>
 
@@ -91,15 +91,21 @@
     </flux:sidebar>
 
     <!-- Mobile User Menu -->
-    <flux:header class="bg-universe lg:hidden">
+    <flux:header sticky class="relative bg-universe lg:hidden">
         <flux:sidebar.toggle class="dark lg:hidden" icon="bars-2" inset="left" />
+
+        {{-- TODO: Add wire:navigate --}}
+        <a href="{{ route('dashboard') }}" class="absolute left-1/2 -translate-x-1/2">
+            <x-app-logo class="dark h-4 min-[360px]:h-5 sm:h-6" />
+        </a>
 
         <flux:spacer />
 
-        <flux:dropdown position="top" align="end">
+        <flux:dropdown class="-me-3" position="top" align="end">
             <flux:profile
                 class="dark"
                 :initials="auth()->user()->initials()"
+                avatar:size="xs"
                 avatar:color="auto"
                 :avatar:color:seed="auth()->id()"
                 icon-trailing="chevron-down"
