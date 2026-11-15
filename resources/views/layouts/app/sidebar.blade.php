@@ -4,41 +4,45 @@
     @include('partials.head')
 </head>
 <body class="min-h-screen bg-white dark:bg-zinc-800">
-    <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-universe">
-        <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
+    <flux:sidebar sticky stashable class="border-e border-zinc-700 bg-universe">
+        {{-- Dark styles on the navy background; the user menu stays out so it follows the page theme. --}}
+        <div class="dark contents">
+            <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-        {{-- TODO: Add wire:navigate --}}
-        <a href="{{ route('dashboard') }}" class="me-5 mb-2 flex items-center space-x-2 rtl:space-x-reverse">
-            <x-app-logo />
-        </a>
+            {{-- TODO: Add wire:navigate --}}
+            <a href="{{ route('dashboard') }}" class="me-5 mb-2 flex items-center space-x-2 rtl:space-x-reverse">
+                <x-app-logo />
+            </a>
 
-        <flux:navlist variant="outline">
-            <flux:navlist.group class="grid">
-                {{-- TODO: Add wire:navigate --}}
-                <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')">
-                    {{ __('navigation.sidebar.dashboard') }}
+            <flux:navlist variant="outline">
+                <flux:navlist.group class="grid">
+                    {{-- TODO: Add wire:navigate --}}
+                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')">
+                        {{ __('navigation.sidebar.dashboard') }}
+                    </flux:navlist.item>
+                </flux:navlist.group>
+
+                <x-sidebar-nav />
+            </flux:navlist>
+
+            <flux:spacer />
+
+            <flux:navlist variant="outline">
+                @can('access-admin-panel')
+                    <flux:navlist.item icon="shield-check" href="{{ route('filament.admin.pages.dashboard') }}">
+                        {{ __('navigation.sidebar.admin') }}
+                    </flux:navlist.item>
+                @endcan
+                <flux:navlist.item icon="globe-alt" href="{{ route('public.home') }}" target="_blank">
+                    {{ __('navigation.sidebar.public-site') }}
                 </flux:navlist.item>
-            </flux:navlist.group>
-
-            <x-sidebar-nav />
-        </flux:navlist>
-
-        <flux:spacer />
-
-        <flux:navlist variant="outline">
-            @can('access-admin-panel')
-                <flux:navlist.item icon="shield-check" href="{{ route('filament.admin.pages.dashboard') }}">
-                    {{ __('navigation.sidebar.admin') }}
-                </flux:navlist.item>
-            @endcan
-            <flux:navlist.item icon="globe-alt" href="{{ route('public.home') }}" target="_blank">
-                {{ __('navigation.sidebar.public-site') }}
-            </flux:navlist.item>
-        </flux:navlist>
+            </flux:navlist>
+        </div>
 
         <!-- Desktop User Menu -->
         <flux:dropdown class="hidden lg:block" position="bottom" align="start">
             <flux:profile
+                class="dark"
                 :name="auth()->user()->name"
                 :initials="auth()->user()->initials()"
                 avatar:color="auto"
@@ -87,13 +91,14 @@
     </flux:sidebar>
 
     <!-- Mobile User Menu -->
-    <flux:header class="lg:hidden">
-        <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+    <flux:header class="bg-universe lg:hidden">
+        <flux:sidebar.toggle class="dark lg:hidden" icon="bars-2" inset="left" />
 
         <flux:spacer />
 
         <flux:dropdown position="top" align="end">
             <flux:profile
+                class="dark"
                 :initials="auth()->user()->initials()"
                 avatar:color="auto"
                 :avatar:color:seed="auth()->id()"
