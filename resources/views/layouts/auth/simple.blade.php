@@ -3,12 +3,12 @@
 <head>
     @include('partials.head')
 </head>
-<body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
+<body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-zinc-950 dark:to-zinc-900">
     <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
         <div class="flex w-full max-w-sm flex-col gap-2">
             <a href="{{ route('public.home') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
                 <span class="mb-1 flex size-16 items-center justify-center rounded-md">
-                    <x-app-logo-icon class="size-16 fill-current text-black dark:text-white" />
+                    <x-app-logo-icon class="size-16 fill-current text-universe dark:text-white" />
                 </span>
                 <span class="sr-only">{{ config('app.name') }}</span>
             </a>
