@@ -41,25 +41,17 @@
 
         <!-- Desktop User Menu -->
         <flux:dropdown class="hidden lg:block" position="bottom" align="start">
-            <flux:profile
-                class="dark"
-                :name="auth()->user()->name"
-                :initials="auth()->user()->initials()"
-                avatar:color="auto"
-                :avatar:color:seed="auth()->id()"
-                icon:trailing="chevrons-up-down"
-            />
+            <flux:profile class="dark" :name="auth()->user()->name" icon:trailing="chevrons-up-down">
+                <x-slot:avatar>
+                    <x-user-avatar size="sm" />
+                </x-slot:avatar>
+            </flux:profile>
 
             <flux:menu class="w-[220px]">
                 <flux:menu.radio.group>
                     <div class="p-0 text-sm font-normal">
                         <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                            <flux:avatar
-                                size="sm"
-                                :initials="auth()->user()->initials()"
-                                color="auto"
-                                :color:seed="auth()->id()"
-                            />
+                            <x-user-avatar size="sm" />
 
                             <div class="grid flex-1 text-start text-sm leading-tight">
                                 <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
@@ -102,25 +94,17 @@
         <flux:spacer />
 
         <flux:dropdown class="-me-3" position="top" align="end">
-            <flux:profile
-                class="dark"
-                :initials="auth()->user()->initials()"
-                avatar:size="xs"
-                avatar:color="auto"
-                :avatar:color:seed="auth()->id()"
-                icon-trailing="chevron-down"
-            />
+            <flux:profile class="dark" icon-trailing="chevron-down">
+                <x-slot:avatar>
+                    <x-user-avatar size="xs" />
+                </x-slot:avatar>
+            </flux:profile>
 
             <flux:menu>
                 <flux:menu.radio.group>
                     <div class="p-0 text-sm font-normal">
                         <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                            <flux:avatar
-                                size="sm"
-                                :initials="auth()->user()->initials()"
-                                color="auto"
-                                :color:seed="auth()->id()"
-                            />
+                            <x-user-avatar size="sm" />
 
                             <div class="grid flex-1 text-start text-sm leading-tight">
                                 <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
