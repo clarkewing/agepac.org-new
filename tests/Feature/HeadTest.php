@@ -61,6 +61,16 @@ it('points the canonical URL at the current page, without its query string', fun
         ->assertSeeHtml('<link rel="canonical" href="'.secure_url('/association/team').'">');
 });
 
+it('shares every public page under its canonical URL', function (string $name) {
+    $response = $this->get(route($name))->assertOk();
+
+    preg_match('/<link rel="canonical" href="([^"]+)">/', $response->getContent(), $canonical);
+
+    expect($canonical)->not->toBeEmpty();
+
+    $response->assertSeeHtml('<meta property="og:url" content="'.$canonical[1].'">');
+})->with('public pages');
+
 it('takes the legal page metadata from the markdown front matter', function () {
     $this->get(route('public.privacy'))
         ->assertOk()
