@@ -4,7 +4,6 @@
 @php
     Head::title('AGEPAC – The ENAC Pilot Association', exact: true)
         ->description($description = 'L’AGEPAC est l’Association Générale des Élèves Pilotes de l’Aviation Civile, l’association des Élèves Pilotes de Ligne issus de la formation ENAC.')
-        ->og(url: route('public.home'))
         ->ogImage(asset('media/cockpit-ifr-leana.jpg'), alt: 'Une EPL en cours de navigation IFR en TB20')
         ->schema(Schema::organization()
             ->name('AGEPAC')
