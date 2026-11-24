@@ -40,7 +40,7 @@
                             </p>
                             <a
                                 class="focus:ring-vermilion-400 mt-3 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-800 px-6 py-3 text-base font-medium text-white shadow-xs hover:bg-gray-900 focus:ring-2 focus:ring-offset-2 focus:outline-hidden sm:inline-flex sm:w-auto sm:shrink-0"
-                                href="{{ asset('media/guide-epl-2023.pdf') }}"
+                                href="{{ asset('media/guide-epl-2026.pdf') }}"
                                 target="_blank"
                                 download
                             >
