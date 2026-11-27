@@ -17,6 +17,11 @@ beforeEach(function () {
 });
 
 afterEach(function () {
+    // Skipped without a Stripe key, so nothing was created.
+    if (! isset($this->product)) {
+        return;
+    }
+
     Cashier::stripe()->products->update($this->product->id, ['active' => false]);
 });
 
