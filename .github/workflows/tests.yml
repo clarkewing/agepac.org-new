@@ -24,12 +24,6 @@ jobs:
       - name: Add Flux Credentials Loaded From ENV
         run: composer config http-basic.composer.fluxui.dev "${{ secrets.FLUX_USERNAME }}" "${{ secrets.FLUX_LICENSE_KEY }}"
 
-      - name: Cache dependencies
-        uses: actions/cache@v6
-        with:
-          path: ~/.composer/cache/files
-          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -37,6 +31,19 @@ jobs:
           extensions: iconv, intl
           tools: composer:v2
           coverage: xdebug
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      # Fork PRs get no Flux secrets, but they can restore main's cache, which holds the Flux Pro zip.
+      # The restore-keys fallback carries older zips forward so slightly stale forks still hit.
+      - name: Cache Composer downloads
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-php-${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-php-${{ matrix.php }}-
 
       - name: Setup Node
         uses: actions/setup-node@v7
