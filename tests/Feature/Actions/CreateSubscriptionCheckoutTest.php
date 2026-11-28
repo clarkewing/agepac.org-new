@@ -21,6 +21,11 @@ describe('checkout creation', function () {
     });
 
     afterEach(function () {
+        // Skipped without a Stripe key, so nothing was created.
+        if (! isset($this->price)) {
+            return;
+        }
+
         Cashier::stripe()->customers->delete($this->user->stripe_id);
         Cashier::stripe()->products->update($this->price->product, ['active' => false]);
     });

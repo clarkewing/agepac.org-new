@@ -23,7 +23,12 @@ pest()->extend(TestCase::class)
         Mailcoach::fake();
 
         // Real-API tests talk to Stripe directly instead of tripping the stray-request guard.
+        // Without a real key (e.g. CI on fork PRs, which gets no secrets) they skip instead of failing.
         if (in_array('stripe-api', $this->groups(), true)) {
+            if (blank(config('cashier.secret'))) {
+                $this->markTestSkipped('Needs a real `STRIPE_SECRET` to call the Stripe API.');
+            }
+
             $this->allowStripeRequests();
         }
     })
